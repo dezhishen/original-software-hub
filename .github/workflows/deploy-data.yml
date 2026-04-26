@@ -1,4 +1,4 @@
-name: Deploy Data
+name: Deploy Pages
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy-data:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,10 +28,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: go run .
 
-      - name: Publish generated data to data branch
+      - name: Publish frontend (with data) to page branch
         uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
-          branch: data
-          folder: frontend/data
+          branch: page
+          folder: frontend
           clean: true
           single-commit: true
