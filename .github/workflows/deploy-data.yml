@@ -36,16 +36,16 @@ jobs:
           clean: true
           single-commit: true
 
-      - name: Purge jsDelivr CDN cache
-        run: |
-          # 枚举所有 jsonp 文件并逐一清除 jsDelivr 缓存
-          REPO="dezhishen/original-software-hub"
-          BRANCH="data"
-          BASE="https://purge.jsdelivr.net/gh/${REPO}@${BRANCH}"
+      # - name: Purge jsDelivr CDN cache
+      #   run: |
+      #     # 枚举所有 jsonp 文件并逐一清除 jsDelivr 缓存
+      #     REPO="dezhishen/original-software-hub"
+      #     BRANCH="data"
+      #     BASE="https://purge.jsdelivr.net/gh/${REPO}@${BRANCH}"
 
-          FILES=$(find frontend/data/jsonp -type f -name "*.js" | sed 's|frontend/data/jsonp||')
-          for f in $FILES; do
-            URL="${BASE}/jsonp${f}"
-            echo "Purging: $URL"
-            curl -sf "$URL" -o /dev/null || echo "  warn: purge failed for $f"
-          done
+      #     FILES=$(find frontend/data/jsonp -type f -name "*.js" | sed 's|frontend/data/jsonp||')
+      #     for f in $FILES; do
+      #       URL="${BASE}/jsonp${f}"
+      #       echo "Purging: $URL"
+      #       curl -sf "$URL" -o /dev/null || echo "  warn: purge failed for $f"
+      #     done
