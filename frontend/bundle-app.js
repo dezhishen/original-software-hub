@@ -258,6 +258,9 @@
       description: String(item.description || "").trim(),
       organization,
       officialWebsite,
+      tags: Array.isArray(item.tags)
+        ? item.tags.map((tag) => String(tag || "").trim()).filter(Boolean)
+        : [],
       source
     };
   }
