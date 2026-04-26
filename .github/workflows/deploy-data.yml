@@ -1,16 +1,10 @@
 name: Deploy Data
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - data-cli/**
-      - frontend/data/**
-      - .github/workflows/deploy-data.yml
   workflow_dispatch:
   schedule:
     - cron: "0 2 * * *"
+    - cron: "0 14 * * *"
 
 permissions:
   contents: write
@@ -29,6 +23,9 @@ jobs:
 
       - name: Generate latest data
         working-directory: data-cli
+        env:
+          OSH_GITHUB_TOKEN: ${{ secrets.OSH_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: go run .
 
       - name: Publish generated data to data branch

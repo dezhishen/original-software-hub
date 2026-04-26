@@ -4,6 +4,7 @@
     {
       "id": "<SOFTWARE_ID>",
       "name": "<SOFTWARE_NAME>",
+      "icon": "https://<ICON_URL>",
       "description": "<SOFTWARE_DESCRIPTION>",
       "organization": "<ORGANIZATION_NAME>",
       "officialWebsite": "https://<OFFICIAL_WEBSITE>",

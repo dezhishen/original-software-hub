@@ -12,6 +12,7 @@ import (
 	// Blank-import each plugin to trigger its init() registration.
 	// Uncomment or add plugins here to include them in the build.
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
 )
@@ -22,6 +23,12 @@ func main() {
 
 	jsonDir := filepath.Join(*outDir, "json", "versions")
 	jsonpDir := filepath.Join(*outDir, "jsonp", "versions")
+	if err := resetDir(jsonDir); err != nil {
+		log.Fatalf("reset json dir: %v", err)
+	}
+	if err := resetDir(jsonpDir); err != nil {
+		log.Fatalf("reset jsonp dir: %v", err)
+	}
 	if err := os.MkdirAll(jsonDir, 0o755); err != nil {
 		log.Fatalf("create json dir: %v", err)
 	}
@@ -37,40 +44,43 @@ func main() {
 
 	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
 	for _, p := range plugins {
-		fmt.Printf("[%s] fetching versions...\n", p.ID())
-		info, err := p.FetchSoftwareInfo()
+		fmt.Printf("[%s] fetching data...\n", p.Name())
+		items, err := p.Fetch()
 		if err != nil {
-			log.Printf("[%s] FetchSoftwareInfo error: %v", p.ID(), err)
-			continue
-		}
-		versions, err := p.FetchVersions()
-		if err != nil {
-			log.Printf("[%s] FetchVersions error: %v", p.ID(), err)
+			log.Printf("[%s] Fetch error: %v", p.Name(), err)
 			continue
 		}
 
-		versionPayload := plugin.VersionPayload{
-			SoftwareID: p.ID(),
-			UpdatedAt:  today(),
-			Versions:   versions,
-		}
-		if err := writeJSON(filepath.Join(jsonDir, p.ID()+".json"), versionPayload); err != nil {
-			log.Printf("[%s] write json: %v", p.ID(), err)
-			continue
-		}
-		if err := writeJSONP(filepath.Join(jsonpDir, p.ID()+".js"), versionPayload); err != nil {
-			log.Printf("[%s] write jsonp: %v", p.ID(), err)
-			continue
-		}
+		for _, entry := range items {
+			softwareID := entry.Item.ID
+			if softwareID == "" {
+				log.Printf("[%s] skip item with empty id", p.Name())
+				continue
+			}
 
-		item := *info
-		item.Source = plugin.Source{
-			Mode:          "jsonp",
-			Path:          "versions/" + p.ID() + ".js",
-			CallbackParam: "callback",
-			TimeoutMs:     8000,
+			versionPayload := plugin.VersionPayload{
+				SoftwareID: softwareID,
+				UpdatedAt:  today(),
+				Versions:   entry.Versions,
+			}
+			if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), versionPayload); err != nil {
+				log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
+				continue
+			}
+			if err := writeJSONP(filepath.Join(jsonpDir, softwareID+".js"), versionPayload); err != nil {
+				log.Printf("[%s/%s] write jsonp: %v", p.Name(), softwareID, err)
+				continue
+			}
+
+			item := entry.Item
+			item.Source = plugin.Source{
+				Mode:          "jsonp",
+				Path:          "versions/" + softwareID + ".js",
+				CallbackParam: "callback",
+				TimeoutMs:     8000,
+			}
+			listItems = append(listItems, item)
 		}
-		listItems = append(listItems, item)
 	}
 
 	softwareList := plugin.SoftwareListPayload{
@@ -118,6 +128,13 @@ func main() {
 
 func today() string {
 	return time.Now().Format("2006-01-02")
+}
+
+func resetDir(path string) error {
+	if err := os.RemoveAll(path); err != nil {
+		return err
+	}
+	return os.MkdirAll(path, 0o755)
 }
 
 func writeJSON(path string, v any) error {

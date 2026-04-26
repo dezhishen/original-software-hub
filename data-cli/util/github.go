@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -27,6 +28,12 @@ type GitHubAsset struct {
 // FetchGitHubLatestRelease fetches the latest release from a GitHub repo.
 // owner and repo must be the GitHub user/org and repository name respectively.
 func FetchGitHubLatestRelease(owner, repo string) (*GitHubRelease, error) {
+	return FetchGitHubLatestReleaseWithToken(owner, repo, "")
+}
+
+// FetchGitHubLatestReleaseWithToken fetches the latest release using an optional token.
+// When token is present, it is sent as a Bearer token to avoid low anonymous rate limits.
+func FetchGitHubLatestReleaseWithToken(owner, repo, token string) (*GitHubRelease, error) {
 	url := fmt.Sprintf(githubReleasesURL, owner, repo)
 	client := &http.Client{Timeout: 20 * time.Second}
 
@@ -36,6 +43,9 @@ func FetchGitHubLatestRelease(owner, repo string) (*GitHubRelease, error) {
 	}
 	req.Header.Set("Accept", "application/vnd.github+json")
 	req.Header.Set("X-GitHub-Api-Version", "2022-11-28")
+	if strings.TrimSpace(token) != "" {
+		req.Header.Set("Authorization", "Bearer "+strings.TrimSpace(token))
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {

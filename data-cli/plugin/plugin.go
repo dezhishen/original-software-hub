@@ -73,16 +73,21 @@ type VersionPayload struct {
 	Versions   []Version `json:"versions"`
 }
 
+// SoftwareData is the in-memory full data returned by plugins.
+// The main program is responsible for transforming it into output files.
+type SoftwareData struct {
+	Item     SoftwareItem
+	Versions []Version
+}
+
 // ── Plugin interface ──────────────────────────────────────────────────────────
 
-// Plugin is implemented by each software-specific plugin package.
+// Plugin is implemented by each data source plugin package.
 type Plugin interface {
-	// ID returns the software identifier (e.g. "chrome", "vscode").
-	ID() string
-	// FetchSoftwareInfo returns metadata for the software list (without Source).
-	FetchSoftwareInfo() (*SoftwareItem, error)
-	// FetchVersions returns the full list of versions to write.
-	FetchVersions() ([]Version, error)
+	// Name returns the plugin name for logging (e.g. "chrome", "github").
+	Name() string
+	// Fetch returns one or more software data items.
+	Fetch() ([]SoftwareData, error)
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────
