@@ -15,7 +15,7 @@ import (
 
 const (
 	huorongOfficialWebsite = "https://www.huorong.cn/person"
-	huorongIconURL         = "https://cdn-www.huorong.cn/Public/Uploads/uploadfile/images/20240301/b1icon13.svg"
+	huorongFallbackIconURL = "https://cdn-www.huorong.cn/Public/Uploads/uploadfile/images/20240301/b1icon13.svg"
 )
 
 var (
@@ -36,7 +36,7 @@ func (h *Huorong) Name() string {
 }
 
 func (h *Huorong) Fetch() ([]plugin.SoftwareData, error) {
-	version, releaseDate, variants, err := fetchHuorongDownloadInfo()
+	version, releaseDate, iconURL, variants, err := fetchHuorongDownloadInfo()
 	if err != nil {
 		return nil, fmt.Errorf("huorong: %w", err)
 	}
@@ -46,7 +46,7 @@ func (h *Huorong) Fetch() ([]plugin.SoftwareData, error) {
 			Item: plugin.SoftwareItem{
 				ID:              "huorong",
 				Name:            "火绒",
-				Icon:            huorongIconURL,
+				Icon:            iconURL,
 				Description:     "火绒安全软件，专业的个人电脑防护工具。",
 				Organization:    "Huorong",
 				OfficialWebsite: huorongOfficialWebsite,
@@ -64,31 +64,36 @@ func (h *Huorong) Fetch() ([]plugin.SoftwareData, error) {
 	}, nil
 }
 
-func fetchHuorongDownloadInfo() (string, string, []plugin.Variant, error) {
+func fetchHuorongDownloadInfo() (string, string, string, []plugin.Variant, error) {
 	client := &http.Client{Timeout: 15 * time.Second}
 	resp, err := client.Get(huorongOfficialWebsite)
 	if err != nil {
-		return "", "", nil, fmt.Errorf("fetch official page: %w", err)
+		return "", "", "", nil, fmt.Errorf("fetch official page: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", "", nil, fmt.Errorf("fetch official page: status %d", resp.StatusCode)
+		return "", "", "", nil, fmt.Errorf("fetch official page: status %d", resp.StatusCode)
 	}
 
 	doc, err := htmlquery.Parse(resp.Body)
 	if err != nil {
-		return "", "", nil, fmt.Errorf("parse official page: %w", err)
+		return "", "", "", nil, fmt.Errorf("parse official page: %w", err)
+	}
+
+	iconURL, err := findHuorongIconURL(doc)
+	if err != nil {
+		iconURL = huorongFallbackIconURL
 	}
 
 	manualURL, err := findHuorongManualURL(doc)
 	if err != nil {
-		return "", "", nil, err
+		return "", "", "", nil, err
 	}
 
 	downloads, err := findHuorongDownloadLinks(doc)
 	if err != nil {
-		return "", "", nil, err
+		return "", "", "", nil, err
 	}
 
 	variants := make([]plugin.Variant, 0, 3)
@@ -133,7 +138,7 @@ func fetchHuorongDownloadInfo() (string, string, []plugin.Variant, error) {
 	}
 
 	if len(variants) == 0 {
-		return "", "", nil, fmt.Errorf("no huorong download links found on official page")
+		return "", "", "", nil, fmt.Errorf("no huorong download links found on official page")
 	}
 
 	if version == "Latest" {
@@ -145,7 +150,33 @@ func fetchHuorongDownloadInfo() (string, string, []plugin.Variant, error) {
 		releaseDate = time.Now().UTC().Format("2006-01-02")
 	}
 
-	return version, releaseDate, variants, nil
+	return version, releaseDate, iconURL, variants, nil
+}
+
+func findHuorongIconURL(doc *html.Node) (string, error) {
+	nodes, err := htmlquery.QueryAll(doc, `//img[contains(@src, 'b1icon13.svg')]`)
+	if err != nil {
+		return "", fmt.Errorf("query icon url: %w", err)
+	}
+	for _, node := range nodes {
+		src := strings.TrimSpace(htmlquery.SelectAttr(node, "src"))
+		if src != "" {
+			return absoluteHuorongURL(src), nil
+		}
+	}
+
+	nodes, err = htmlquery.QueryAll(doc, `//img[contains(@src, 'icon') and contains(@src, '.svg')]`)
+	if err != nil {
+		return "", fmt.Errorf("query fallback icon url: %w", err)
+	}
+	for _, node := range nodes {
+		src := strings.TrimSpace(htmlquery.SelectAttr(node, "src"))
+		if src != "" {
+			return absoluteHuorongURL(src), nil
+		}
+	}
+
+	return "", fmt.Errorf("huorong icon url not found on official page")
 }
 
 func findHuorongManualURL(doc *html.Node) (string, error) {
