@@ -128,7 +128,7 @@ func buildWindowsVersion(win windowsConfig) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     version,
+		Version:     "Windows " + version,
 		ReleaseDate: strings.TrimSpace(win.UpdateDate),
 		OfficialURL: "https://im.qq.com/pcqq/index.shtml",
 		Variants:    variants,
@@ -153,7 +153,7 @@ func buildLinuxVersion(linux linuxConfig) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     version,
+		Version:     "Linux " + version,
 		ReleaseDate: strings.TrimSpace(linux.UpdateDate),
 		OfficialURL: "https://im.qq.com/linuxqq/index.shtml",
 		Variants:    variants,
@@ -174,7 +174,7 @@ func buildMacOSVersion(mac macOSConfig) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     version,
+		Version:     "macOS " + version,
 		ReleaseDate: strings.TrimSpace(mac.UpdateDate),
 		OfficialURL: "https://im.qq.com/macqq/index.shtml",
 		Variants:    variants,
