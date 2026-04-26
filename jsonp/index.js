@@ -1,0 +1,1 @@
+callback({"meta":{"version":"1.0.0","generatedAt":"2026-04-26T11:19:56Z","generator":"data-cli"},"softwareList":{"mode":"jsonp","path":"software-list.js","callbackParam":"callback","timeoutMs":8000}});

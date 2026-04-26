@@ -1,0 +1,139 @@
+{
+  "softwareId": "openlist",
+  "updatedAt": "2026-04-26",
+  "versions": [
+    {
+      "version": "v4.2.1",
+      "releaseDate": "2026-04-09",
+      "officialUrl": "https://github.com/OpenListTeam/OpenList/releases/tag/v4.2.1",
+      "variants": [
+        {
+          "architecture": "arm64",
+          "platform": "Linux",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openlist-linux-arm64-lite.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-arm64-lite.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-linux-arm64.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-arm64.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-linux-musl-arm64-lite.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-musl-arm64-lite.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-linux-musl-arm64.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-musl-arm64.tar.gz"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "Linux",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openlist-linux-amd64-lite.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-amd64-lite.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-linux-amd64.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-amd64.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-linux-musl-amd64-lite.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-musl-amd64-lite.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-linux-musl-amd64.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-linux-musl-amd64.tar.gz"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "platform": "Windows",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openlist-windows-arm64-lite.zip",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-windows-arm64-lite.zip"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-windows-arm64.zip",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-windows-arm64.zip"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "Windows",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openlist-windows-amd64-lite.zip",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-windows-amd64-lite.zip"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-windows-amd64.zip",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-windows-amd64.zip"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-windows7-amd64-lite.zip",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-windows7-amd64-lite.zip"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-windows7-amd64.zip",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-windows7-amd64.zip"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "platform": "macOS",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openlist-darwin-arm64-lite.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-darwin-arm64-lite.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-darwin-arm64.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-darwin-arm64.tar.gz"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "macOS",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openlist-darwin-amd64-lite.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-darwin-amd64-lite.tar.gz"
+            },
+            {
+              "type": "direct",
+              "label": "openlist-darwin-amd64.tar.gz",
+              "url": "https://github.com/OpenListTeam/OpenList/releases/download/v4.2.1/openlist-darwin-amd64.tar.gz"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
