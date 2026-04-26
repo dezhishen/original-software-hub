@@ -369,6 +369,41 @@
     container.innerHTML = `<div><h2 class="text-xl font-semibold text-slate-700" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(title)}</h2><p class="mt-2 text-sm text-slate-500">${escapeHtml(description || "")}</p></div>`;
   }
 
+  function detectCurrentPlatform() {
+    const ua = String(navigator.userAgent || "").toLowerCase();
+    const platform = String((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "").toLowerCase();
+    const source = `${ua} ${platform}`;
+
+    if (/iphone|ipad|ipod/.test(source)) return { id: "ios", label: "iOS" };
+    if (/android/.test(source)) return { id: "android", label: "Android" };
+    if (/mac|darwin/.test(source)) return { id: "macos", label: "macOS" };
+    if (/win/.test(source)) return { id: "windows", label: "Windows" };
+    if (/linux|x11/.test(source)) return { id: "linux", label: "Linux" };
+    return { id: "web", label: "Web" };
+  }
+
+  function platformMatchesCurrent(variantPlatform, currentPlatformId) {
+    const p = String(variantPlatform || "").toLowerCase();
+    if (!p) return false;
+
+    switch (currentPlatformId) {
+      case "windows":
+        return p.includes("windows");
+      case "macos":
+        return p.includes("mac");
+      case "linux":
+        return p.includes("linux");
+      case "android":
+        return p.includes("android");
+      case "ios":
+        return p.includes("ios") || p.includes("iphone") || p.includes("ipad");
+      case "web":
+        return p.includes("web");
+      default:
+        return false;
+    }
+  }
+
   function renderSoftwareDetail({ container, software, versions }) {
     if (!container) return;
     if (!software) {
@@ -376,12 +411,15 @@
       return;
     }
 
+    const currentPlatform = detectCurrentPlatform();
+
     container.className = "text-left";
     container.innerHTML = `
       <div class="mb-5 grid gap-2 border-b border-slate-200 pb-5">
         <h2 class="text-2xl font-semibold text-slate-900" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
         <p class="text-sm leading-6 text-slate-600">${escapeHtml(software.description)}</p>
         <p class="text-sm text-slate-500">所属机构：${escapeHtml(software.organization)}</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">当前检测平台：<span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">${escapeHtml(currentPlatform.label)}</span></p>
         <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-100" target="_blank" rel="noopener noreferrer"
            href="${escapeAttr(software.officialWebsite)}">访问官网</a>
       </div>
@@ -406,8 +444,15 @@
               href="${escapeAttr(v.officialUrl)}">前往官网发布页</a>`
         : "";
 
-      const variantRows = (v.variants || [])
+      const sortedVariants = [...(v.variants || [])].sort((a, b) => {
+        const aMatch = platformMatchesCurrent(a.platform, currentPlatform.id) ? 1 : 0;
+        const bMatch = platformMatchesCurrent(b.platform, currentPlatform.id) ? 1 : 0;
+        return bMatch - aMatch;
+      });
+
+      const variantRows = sortedVariants
         .map((variant) => {
+          const isCurrentPlatform = platformMatchesCurrent(variant.platform, currentPlatform.id);
           const directLinks = (variant.links || [])
             .map(
               (link) =>
@@ -421,9 +466,9 @@
             : "暂无直链";
 
           return `
-            <tr class="bg-white even:bg-slate-50 hover:bg-slate-100/70 dark:bg-slate-800 dark:even:bg-slate-800/75 dark:hover:bg-slate-700/60">
+            <tr class="${isCurrentPlatform ? "bg-brand-50/70 dark:bg-brand-900/25" : "bg-white even:bg-slate-50 dark:bg-slate-800 dark:even:bg-slate-800/75"} hover:bg-slate-100/70 dark:hover:bg-slate-700/60">
               <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
-              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}</td>
+              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentPlatform ? ' <span class="ml-1 rounded bg-brand-100 px-1.5 py-0.5 text-[11px] font-medium text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">当前设备</span>' : ""}</td>
               <td class="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
             </tr>`;
         })
