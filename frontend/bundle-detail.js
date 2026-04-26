@@ -35,6 +35,36 @@
     return num > 0 ? num : fallback;
   }
 
+  function relativeTime(dateStr) {
+    if (!dateStr) return "";
+    const date = new Date(
+      /^\d{4}-\d{2}-\d{2}$/.test(String(dateStr).trim())
+        ? String(dateStr).trim() + "T00:00:00Z"
+        : String(dateStr).trim()
+    );
+    if (isNaN(date)) return escapeHtml(String(dateStr));
+
+    const diffMs = Date.now() - date.getTime();
+    const diffMin = Math.floor(diffMs / 60000);
+    const diffHr  = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHr  / 24);
+    let rel;
+    if (diffMs < 0)         rel = "刚刚";
+    else if (diffMin < 1)   rel = "刚刚";
+    else if (diffMin < 60)  rel = `${diffMin} 分钟前`;
+    else if (diffHr  < 24)  rel = `${diffHr} 小时前`;
+    else if (diffDay < 30)  rel = `${diffDay} 天前`;
+    else if (diffDay < 365) rel = `${Math.floor(diffDay / 30)} 个月前`;
+    else                    rel = `${Math.floor(diffDay / 365)} 年前`;
+
+    const realTime = date.toLocaleString("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit"
+    });
+    return `<time datetime="${escapeAttr(date.toISOString())}" title="${escapeAttr(realTime + "（北京时间）")}" class="cursor-help underline decoration-dotted decoration-slate-400">${escapeHtml(rel)}</time>`;
+  }
+
   // ── infra/http/json-client ─────────────────────────────────────────────────
   async function fetchJson(url) {
     const response = await fetch(url, { cache: "no-cache" });
@@ -297,6 +327,16 @@
   }
 
   // ── ui/renderers/software-detail-renderer ──────────────────────────────────
+  function renderAppFooter(updatedAt) {
+    const footer = document.querySelector("#appFooter");
+    if (!footer) return;
+    const timeHtml = updatedAt ? `数据更新时间：${relativeTime(updatedAt)}` : "";
+    footer.innerHTML = [
+      timeHtml,
+      `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用。</p>`
+    ].filter(Boolean).join("\n");
+  }
+
   function renderDetailEmpty(container, title, description) {
     if (!container) return;
     container.className = "min-h-[280px] grid place-items-center text-center";
@@ -452,6 +492,7 @@
       const { versions } = normalizeSoftwareVersionPayload(rawVersions);
 
       renderSoftwareDetail({ container, software, versions });
+      renderAppFooter(rawVersions?.updatedAt);
       hideOverlay(overlay);
     } catch (error) {
       const message = error instanceof Error ? error.message : "未知错误";
