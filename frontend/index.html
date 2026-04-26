@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Original Software Hub</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("osh-dark-mode");
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var isDark = saved !== null ? saved === "1" : prefersDark;
+          document.documentElement.classList.toggle("dark", isDark);
+        } catch (_) {}
+      })();
+    </script>
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
