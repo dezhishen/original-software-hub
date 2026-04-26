@@ -14,6 +14,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
 )
