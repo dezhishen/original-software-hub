@@ -28,27 +28,21 @@ repos:
       - keywords: [windows, amd64, .msi]
         platform: Windows
         architecture: x64
-        label: Windows 安装包 (msi)
       - keywords: [windows, arm64, .msi]
         platform: Windows
         architecture: arm64
-        label: Windows 安装包 (arm64)
       - keywords: [linux, amd64, .deb]
         platform: Linux
         architecture: x64
-        label: Linux deb (x64)
       - keywords: [linux, arm64, .deb]
         platform: Linux
         architecture: arm64
-        label: Linux deb (arm64)
       - keywords: [macos, amd64, .zip]
         platform: macOS
         architecture: x64
-        label: macOS 压缩包 (x64)
       - keywords: [macos, arm64, .zip]
         platform: macOS
         architecture: arm64
-        label: macOS 压缩包 (arm64)
 
   - id: openlist
     owner: openlistteam
@@ -62,27 +56,21 @@ repos:
       - keywords: [windows, amd64]
         platform: Windows
         architecture: x64
-        label: Windows 压缩包 (x64)
       - keywords: [windows, arm64]
         platform: Windows
         architecture: arm64
-        label: Windows 压缩包 (arm64)
       - keywords: [linux, amd64]
         platform: Linux
         architecture: x64
-        label: Linux tar.gz (x64)
       - keywords: [linux, arm64]
         platform: Linux
         architecture: arm64
-        label: Linux tar.gz (arm64)
       - keywords: [darwin, amd64]
         platform: macOS
         architecture: x64
-        label: macOS tar.gz (x64)
       - keywords: [darwin, arm64]
         platform: macOS
         architecture: arm64
-        label: macOS tar.gz (arm64)
 
   # 继续新增仓库时，按下面结构复制即可：
   # - id: neovim
@@ -95,11 +83,10 @@ repos:
   #   icon: https://neovim.io/logos/neovim-mark-flat.png
   #   assets:
   #     # keywords 使用 AND 逻辑，全部命中文件名/URL 才匹配，与具体分隔符无关
+  #     # 下载链接标签自动使用真实文件名，与 releases 页面一致
   #     - keywords: [windows, x86_64, .zip]
   #       platform: Windows
   #       architecture: x64
-  #       label: Windows 压缩包
   #     - keywords: [linux, x86_64, .tar.gz]
   #       platform: Linux
   #       architecture: x64
-  #       label: Linux tar.gz

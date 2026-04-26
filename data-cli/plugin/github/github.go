@@ -42,7 +42,6 @@ type assetRule struct {
 	Keywords     []string `yaml:"keywords"`
 	Platform     string   `yaml:"platform"`
 	Architecture string   `yaml:"architecture"`
-	Label        string   `yaml:"label"`
 }
 
 type githubPlugin struct {
@@ -193,7 +192,6 @@ func normalizeRepoConfig(repo repoConfig) (repoConfig, bool) {
 		}
 		repo.Assets[index].Platform = strings.TrimSpace(repo.Assets[index].Platform)
 		repo.Assets[index].Architecture = strings.TrimSpace(repo.Assets[index].Architecture)
-		repo.Assets[index].Label = strings.TrimSpace(repo.Assets[index].Label)
 	}
 
 	return repo, true
@@ -221,8 +219,8 @@ func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Varian
 			}
 			matched = true
 			key := variantKey{platform: defaultString(rule.Platform, "通用"), architecture: defaultString(rule.Architecture, "通用")}
-			label := defaultString(rule.Label, assetName)
-			variantMap[key] = append(variantMap[key], plugin.Link{Type: "direct", Label: label, URL: assetURL})
+			// 始终使用真实文件名作为链接标签，与 GitHub Releases 页面保持一致
+			variantMap[key] = append(variantMap[key], plugin.Link{Type: "direct", Label: assetName, URL: assetURL})
 		}
 
 		if len(rules) == 0 && !matched {
