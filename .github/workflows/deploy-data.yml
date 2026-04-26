@@ -36,16 +36,17 @@ jobs:
           clean: true
           single-commit: true
 
-      # - name: Purge jsDelivr CDN cache
-      #   run: |
-      #     # 枚举所有 jsonp 文件并逐一清除 jsDelivr 缓存
-      #     REPO="dezhishen/original-software-hub"
-      #     BRANCH="data"
-      #     BASE="https://purge.jsdelivr.net/gh/${REPO}@${BRANCH}"
+      - name: Determine CDN URLs to Purge
+        id: purge_urls
+        run: |
+          baseUrl="https://cdn.jsdelivr.net/gh/${{ github.repository }}@data/jsonp"
+          urls=""
+          for f in `find jsonp -name "*.js" -type f`; do
+            urls+="${baseUrl}/${f},"
+          done
+          echo "urls=${urls%,*}" >> $GITHUB_OUTPUT
 
-      #     FILES=$(find frontend/data/jsonp -type f -name "*.js" | sed 's|frontend/data/jsonp||')
-      #     for f in $FILES; do
-      #       URL="${BASE}/jsonp${f}"
-      #       echo "Purging: $URL"
-      #       curl -sf "$URL" -o /dev/null || echo "  warn: purge failed for $f"
-      #     done
+      - name: Purge CDN Caches
+        uses: egad13/purge-jsdelivr-cache@v1
+        with:
+          url: ${{ steps.purge_urls.outputs.urls }}
