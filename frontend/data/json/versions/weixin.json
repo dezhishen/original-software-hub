@@ -1,11 +1,11 @@
 {
   "softwareId": "weixin",
-  "updatedAt": "2026-04-26T13:11:14Z",
+  "updatedAt": "2026-04-26T13:27:07Z",
   "versions": [
     {
-      "version": "Latest",
-      "releaseDate": "2025-09-03",
-      "officialUrl": "https://weixin.qq.com/",
+      "version": "4.1.9",
+      "releaseDate": "2026-04-21",
+      "officialUrl": "https://weixin.qq.com/updates",
       "variants": [
         {
           "architecture": "x64",
@@ -13,13 +13,8 @@
           "links": [
             {
               "type": "direct",
-              "label": "微信安装包 (exe)",
-              "url": "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe"
-            },
-            {
-              "type": "direct",
-              "label": "在线更新版",
-              "url": "https://weixin.qq.com/"
+              "label": "微信 4.1.9 安装包 (exe)",
+              "url": "https://dldir1v6.qq.com/weixin/Universal/Windows/WeChatWin_4.1.9.exe"
             }
           ]
         },
@@ -29,8 +24,8 @@
           "links": [
             {
               "type": "direct",
-              "label": "微信安装包 (dmg)",
-              "url": "https://dldir1.qq.com/weixin/mac/WeChat.dmg"
+              "label": "微信 4.1.9 安装包 (dmg)",
+              "url": "https://dldir1v6.qq.com/weixin/Universal/Mac/WeChatMac_4.1.9.dmg"
             }
           ]
         },

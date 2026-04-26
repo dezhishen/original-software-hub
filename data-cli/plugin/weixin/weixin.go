@@ -2,7 +2,9 @@ package weixin
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"regexp"
 	"time"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
@@ -10,11 +12,15 @@ import (
 
 const (
 	weixinOfficialWebsite = "https://weixin.qq.com/"
+	weixinUpdatesURL      = "https://weixin.qq.com/updates"
 	weixinIconURL         = "https://res.wx.qq.com/a/wx_fed/web2/static/img/site_icon/favicon32.ico"
+	weixinWebURL          = "https://weixin.qq.com/"
+)
 
-	weixinWindowsURL = "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe"
-	weixinMacOSURL   = "https://dldir1.qq.com/weixin/mac/WeChat.dmg"
-	weixinWebURL     = "https://weixin.qq.com/"
+var (
+	reWinURL = regexp.MustCompile(`https://dldir[^"]+/WeChatWin_([\d.]+)\.exe`)
+	reMacURL = regexp.MustCompile(`https://dldir[^"]+/WeChatMac_([\d.]+)\.dmg`)
+	reDate   = regexp.MustCompile(`发布日期[：: ]*(\d{4}-\d{2}-\d{2})`)
 )
 
 // WeChat implements plugin.Plugin for Tencent WeChat messenger.
@@ -29,9 +35,9 @@ func (w *WeChat) Name() string {
 }
 
 func (w *WeChat) Fetch() ([]plugin.SoftwareData, error) {
-	releaseDate, err := detectReleaseDate([]string{weixinWindowsURL, weixinMacOSURL})
+	info, err := fetchUpdatesInfo()
 	if err != nil {
-		releaseDate = time.Now().UTC().Format("2006-01-02")
+		return nil, fmt.Errorf("fetch weixin updates: %w", err)
 	}
 
 	return []plugin.SoftwareData{
@@ -47,23 +53,22 @@ func (w *WeChat) Fetch() ([]plugin.SoftwareData, error) {
 			},
 			Versions: []plugin.Version{
 				{
-					Version:     "Latest",
-					ReleaseDate: releaseDate,
-					OfficialURL: weixinOfficialWebsite,
+					Version:     info.version,
+					ReleaseDate: info.releaseDate,
+					OfficialURL: weixinUpdatesURL,
 					Variants: []plugin.Variant{
 						{
 							Architecture: "x64",
 							Platform:     "Windows",
 							Links: []plugin.Link{
-								{Type: "direct", Label: "微信安装包 (exe)", URL: weixinWindowsURL},
-								{Type: "direct", Label: "在线更新版", URL: weixinWebURL},
+								{Type: "direct", Label: fmt.Sprintf("微信 %s 安装包 (exe)", info.version), URL: info.windowsURL},
 							},
 						},
 						{
 							Architecture: "universal",
 							Platform:     "macOS",
 							Links: []plugin.Link{
-								{Type: "direct", Label: "微信安装包 (dmg)", URL: weixinMacOSURL},
+								{Type: "direct", Label: fmt.Sprintf("微信 %s 安装包 (dmg)", info.version), URL: info.macURL},
 							},
 						},
 						{
@@ -80,21 +85,53 @@ func (w *WeChat) Fetch() ([]plugin.SoftwareData, error) {
 	}, nil
 }
 
-func detectReleaseDate(urls []string) (string, error) {
-	client := &http.Client{Timeout: 15 * time.Second}
-	for _, u := range urls {
-		resp, err := client.Head(u)
-		if err != nil {
-			continue
-		}
-		defer resp.Body.Close()
-		if resp.StatusCode == http.StatusOK {
-			if lastModified := resp.Header.Get("Last-Modified"); lastModified != "" {
-				if t, err := time.Parse(time.RFC1123, lastModified); err == nil {
-					return t.UTC().Format("2006-01-02"), nil
-				}
-			}
-		}
+type updatesInfo struct {
+	version     string
+	releaseDate string
+	windowsURL  string
+	macURL      string
+}
+
+func fetchUpdatesInfo() (*updatesInfo, error) {
+	client := &http.Client{Timeout: 20 * time.Second}
+	resp, err := client.Get(weixinUpdatesURL)
+	if err != nil {
+		return nil, fmt.Errorf("http get %s: %w", weixinUpdatesURL, err)
 	}
-	return time.Now().UTC().Format("2006-01-02"), fmt.Errorf("detect weixin release date")
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("http status %d", resp.StatusCode)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read body: %w", err)
+	}
+	html := string(body)
+
+	winMatch := reWinURL.FindStringSubmatch(html)
+	if len(winMatch) < 2 {
+		return nil, fmt.Errorf("windows download URL not found on updates page")
+	}
+	macMatch := reMacURL.FindStringSubmatch(html)
+	if len(macMatch) < 2 {
+		return nil, fmt.Errorf("macos download URL not found on updates page")
+	}
+
+	version := winMatch[1]
+	windowsURL := winMatch[0]
+	macURL := macMatch[0]
+
+	releaseDate := time.Now().UTC().Format("2006-01-02")
+	if dateMatch := reDate.FindStringSubmatch(html); len(dateMatch) >= 2 {
+		releaseDate = dateMatch[1]
+	}
+
+	return &updatesInfo{
+		version:     version,
+		releaseDate: releaseDate,
+		windowsURL:  windowsURL,
+		macURL:      macURL,
+	}, nil
 }

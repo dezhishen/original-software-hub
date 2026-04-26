@@ -10,7 +10,7 @@ import (
 
 const (
 	huorongOfficialWebsite = "https://www.huorong.cn/person"
-	huorongIconURL         = "https://www.huorong.cn/static/images/logo.png"
+	huorongIconURL         = "https://cdn-www.huorong.cn/Public/Uploads/uploadfile/images/20240301/b1icon13.svg"
 
 	huorongWindowsURL = "https://downloads.huorong.cn/setup/HuorongSetup.exe"
 	huorongMacOSURL   = "https://downloads.huorong.cn/setup/Huorong.dmg"

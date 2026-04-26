@@ -1,0 +1,79 @@
+{
+  "softwareId": "github-cli",
+  "updatedAt": "2026-04-26T13:27:07Z",
+  "versions": [
+    {
+      "version": "v2.91.0",
+      "releaseDate": "2026-04-22",
+      "officialUrl": "https://github.com/cli/cli/releases/tag/v2.91.0",
+      "variants": [
+        {
+          "architecture": "arm64",
+          "platform": "Linux",
+          "links": [
+            {
+              "type": "direct",
+              "label": "gh_2.91.0_linux_arm64.deb",
+              "url": "https://github.com/cli/cli/releases/download/v2.91.0/gh_2.91.0_linux_arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "Linux",
+          "links": [
+            {
+              "type": "direct",
+              "label": "gh_2.91.0_linux_amd64.deb",
+              "url": "https://github.com/cli/cli/releases/download/v2.91.0/gh_2.91.0_linux_amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "platform": "Windows",
+          "links": [
+            {
+              "type": "direct",
+              "label": "gh_2.91.0_windows_arm64.msi",
+              "url": "https://github.com/cli/cli/releases/download/v2.91.0/gh_2.91.0_windows_arm64.msi"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "Windows",
+          "links": [
+            {
+              "type": "direct",
+              "label": "gh_2.91.0_windows_amd64.msi",
+              "url": "https://github.com/cli/cli/releases/download/v2.91.0/gh_2.91.0_windows_amd64.msi"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "platform": "macOS",
+          "links": [
+            {
+              "type": "direct",
+              "label": "gh_2.91.0_macOS_arm64.zip",
+              "url": "https://github.com/cli/cli/releases/download/v2.91.0/gh_2.91.0_macOS_arm64.zip"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "macOS",
+          "links": [
+            {
+              "type": "direct",
+              "label": "gh_2.91.0_macOS_amd64.zip",
+              "url": "https://github.com/cli/cli/releases/download/v2.91.0/gh_2.91.0_macOS_amd64.zip"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
