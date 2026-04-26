@@ -15,7 +15,7 @@ import (
 const (
 	weixinOfficialWebsite = "https://weixin.qq.com/"
 	weixinUpdatesURL      = "https://weixin.qq.com/updates"
-	weixinIconURL         = "https://res.wx.qq.com/a/wx_fed/web2/static/img/site_icon/favicon32.ico"
+	weixinIconURL         = "https://sgnewres.wechat.com/t/ofs-wechat/newsroom-web/res/_next/static/media/wechat-with-color.7a890de8.svg"
 )
 
 var (
