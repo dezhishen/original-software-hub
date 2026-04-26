@@ -1,4 +1,4 @@
-name: Deploy Pages
+name: Clear CDN Cache
 
 on:
   workflow_dispatch:
