@@ -350,11 +350,15 @@
             )
             .join("");
 
+          const directLinksHtml = directLinks
+            ? `<div class="flex flex-wrap gap-2">${directLinks}</div>`
+            : "暂无直链";
+
           return `
             <tr>
               <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700">${escapeHtml(variant.architecture || "-")}</td>
               <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700">${escapeHtml(variant.platform || "-")}</td>
-              <td class="px-3 py-2 text-sm text-slate-700">${directLinks || "暂无直链"}</td>
+              <td class="px-3 py-2 text-sm text-slate-700">${directLinksHtml}</td>
             </tr>`;
         })
         .join("");
