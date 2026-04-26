@@ -7,6 +7,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
+	"strings"
 	"time"
 
 	// Blank-import each plugin to trigger its init() registration.
@@ -23,6 +25,7 @@ import (
 
 func main() {
 	outDir := flag.String("out", "../frontend/data", "Output directory (json/ will be created inside)")
+	pluginsArg := flag.String("plugins", "all", "Plugins to run: all or comma-separated names (e.g. weixin,qq)")
 	flag.Parse()
 
 	jsonDir := filepath.Join(*outDir, "json", "versions")
@@ -33,7 +36,10 @@ func main() {
 		log.Fatalf("create json dir: %v", err)
 	}
 
-	plugins := plugin.All()
+	plugins, err := selectPlugins(plugin.All(), *pluginsArg)
+	if err != nil {
+		log.Fatalf("select plugins: %v", err)
+	}
 	if len(plugins) == 0 {
 		log.Println("no plugins registered, nothing to do")
 		return
@@ -102,6 +108,54 @@ func main() {
 	}
 
 	fmt.Println("Done.")
+}
+
+func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, error) {
+	raw := strings.TrimSpace(strings.ToLower(pluginsArg))
+	if raw == "" || raw == "all" {
+		return all, nil
+	}
+
+	selectedNames := map[string]struct{}{}
+	for _, name := range strings.Split(raw, ",") {
+		n := strings.TrimSpace(strings.ToLower(name))
+		if n == "" {
+			continue
+		}
+		selectedNames[n] = struct{}{}
+	}
+	if len(selectedNames) == 0 {
+		return nil, fmt.Errorf("invalid -plugins value: %q", pluginsArg)
+	}
+
+	filtered := make([]plugin.Plugin, 0, len(selectedNames))
+	found := map[string]struct{}{}
+	available := make([]string, 0, len(all))
+	for _, p := range all {
+		name := strings.ToLower(strings.TrimSpace(p.Name()))
+		if name == "" {
+			continue
+		}
+		available = append(available, name)
+		if _, ok := selectedNames[name]; ok {
+			filtered = append(filtered, p)
+			found[name] = struct{}{}
+		}
+	}
+
+	missing := make([]string, 0)
+	for name := range selectedNames {
+		if _, ok := found[name]; !ok {
+			missing = append(missing, name)
+		}
+	}
+	if len(missing) > 0 {
+		sort.Strings(missing)
+		sort.Strings(available)
+		return nil, fmt.Errorf("unknown plugins: %s (available: %s)", strings.Join(missing, ","), strings.Join(available, ","))
+	}
+
+	return filtered, nil
 }
 
 func resetDir(path string) error {

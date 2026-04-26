@@ -291,13 +291,18 @@
   }
 
   // ── ui/renderers/software-list-renderer ────────────────────────────────────
-  function renderSoftwareList({ container, softwares, keyword, onSelect }) {
+  function renderSoftwareList({ container, softwares, keyword, onSelect, onTagSelect }) {
     if (!container) return { filtered: [], firstId: "" };
 
     const kw = String(keyword || "").trim().toLowerCase();
+    const tagKw = kw.startsWith("#") ? kw.slice(1).trim() : "";
     const filtered = softwares.filter((s) => {
       if (!kw) return true;
-      return `${s.name} ${s.organization}`.toLowerCase().includes(kw);
+      const tags = Array.isArray(s.tags) ? s.tags : [];
+      if (tagKw) {
+        return tags.some((tag) => String(tag || "").toLowerCase().includes(tagKw));
+      }
+      return `${s.name} ${s.organization} ${tags.join(" ")}`.toLowerCase().includes(kw);
     });
 
     container.innerHTML = "";
@@ -316,7 +321,7 @@
         ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-28 w-28 select-none opacity-[0.08] dark:opacity-[0.05]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
         : "";
       const tagsMarkup = (software.tags || [])
-        .map(tag => `<span class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-400">${escapeHtml(tag)}</span>`)
+        .map(tag => `<button type="button" data-tag="${escapeAttr(tag)}" class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 transition hover:bg-brand-100 dark:bg-slate-700/50 dark:text-brand-400 dark:hover:bg-slate-700">#${escapeHtml(tag)}</button>`)
         .join(" ");
       card.innerHTML = `
         ${bgWatermark}
@@ -329,6 +334,12 @@
         <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-500">机构：${escapeHtml(software.organization)}</p>
       `;
       card.addEventListener("click", () => onSelect(software.id));
+      card.querySelectorAll("[data-tag]").forEach((tagBtn) => {
+        tagBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          onTagSelect?.(tagBtn.getAttribute("data-tag") || "");
+        });
+      });
       container.appendChild(card);
     });
 
@@ -414,6 +425,13 @@
         container: dom.list,
         softwares: state.softwares,
         keyword: state.keyword,
+        onTagSelect(tag) {
+          const cleanTag = String(tag || "").trim();
+          if (!cleanTag) return;
+          state.keyword = `#${cleanTag.toLowerCase()}`;
+          if (dom.searchInput) dom.searchInput.value = `#${cleanTag}`;
+          renderAll();
+        },
         onSelect(softwareId) {
           const nextUrl = new URL("./software-detail.html", window.location.href);
           nextUrl.searchParams.set("id", softwareId);
