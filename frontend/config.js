@@ -7,7 +7,7 @@
       type: "jsonp",
       url: isLocalhost
         ? "./data/jsonp"
-        : "https://cdn.jsdelivr.net/gh/dezhishen/original-software-hub@data/jsonp",
+        : "https://raw.githubusercontent.com/dezhishen/original-software-hub/refs/heads/data/jsonp",
       indexPath: "index.js",
       callbackParam: "callback",
       timeoutMs: 8000
