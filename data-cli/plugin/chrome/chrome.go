@@ -34,7 +34,7 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 				Icon:            "https://www.google.com/chrome/static/images/chrome-logo.svg",
 				Description:     "Google 出品的高速、安全浏览器。",
 				Organization:    "Google LLC",
-				OfficialWebsite: "https://www.google.com/chrome/",			Tags:            []string{"浏览器", "网络"},			},
+				OfficialWebsite: "https://www.google.com/chrome/", Tags: []string{"浏览器", "网络"}},
 			Versions: []plugin.Version{
 				{
 					Version:     version,

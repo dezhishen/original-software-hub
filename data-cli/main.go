@@ -13,8 +13,10 @@ import (
 	// Uncomment or add plugins here to include them in the build.
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/huorong"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
 )
