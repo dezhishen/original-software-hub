@@ -35,18 +35,3 @@ jobs:
           folder: frontend/data
           clean: true
           single-commit: true
-
-      - name: Determine CDN URLs to Purge
-        id: purge_urls
-        run: |
-          baseUrl="https://cdn.jsdelivr.net/gh/${{ github.repository }}@data/jsonp"
-          urls=""
-          for f in `find jsonp -name "*.js" -type f`; do
-            urls+="${baseUrl}/${f},"
-          done
-          echo "urls=${urls%,*}" >> $GITHUB_OUTPUT
-
-      - name: Purge CDN Caches
-        uses: egad13/purge-jsdelivr-cache@v1
-        with:
-          url: ${{ steps.purge_urls.outputs.urls }}

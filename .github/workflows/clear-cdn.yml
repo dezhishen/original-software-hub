@@ -1,0 +1,29 @@
+name: Deploy Pages
+
+on:
+  workflow_dispatch:
+jobs:
+  deploy-page-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout data branch
+        uses: actions/checkout@v3
+        with:
+          ref: data
+      - name: Determine CDN URLs to Purge
+        id: purge_urls
+        run: |
+          baseUrl="https://cdn.jsdelivr.net/gh/${{ github.repository }}@data"
+          urls=""
+          for f in `find jsonp -name "*.js" -type f`; do
+            urls+="${baseUrl}/${f},"
+          done
+          for f in `find json -name "*.json" -type f`; do
+            urls+="${baseUrl}/${f},"
+          done
+          echo "urls=${urls%,*}" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+      - name: Purge CDN Caches
+        uses: egad13/purge-jsdelivr-cache@v1
+        with:
+          url: ${{ steps.purge_urls.outputs.urls }}
