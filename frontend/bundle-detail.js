@@ -37,10 +37,12 @@
 
   function relativeTime(dateStr) {
     if (!dateStr) return "";
+    const raw = String(dateStr).trim();
+    const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(raw);
     const date = new Date(
-      /^\d{4}-\d{2}-\d{2}$/.test(String(dateStr).trim())
-        ? String(dateStr).trim() + "T00:00:00Z"
-        : String(dateStr).trim()
+      isDateOnly
+        ? `${raw}T12:00:00+08:00`
+        : raw
     );
     if (isNaN(date)) return escapeHtml(String(dateStr));
 
@@ -50,6 +52,7 @@
     const diffDay = Math.floor(diffHr  / 24);
     let rel;
     if (diffMs < 0)         rel = "刚刚";
+    else if (isDateOnly && diffDay < 1) rel = "今天";
     else if (diffMin < 1)   rel = "刚刚";
     else if (diffMin < 60)  rel = `${diffMin} 分钟前`;
     else if (diffHr  < 24)  rel = `${diffHr} 小时前`;
@@ -195,6 +198,7 @@
     if (!listPath) throw new Error("index 缺少 softwareList.path");
 
     return {
+      generatedAt: String(indexPayload?.meta?.generatedAt || "").trim(),
       softwareList: {
         mode: listMode,
         url: resolveUrl(url, listPath),
@@ -515,7 +519,7 @@
       const { versions } = normalizeSoftwareVersionPayload(rawVersions);
 
       renderSoftwareDetail({ container, software, versions });
-      renderAppFooter(rawVersions?.updatedAt);
+      renderAppFooter(rawVersions?.updatedAt || dataSource.generatedAt);
       hideOverlay(overlay);
     } catch (error) {
       const message = error instanceof Error ? error.message : "未知错误";

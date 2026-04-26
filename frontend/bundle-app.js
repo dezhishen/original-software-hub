@@ -37,10 +37,12 @@
 
   function relativeTime(dateStr) {
     if (!dateStr) return "";
+    const raw = String(dateStr).trim();
+    const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(raw);
     const date = new Date(
-      /^\d{4}-\d{2}-\d{2}$/.test(String(dateStr).trim())
-        ? String(dateStr).trim() + "T00:00:00Z"
-        : String(dateStr).trim()
+      isDateOnly
+        ? `${raw}T12:00:00+08:00`
+        : raw
     );
     if (isNaN(date)) return escapeHtml(String(dateStr));
 
@@ -50,6 +52,7 @@
     const diffDay = Math.floor(diffHr  / 24);
     let rel;
     if (diffMs < 0)         rel = "刚刚";
+    else if (isDateOnly && diffDay < 1) rel = "今天";
     else if (diffMin < 1)   rel = "刚刚";
     else if (diffMin < 60)  rel = `${diffMin} 分钟前`;
     else if (diffHr  < 24)  rel = `${diffHr} 小时前`;
@@ -195,6 +198,7 @@
     if (!listPath) throw new Error("index 缺少 softwareList.path");
 
     return {
+      generatedAt: String(indexPayload?.meta?.generatedAt || "").trim(),
       softwareList: {
         mode: listMode,
         url: resolveUrl(url, listPath),
@@ -302,7 +306,7 @@
 
     filtered.forEach((software) => {
       const card = document.createElement("article");
-      card.className = "relative overflow-hidden cursor-pointer rounded-xl border border-white/70 bg-white/55 p-4 shadow-sm backdrop-blur-md transition hover:-translate-y-0.5 hover:border-brand-500/50 hover:shadow-[0_10px_24px_rgba(15,157,132,0.18)] dark:border-slate-700/60 dark:bg-slate-800/55";
+      card.className = "relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/85 bg-white/60 p-4 shadow-[0_14px_30px_rgba(15,70,56,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-brand-500/55 hover:shadow-[0_20px_40px_rgba(15,157,132,0.22)] dark:border-slate-700/80 dark:bg-slate-800/60 dark:shadow-[0_14px_30px_rgba(2,6,23,0.45)] dark:hover:shadow-[0_20px_40px_rgba(15,157,132,0.25)]";
       const iconMarkup = renderSoftwareIcon(software);
       const rawIcon = String(software?.icon || "").trim();
       const bgWatermark = rawIcon
@@ -391,7 +395,7 @@
       const rawList = await fetchBySource(dataSource.softwareList);
       state.softwares = normalizeSoftwareListPayload(rawList).items;
       renderAll();
-      renderAppFooter(rawList?.updatedAt);
+      renderAppFooter(rawList?.updatedAt || dataSource.generatedAt);
       hideOverlay(loadingOverlay);
     } catch (error) {
       hideOverlay(loadingOverlay);

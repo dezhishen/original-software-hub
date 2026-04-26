@@ -36,6 +36,8 @@ func main() {
 		log.Println("no plugins registered, nothing to do")
 		return
 	}
+	nowUTC := time.Now().UTC()
+	updatedAt := nowUTC.Format(time.RFC3339)
 
 	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
 	for _, p := range plugins {
@@ -55,7 +57,7 @@ func main() {
 
 			versionPayload := plugin.VersionPayload{
 				SoftwareID: softwareID,
-				UpdatedAt:  today(),
+				UpdatedAt:  updatedAt,
 				Versions:   entry.Versions,
 			}
 			if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), versionPayload); err != nil {
@@ -74,7 +76,7 @@ func main() {
 	}
 
 	softwareList := plugin.SoftwareListPayload{
-		UpdatedAt: today(),
+		UpdatedAt: updatedAt,
 		Items:     listItems,
 	}
 	if err := writeJSON(filepath.Join(*outDir, "json", "software-list.json"), softwareList); err != nil {
@@ -84,7 +86,7 @@ func main() {
 	indexJSON := plugin.IndexPayload{
 		Meta: plugin.Meta{
 			Version:     "1.0.0",
-			GeneratedAt: time.Now().UTC().Format(time.RFC3339),
+			GeneratedAt: updatedAt,
 			Generator:   "data-cli",
 		},
 		SoftwareList: plugin.Source{
@@ -98,10 +100,6 @@ func main() {
 	}
 
 	fmt.Println("Done.")
-}
-
-func today() string {
-	return time.Now().Format("2006-01-02")
 }
 
 func resetDir(path string) error {
