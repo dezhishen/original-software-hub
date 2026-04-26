@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
@@ -27,32 +28,34 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-[#fffef8] via-[#f4faf7] to-[#edf6f2] text-slate-900" style="font-family: 'Noto Sans SC', sans-serif;">
+  <body class="min-h-screen bg-gradient-to-br from-[#fffef8] via-[#f4faf7] to-[#edf6f2] text-slate-900 transition-colors dark:from-[#0d1117] dark:via-[#111827] dark:to-[#0d1f2d] dark:text-slate-100" style="font-family: 'Noto Sans SC', sans-serif;">
 
     <header class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-10 pb-6 text-left">
-      <p class="inline-flex rounded-full border border-brand-500/30 bg-brand-50 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-brand-700" style="font-family: 'Space Grotesk', sans-serif;">ORIGINAL SOFTWARE HUB</p>
-      <h1 class="mt-4 text-3xl font-bold leading-tight md:text-5xl" style="font-family: 'Space Grotesk', sans-serif;">常用软件官方下载与版本入口</h1>
-      <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600">
+      <p class="inline-flex rounded-full border border-brand-500/30 bg-brand-50 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-brand-700 dark:border-brand-500/40 dark:bg-slate-800 dark:text-brand-500" style="font-family: 'Space Grotesk', sans-serif;">ORIGINAL SOFTWARE HUB</p>
+      <h1 class="mt-4 text-3xl font-bold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">常用软件官方下载与版本入口</h1>
+      <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-400">
         集中展示软件官网与版本下载链接，按平台与架构快速定位可用安装包。
       </p>
     </header>
 
-    <div id="loadingOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-white/90 backdrop-blur-sm transition-opacity duration-300">
+    <div id="loadingOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-white/90 backdrop-blur-sm transition-opacity duration-300 dark:bg-slate-900/90">
       <div class="h-11 w-11 animate-spin rounded-full border-4 border-brand-500/20 border-t-brand-500"></div>
-      <p class="text-sm text-slate-600">正在加载软件列表...</p>
+      <p class="text-sm text-slate-600 dark:text-slate-400">正在加载软件列表...</p>
     </div>
 
     <main class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pb-10">
-      <section class="rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-[0_12px_34px_rgba(15,70,56,0.10)] backdrop-blur-sm md:p-6">
-        <div class="mb-4 grid gap-3 border-b border-slate-200 pb-4">
-          <h2 class="text-left text-2xl font-semibold" style="font-family: 'Space Grotesk', sans-serif;">软件目录</h2>
-          <input id="searchInput" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none ring-brand-500/20 transition focus:border-brand-500 focus:ring-4" type="search" placeholder="搜索软件名称 / 机构" />
+        <section class="rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-[0_12px_34px_rgba(15,70,56,0.10)] backdrop-blur-sm md:p-6 dark:border-slate-700 dark:bg-slate-800/85">
+        <div class="mb-4 grid gap-3 border-b border-slate-200 pb-4 dark:border-slate-700">
+          <h2 class="text-left text-2xl font-semibold dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">软件目录</h2>
+          <input id="searchInput" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none ring-brand-500/20 transition focus:border-brand-500 focus:ring-4 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500" type="search" placeholder="搜索软件名称 / 机构" />
         </div>
         <div id="softwareList" class="grid grid-cols-1 gap-4 sm:grid-cols-3 xl:grid-cols-4" aria-live="polite"></div>
       </section>
     </main>
 
-    <footer id="appFooter" class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pb-8 pt-2 text-xs text-slate-400 space-y-1"></footer>
+    <footer id="appFooter" class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pb-8 pt-2 text-xs text-slate-400 space-y-1 dark:text-slate-500"></footer>
+
+    <button id="darkModeToggle" type="button" aria-label="切换夜间模式" class="fixed top-4 right-4 z-40 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-sm backdrop-blur-sm transition hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-800/90 dark:text-slate-300 dark:hover:text-brand-500"></button>
 
     <script src="./config.js"></script>
     <script src="./bundle-app.js"></script>

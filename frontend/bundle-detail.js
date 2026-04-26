@@ -337,6 +337,28 @@
     ].filter(Boolean).join("\n");
   }
 
+  function initDarkMode() {
+    const html = document.documentElement;
+    const btn = document.querySelector("#darkModeToggle");
+    const saved = localStorage.getItem("osh-dark-mode");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = saved !== null ? saved === "1" : prefersDark;
+    const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+    const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    function applyDark(dark) {
+      html.classList.toggle("dark", dark);
+      if (!btn) return;
+      btn.innerHTML = dark ? sunIcon : moonIcon;
+      btn.setAttribute("aria-label", dark ? "切换白天模式" : "切换夜间模式");
+    }
+    applyDark(isDark);
+    btn?.addEventListener("click", () => {
+      const nowDark = !html.classList.contains("dark");
+      localStorage.setItem("osh-dark-mode", nowDark ? "1" : "0");
+      applyDark(nowDark);
+    });
+  }
+
   function renderDetailEmpty(container, title, description) {
     if (!container) return;
     container.className = "min-h-[280px] grid place-items-center text-center";
@@ -454,6 +476,7 @@
   }
 
   async function bootstrapSoftwareDetailApp() {
+    initDarkMode();
     const container = document.querySelector("#softwareDetail");
     const overlay = document.querySelector("#loadingOverlay");
     const softwareId = new URLSearchParams(window.location.search).get("id") || "";

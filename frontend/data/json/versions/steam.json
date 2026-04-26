@@ -1,0 +1,46 @@
+{
+  "softwareId": "steam",
+  "updatedAt": "2026-04-26",
+  "versions": [
+    {
+      "version": "latest",
+      "releaseDate": "2026-03-17",
+      "officialUrl": "https://store.steampowered.com/about/",
+      "variants": [
+        {
+          "architecture": "x86/x64",
+          "platform": "Windows",
+          "links": [
+            {
+              "type": "direct",
+              "label": "SteamSetup.exe",
+              "url": "https://media.st.dl.eccdnx.com/client/installer/SteamSetup.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "macOS",
+          "links": [
+            {
+              "type": "direct",
+              "label": "steam.dmg",
+              "url": "https://media.st.dl.eccdnx.com/client/installer/steam.dmg"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "Linux",
+          "links": [
+            {
+              "type": "direct",
+              "label": "steam.deb",
+              "url": "https://media.st.dl.eccdnx.com/client/installer/steam.deb"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
