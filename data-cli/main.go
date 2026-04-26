@@ -14,11 +14,14 @@ import (
 
 	// Blank-import each plugin to trigger its init() registration.
 	// Uncomment or add plugins here to include them in the build.
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/baidunetdisk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/dingtalk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/huorong"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wecom"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
@@ -226,7 +229,6 @@ func buildSearchPinyin(name string) string {
 	}
 	return full
 }
-
 
 func containsHan(s string) bool {
 	for _, r := range s {
