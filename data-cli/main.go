@@ -13,6 +13,7 @@ import (
 	// Uncomment or add plugins here to include them in the build.
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
 )
