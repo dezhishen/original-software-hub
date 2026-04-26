@@ -29,7 +29,7 @@ jobs:
         run: go run .
 
       - name: Publish generated data to data branch
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
           branch: data
           folder: frontend/data
