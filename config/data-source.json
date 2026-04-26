@@ -1,0 +1,10 @@
+{
+  "softwareList": {
+    "mode": "json",
+    "url": "https://example.com/software-list.json"
+  },
+  "softwareVersions": {
+    "mode": "json",
+    "url": "https://example.com/software-versions.json"
+  }
+}

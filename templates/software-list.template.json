@@ -1,0 +1,18 @@
+{
+  "updatedAt": "<YYYY-MM-DD>",
+  "items": [
+    {
+      "id": "<SOFTWARE_ID>",
+      "name": "<SOFTWARE_NAME>",
+      "description": "<SOFTWARE_DESCRIPTION>",
+      "organization": "<ORGANIZATION_NAME>",
+      "officialWebsite": "https://<OFFICIAL_WEBSITE>",
+      "source": {
+        "mode": "json",
+        "path": "versions/<SOFTWARE_ID>.json",
+        "callbackParam": "callback",
+        "timeoutMs": 8000
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build artifacts
+*.out
+*.test
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Logs
+*.log
+
+# Node / misc
+node_modules/
+
+# Temporary files
+.tmp/
+.cache/

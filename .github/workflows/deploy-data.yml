@@ -1,0 +1,40 @@
+name: Deploy Data
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - data-cli/**
+      - frontend/data/**
+      - .github/workflows/deploy-data.yml
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: data-cli/go.mod
+
+      - name: Generate latest data
+        working-directory: data-cli
+        run: go run .
+
+      - name: Publish generated data to data branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: data
+          folder: frontend/data
+          clean: true
+          single-commit: true

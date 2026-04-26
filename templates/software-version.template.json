@@ -1,0 +1,24 @@
+{
+  "softwareId": "<SOFTWARE_ID>",
+  "updatedAt": "<YYYY-MM-DD>",
+  "versions": [
+    {
+      "version": "<VERSION>",
+      "releaseDate": "<YYYY-MM-DD>",
+      "officialUrl": "https://<OFFICIAL_RELEASE_URL>",
+      "variants": [
+        {
+          "architecture": "<ARCHITECTURE>",
+          "platform": "<PLATFORM>",
+          "links": [
+            {
+              "type": "direct",
+              "label": "<DOWNLOAD_LABEL>",
+              "url": "https://<DIRECT_DOWNLOAD_URL>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+callback({"updatedAt":"2026-04-26","items":[{"id":"chrome","name":"Google Chrome","icon":"https://www.google.com/chrome/static/images/chrome-logo.svg","description":"Google 出品的高速、安全浏览器。","organization":"Google LLC","officialWebsite":"https://www.google.com/chrome/","source":{"mode":"jsonp","path":"versions/chrome.js","callbackParam":"callback","timeoutMs":8000}}]});

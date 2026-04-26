@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "generatedAt": "<ISO8601_DATETIME>",
+    "generator": "<DATA_CLI_NAME>"
+  },
+  "softwareList": {
+    "mode": "json",
+    "path": "software-list.json",
+    "callbackParam": "callback",
+    "timeoutMs": 8000
+  }
+}
