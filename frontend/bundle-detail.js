@@ -382,6 +382,17 @@
     return { id: "web", label: "Web" };
   }
 
+  function detectCurrentArchitecture() {
+    const ua = String(navigator.userAgent || "").toLowerCase();
+    const uaArch = String((navigator.userAgentData && navigator.userAgentData.architecture) || "").toLowerCase();
+    const source = `${uaArch} ${ua}`;
+
+    if (/arm64|aarch64|armv8/.test(source)) return { id: "arm64", label: "ARM64" };
+    if (/x86_64|win64|wow64|amd64|x64/.test(source)) return { id: "x64", label: "x64" };
+    if (/i[3-6]86|x86/.test(source)) return { id: "x86", label: "x86" };
+    return { id: "universal", label: "通用" };
+  }
+
   function platformMatchesCurrent(variantPlatform, currentPlatformId) {
     const p = String(variantPlatform || "").toLowerCase();
     if (!p) return false;
@@ -404,6 +415,36 @@
     }
   }
 
+  function architectureScore(variantArchitecture, currentArchId) {
+    const arch = String(variantArchitecture || "").toLowerCase();
+    const has = (keyword) => arch.includes(keyword);
+
+    if (has("universal") || has("通用")) return 85;
+
+    switch (currentArchId) {
+      case "arm64":
+        if (has("arm64") || has("arm")) return 100;
+        if (has("x64") || has("amd64")) return 55;
+        if (has("x86") || has("32")) return 35;
+        break;
+      case "x64":
+        if (has("x64") || has("amd64")) return 100;
+        if (has("x86/x64")) return 100;
+        if (has("x86") || has("32")) return 70;
+        if (has("arm64") || has("arm")) return 40;
+        break;
+      case "x86":
+        if (has("x86") || has("32")) return 100;
+        if (has("x64") || has("amd64")) return 60;
+        if (has("arm64") || has("arm")) return 30;
+        break;
+      default:
+        return 50;
+    }
+
+    return 50;
+  }
+
   function renderSoftwareDetail({ container, software, versions }) {
     if (!container) return;
     if (!software) {
@@ -412,6 +453,7 @@
     }
 
     const currentPlatform = detectCurrentPlatform();
+    const currentArchitecture = detectCurrentArchitecture();
 
     container.className = "text-left";
     container.innerHTML = `
@@ -419,7 +461,7 @@
         <h2 class="text-2xl font-semibold text-slate-900" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
         <p class="text-sm leading-6 text-slate-600">${escapeHtml(software.description)}</p>
         <p class="text-sm text-slate-500">所属机构：${escapeHtml(software.organization)}</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">当前检测平台：<span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">${escapeHtml(currentPlatform.label)}</span></p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">当前检测环境：<span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span></p>
         <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-100" target="_blank" rel="noopener noreferrer"
            href="${escapeAttr(software.officialWebsite)}">访问官网</a>
       </div>
@@ -445,14 +487,25 @@
         : "";
 
       const sortedVariants = [...(v.variants || [])].sort((a, b) => {
-        const aMatch = platformMatchesCurrent(a.platform, currentPlatform.id) ? 1 : 0;
-        const bMatch = platformMatchesCurrent(b.platform, currentPlatform.id) ? 1 : 0;
-        return bMatch - aMatch;
+        const aPlatformScore = platformMatchesCurrent(a.platform, currentPlatform.id) ? 1 : 0;
+        const bPlatformScore = platformMatchesCurrent(b.platform, currentPlatform.id) ? 1 : 0;
+        if (aPlatformScore !== bPlatformScore) return bPlatformScore - aPlatformScore;
+
+        if (aPlatformScore === 1) {
+          const aArchScore = architectureScore(a.architecture, currentArchitecture.id);
+          const bArchScore = architectureScore(b.architecture, currentArchitecture.id);
+          if (aArchScore !== bArchScore) return bArchScore - aArchScore;
+        }
+
+        return 0;
       });
 
+      const first = sortedVariants[0];
+      const hasCurrentDeviceRow = !!first && platformMatchesCurrent(first.platform, currentPlatform.id);
+
       const variantRows = sortedVariants
-        .map((variant) => {
-          const isCurrentPlatform = platformMatchesCurrent(variant.platform, currentPlatform.id);
+        .map((variant, index) => {
+          const isCurrentDevice = hasCurrentDeviceRow && index === 0;
           const directLinks = (variant.links || [])
             .map(
               (link) =>
@@ -466,9 +519,9 @@
             : "暂无直链";
 
           return `
-            <tr class="${isCurrentPlatform ? "bg-brand-50/70 dark:bg-brand-900/25" : "bg-white even:bg-slate-50 dark:bg-slate-800 dark:even:bg-slate-800/75"} hover:bg-slate-100/70 dark:hover:bg-slate-700/60">
+            <tr class="bg-white even:bg-slate-50 hover:bg-slate-100/70 dark:bg-slate-800 dark:even:bg-slate-800/75 dark:hover:bg-slate-700/60 ${isCurrentDevice ? "font-semibold" : ""}">
               <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
-              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentPlatform ? ' <span class="ml-1 rounded bg-brand-100 px-1.5 py-0.5 text-[11px] font-medium text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">当前设备</span>' : ""}</td>
+              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[11px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
               <td class="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
             </tr>`;
         })
