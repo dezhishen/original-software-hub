@@ -1,6 +1,6 @@
 {
   "softwareId": "weixin",
-  "updatedAt": "2026-04-26T13:27:07Z",
+  "updatedAt": "2026-04-26T13:33:05Z",
   "versions": [
     {
       "version": "4.1.9",
@@ -19,6 +19,28 @@
           ]
         },
         {
+          "architecture": "x86",
+          "platform": "Windows",
+          "links": [
+            {
+              "type": "direct",
+              "label": "微信 4.1.9 安装包 x86 (exe)",
+              "url": "https://dldir1v6.qq.com/weixin/Windows/WeChatSetup_x86.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "platform": "Windows (Store)",
+          "links": [
+            {
+              "type": "store",
+              "label": "Microsoft Store",
+              "url": "https://www.microsoft.com/store/apps/9nblggh4slx7"
+            }
+          ]
+        },
+        {
           "architecture": "universal",
           "platform": "macOS",
           "links": [
@@ -30,13 +52,24 @@
           ]
         },
         {
+          "architecture": "x64",
+          "platform": "Linux",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Linux 版微信",
+              "url": "https://linux.weixin.qq.com/"
+            }
+          ]
+        },
+        {
           "architecture": "通用",
           "platform": "Web",
           "links": [
             {
-              "type": "direct",
+              "type": "webpage",
               "label": "网页版微信",
-              "url": "https://weixin.qq.com/"
+              "url": "https://wx.qq.com"
             }
           ]
         }
