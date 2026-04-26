@@ -254,6 +254,7 @@
     return {
       id,
       name,
+      pinyin: String(item.pinyin || "").trim().toLowerCase(),
       icon,
       description: String(item.description || "").trim(),
       organization,
@@ -302,7 +303,7 @@
       if (tagKw) {
         return tags.some((tag) => String(tag || "").toLowerCase().includes(tagKw));
       }
-      return `${s.name} ${s.organization} ${tags.join(" ")}`.toLowerCase().includes(kw);
+      return `${s.name} ${s.organization} ${tags.join(" ")} ${s.pinyin || ""}`.toLowerCase().includes(kw);
     });
 
     container.innerHTML = "";

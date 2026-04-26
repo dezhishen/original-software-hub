@@ -2,7 +2,9 @@ module github.com/dezhishen/original-software-hub/data-cli
 
 go 1.22
 
-require golang.org/x/net v0.26.0 // indirect
+require golang.org/x/net v0.26.0
+
+require github.com/mozillazg/go-pinyin v0.21.0
 
 require github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 

@@ -31,6 +31,7 @@ type IndexPayload struct {
 type SoftwareItem struct {
 	ID              string   `json:"id"`
 	Name            string   `json:"name"`
+	Pinyin          string   `json:"pinyin,omitempty"`
 	Icon            string   `json:"icon,omitempty"`
 	Description     string   `json:"description"`
 	Organization    string   `json:"organization"`

@@ -10,6 +10,7 @@ import (
 	"sort"
 	"strings"
 	"time"
+	"unicode"
 
 	// Blank-import each plugin to trigger its init() registration.
 	// Uncomment or add plugins here to include them in the build.
@@ -21,6 +22,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
+	"github.com/mozillazg/go-pinyin"
 )
 
 func main() {
@@ -74,6 +76,7 @@ func main() {
 			}
 
 			item := entry.Item
+			item.Pinyin = buildSearchPinyin(item.Name)
 			item.Source = plugin.Source{
 				Mode:      "json",
 				Path:      "versions/" + softwareID + ".json",
@@ -82,6 +85,15 @@ func main() {
 			listItems = append(listItems, item)
 		}
 	}
+
+	sort.SliceStable(listItems, func(i, j int) bool {
+		li := sortKeyForItem(listItems[i])
+		lj := sortKeyForItem(listItems[j])
+		if li == lj {
+			return listItems[i].ID < listItems[j].ID
+		}
+		return li < lj
+	})
 
 	softwareList := plugin.SoftwareListPayload{
 		UpdatedAt: updatedAt,
@@ -171,4 +183,56 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	return os.WriteFile(path, data, 0o644)
+}
+
+func sortKeyForItem(item plugin.SoftwareItem) string {
+	if item.Pinyin != "" {
+		return strings.ToLower(strings.Fields(item.Pinyin)[0])
+	}
+	return strings.ToLower(strings.TrimSpace(item.Name))
+}
+
+func buildSearchPinyin(name string) string {
+	clean := strings.TrimSpace(name)
+	if clean == "" || !containsHan(clean) {
+		return ""
+	}
+
+	args := pinyin.NewArgs()
+	args.Style = pinyin.Normal
+	pyGroups := pinyin.Pinyin(clean, args)
+
+	parts := make([]string, 0, len(pyGroups))
+	abbr := make([]rune, 0, len(pyGroups))
+	for _, g := range pyGroups {
+		if len(g) == 0 {
+			continue
+		}
+		s := strings.ToLower(strings.TrimSpace(g[0]))
+		if s == "" {
+			continue
+		}
+		parts = append(parts, s)
+		abbr = append(abbr, []rune(s)[0])
+	}
+
+	full := strings.Join(parts, "")
+	if full == "" {
+		return ""
+	}
+	short := string(abbr)
+	if short != "" && short != full {
+		return full + " " + short
+	}
+	return full
+}
+
+
+func containsHan(s string) bool {
+	for _, r := range s {
+		if unicode.Is(unicode.Han, r) {
+			return true
+		}
+	}
+	return false
 }
