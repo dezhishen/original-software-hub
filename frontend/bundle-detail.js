@@ -337,7 +337,7 @@
     const timeHtml = updatedAt ? `数据更新时间：${relativeTime(updatedAt)}` : "";
     footer.innerHTML = [
       timeHtml,
-      `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用。</p>`
+      `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用，建议优先前往软件官网下载安装。</p>`
     ].filter(Boolean).join("\n");
   }
 
@@ -379,10 +379,10 @@
     container.className = "text-left";
     container.innerHTML = `
       <div class="mb-5 grid gap-2 border-b border-slate-200 pb-5">
-        <h2 class="text-2xl font-bold text-slate-900" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
+        <h2 class="text-2xl font-semibold text-slate-900" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
         <p class="text-sm leading-6 text-slate-600">${escapeHtml(software.description)}</p>
         <p class="text-sm text-slate-500">所属机构：${escapeHtml(software.organization)}</p>
-        <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/40 bg-brand-50 px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-100" target="_blank" rel="noopener noreferrer"
+        <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-100" target="_blank" rel="noopener noreferrer"
            href="${escapeAttr(software.officialWebsite)}">访问官网</a>
       </div>
       <div id="versionsContainer" class="grid gap-4"></div>
@@ -399,7 +399,7 @@
 
     versions.forEach((v) => {
       const card = document.createElement("div");
-      card.className = "overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-brand-500/50 hover:shadow-[0_10px_24px_rgba(15,157,132,0.15)]";
+      card.className = "overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-[0_4px_12px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_8px_16px_rgba(15,157,132,0.12)]";
 
       const officialBtn = v.officialUrl
         ? `<a class="inline-flex items-center rounded-md border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100" target="_blank" rel="noopener noreferrer"
@@ -431,7 +431,7 @@
 
       card.innerHTML = `
         <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-3">
-          <span class="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(v.version || "-")}</span>
+          <span class="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(v.version || "-")}</span>
           <span class="text-xs text-slate-500">${escapeHtml(v.releaseDate || "")}</span>
           ${officialBtn}
         </div>

@@ -315,11 +315,11 @@
 
     filtered.forEach((software) => {
       const card = document.createElement("article");
-      card.className = "relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/85 bg-white/60 p-4 shadow-[0_14px_30px_rgba(15,70,56,0.14)] backdrop-blur-md transition hover:-translate-y-1 hover:border-brand-500/55 hover:shadow-[0_20px_40px_rgba(15,157,132,0.22)] dark:border-slate-700/80 dark:bg-slate-800/60 dark:shadow-[0_14px_30px_rgba(2,6,23,0.45)] dark:hover:shadow-[0_20px_40px_rgba(15,157,132,0.25)]";
+      card.className = "relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
       const iconMarkup = renderSoftwareIcon(software);
       const rawIcon = String(software?.icon || "").trim();
       const bgWatermark = rawIcon
-        ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-28 w-28 select-none opacity-[0.08] dark:opacity-[0.05]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
+        ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-24 w-24 select-none opacity-[0.05] dark:opacity-[0.035]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
         : "";
       const tagsMarkup = (software.tags || [])
         .map(tag => `<button type="button" data-tag="${escapeAttr(tag)}" class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 transition hover:bg-brand-100 dark:bg-slate-700/50 dark:text-brand-400 dark:hover:bg-slate-700">#${escapeHtml(tag)}</button>`)
@@ -353,7 +353,7 @@
     const timeHtml = updatedAt ? `数据更新时间：${relativeTime(updatedAt)}` : "";
     footer.innerHTML = [
       timeHtml,
-      `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用。</p>`
+      `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用，建议优先前往软件官网下载安装。</p>`
     ].filter(Boolean).join("\n");
   }
 

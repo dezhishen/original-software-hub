@@ -29,13 +29,13 @@
       rel="stylesheet"
     />
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-[#fffef8] via-[#f4faf7] to-[#edf6f2] text-slate-900 transition-colors dark:from-[#0d1117] dark:via-[#111827] dark:to-[#0d1f2d] dark:text-slate-100" style="font-family: 'Noto Sans SC', sans-serif;">
+  <body class="min-h-screen bg-gradient-to-br from-[#fffcf4] via-[#f8fbf9] to-[#f2f7f5] text-slate-900 transition-colors dark:from-[#0d1117] dark:via-[#101826] dark:to-[#0f1d2b] dark:text-slate-100" style="font-family: 'Noto Sans SC', sans-serif;">
 
-    <header class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-10 pb-6 text-left">
-      <p class="inline-flex rounded-full border border-brand-500/30 bg-brand-50 px-3 py-1 text-xs font-semibold tracking-[0.08em] text-brand-700 dark:border-brand-500/40 dark:bg-slate-800 dark:text-brand-500" style="font-family: 'Space Grotesk', sans-serif;">ORIGINAL SOFTWARE HUB</p>
-      <h1 class="mt-4 text-3xl font-bold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">常用软件官方下载与版本入口</h1>
-      <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-400">
-        集中展示软件官网与版本下载链接，按平台与架构快速定位可用安装包。
+    <header class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-9 pb-5 text-left">
+      <p class="inline-flex rounded-full border border-brand-500/25 bg-brand-50/70 px-3 py-1 text-[11px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/70 dark:text-brand-500" style="font-family: 'Space Grotesk', sans-serif;">ORIGINAL SOFTWARE HUB</p>
+      <h1 class="mt-4 text-3xl font-semibold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">常用软件官方下载入口</h1>
+      <p class="mt-3 max-w-3xl text-[15px] leading-7 text-slate-600 dark:text-slate-400">
+        汇总常见软件的官网与版本信息，帮助你更快定位合适的平台与安装包。
       </p>
     </header>
 
@@ -45,9 +45,9 @@
     </div>
 
     <main class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pb-10">
-        <section class="rounded-2xl border border-slate-200 bg-white/85 p-4 shadow-[0_12px_34px_rgba(15,70,56,0.10)] backdrop-blur-sm md:p-6 dark:border-slate-700 dark:bg-slate-800/85">
+        <section class="rounded-2xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-6 dark:border-slate-700 dark:bg-slate-800/88 dark:shadow-[0_8px_20px_rgba(2,6,23,0.35)]">
         <div class="mb-4 grid gap-3 border-b border-slate-200 pb-4 dark:border-slate-700">
-          <h2 class="text-left text-2xl font-semibold dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">软件目录</h2>
+          <h2 class="text-left text-2xl font-medium dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">软件目录</h2>
           <input id="searchInput" class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm outline-none ring-brand-500/20 transition focus:border-brand-500 focus:ring-4 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500" type="search" placeholder="搜索软件名称 / 机构 / 标签（#社交）/ 拼音（weixin）" />
         </div>
         <div id="softwareList" class="grid h-[62vh] auto-rows-max content-start grid-cols-1 gap-4 overflow-y-auto overscroll-contain pt-2 pr-1 sm:grid-cols-3 xl:grid-cols-4" aria-live="polite"></div>
