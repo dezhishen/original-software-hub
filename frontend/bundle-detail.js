@@ -520,8 +520,8 @@
 
           return `
             <tr class="bg-white even:bg-slate-50 hover:bg-slate-100/70 dark:bg-slate-800 dark:even:bg-slate-800/75 dark:hover:bg-slate-700/60 ${isCurrentDevice ? "font-semibold" : ""}">
-              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
               <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[11px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
+	              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
               <td class="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
             </tr>`;
         })
@@ -538,7 +538,7 @@
             ? `<div class="overflow-x-auto">
                 <table class="min-w-full border-collapse">
                   <thead class="bg-slate-100 dark:bg-slate-900/55">
-                    <tr><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">直接下载</th></tr>
+	                    <tr><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">直接下载</th></tr>
                   </thead>
                   <tbody class="divide-y divide-slate-200 dark:divide-slate-700 dark:bg-slate-800">${variantRows}</tbody>
                 </table>
