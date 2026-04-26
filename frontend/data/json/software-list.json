@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-26T11:55:11Z",
+  "updatedAt": "2026-04-26T13:06:05Z",
   "items": [
     {
       "id": "qq",
@@ -8,6 +8,10 @@
       "description": "腾讯即时通信软件。",
       "organization": "Tencent",
       "officialWebsite": "https://im.qq.com/",
+      "tags": [
+        "即时通讯",
+        "社交"
+      ],
       "source": {
         "mode": "json",
         "path": "versions/qq.json",
@@ -21,6 +25,10 @@
       "description": "Valve 旗下数字游戏平台客户端。",
       "organization": "Valve Corporation",
       "officialWebsite": "https://store.steampowered.com/about/",
+      "tags": [
+        "游戏平台",
+        "娱乐"
+      ],
       "source": {
         "mode": "json",
         "path": "versions/steam.json",
@@ -34,6 +42,10 @@
       "description": "Google 出品的高速、安全浏览器。",
       "organization": "Google LLC",
       "officialWebsite": "https://www.google.com/chrome/",
+      "tags": [
+        "浏览器",
+        "网络"
+      ],
       "source": {
         "mode": "json",
         "path": "versions/chrome.json",
@@ -47,6 +59,10 @@
       "description": "GitHub 官方命令行工具，支持 Pull Request、Issue、Release 等操作。",
       "organization": "GitHub",
       "officialWebsite": "https://cli.github.com/",
+      "tags": [
+        "开发工具",
+        "命令行"
+      ],
       "source": {
         "mode": "json",
         "path": "versions/github-cli.json",
@@ -60,6 +76,10 @@
       "description": "OpenList 是一个支持多存储的文件列表程序，可用于统一管理和访问网盘内容。",
       "organization": "OpenList Team",
       "officialWebsite": "https://github.com/openlistteam/openlist",
+      "tags": [
+        "文件管理",
+        "开发工具"
+      ],
       "source": {
         "mode": "json",
         "path": "versions/openlist.json",

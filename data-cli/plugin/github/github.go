@@ -33,6 +33,7 @@ type repoConfig struct {
 	Organization    string      `yaml:"organization"`
 	OfficialWebsite string      `yaml:"officialWebsite"`
 	Icon            string      `yaml:"icon"`
+	Tags            []string    `yaml:"tags"`
 	Assets          []assetRule `yaml:"assets"`
 }
 
@@ -104,6 +105,7 @@ func (p *githubPlugin) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     repo.Description,
 				Organization:    repo.Organization,
 				OfficialWebsite: repo.OfficialWebsite,
+				Tags:            repo.Tags,
 			},
 			Versions: []plugin.Version{
 				{

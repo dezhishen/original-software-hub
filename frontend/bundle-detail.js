@@ -519,7 +519,7 @@
       const { versions } = normalizeSoftwareVersionPayload(rawVersions);
 
       renderSoftwareDetail({ container, software, versions });
-      renderAppFooter(rawVersions?.updatedAt || dataSource.generatedAt);
+      renderAppFooter(dataSource.generatedAt);
       hideOverlay(overlay);
     } catch (error) {
       const message = error instanceof Error ? error.message : "未知错误";

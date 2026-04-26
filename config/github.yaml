@@ -24,6 +24,7 @@ repos:
     organization: GitHub
     officialWebsite: https://cli.github.com/
     icon: https://github.githubassets.com/favicons/favicon.svg
+    tags: [开发工具, 命令行]
     assets:
       - keywords: [windows, amd64, .msi]
         platform: Windows
@@ -52,6 +53,7 @@ repos:
     organization: OpenList Team
     officialWebsite: https://github.com/openlistteam/openlist
     icon: https://cdn.jsdelivr.net/gh/OpenListTeam/OpenList-Resource@main/logo/logo.svg
+    tags: [文件管理, 开发工具]
     assets:
       - keywords: [windows, amd64]
         platform: Windows

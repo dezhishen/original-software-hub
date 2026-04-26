@@ -29,13 +29,14 @@ type IndexPayload struct {
 
 // SoftwareItem represents one entry in the software list.
 type SoftwareItem struct {
-	ID              string `json:"id"`
-	Name            string `json:"name"`
-	Icon            string `json:"icon,omitempty"`
-	Description     string `json:"description"`
-	Organization    string `json:"organization"`
-	OfficialWebsite string `json:"officialWebsite"`
-	Source          Source `json:"source"`
+	ID              string   `json:"id"`
+	Name            string   `json:"name"`
+	Icon            string   `json:"icon,omitempty"`
+	Description     string   `json:"description"`
+	Organization    string   `json:"organization"`
+	OfficialWebsite string   `json:"officialWebsite"`
+	Tags            []string `json:"tags,omitempty"`
+	Source          Source   `json:"source"`
 }
 
 // SoftwareListPayload is the software-list.json payload.

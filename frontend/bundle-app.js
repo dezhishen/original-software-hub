@@ -312,6 +312,9 @@
       const bgWatermark = rawIcon
         ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-28 w-28 select-none opacity-[0.08] dark:opacity-[0.05]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
         : "";
+      const tagsMarkup = (software.tags || [])
+        .map(tag => `<span class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-400">${escapeHtml(tag)}</span>`)
+        .join(" ");
       card.innerHTML = `
         ${bgWatermark}
         <div class="relative mb-3 flex items-center gap-3">
@@ -319,6 +322,7 @@
           <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h3>
         </div>
         <p class="relative mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">${escapeHtml(software.description)}</p>
+        ${tagsMarkup ? `<div class="relative mt-3 flex flex-wrap gap-1.5">${tagsMarkup}</div>` : ""}
         <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-500">机构：${escapeHtml(software.organization)}</p>
       `;
       card.addEventListener("click", () => onSelect(software.id));
@@ -395,7 +399,7 @@
       const rawList = await fetchBySource(dataSource.softwareList);
       state.softwares = normalizeSoftwareListPayload(rawList).items;
       renderAll();
-      renderAppFooter(rawList?.updatedAt || dataSource.generatedAt);
+      renderAppFooter(dataSource.generatedAt);
       hideOverlay(loadingOverlay);
     } catch (error) {
       hideOverlay(loadingOverlay);

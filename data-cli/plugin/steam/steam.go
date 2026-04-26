@@ -46,6 +46,7 @@ func (s *Steam) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "Valve 旗下数字游戏平台客户端。",
 				Organization:    "Valve Corporation",
 				OfficialWebsite: steamOfficialWebsite,
+				Tags:            []string{"游戏平台", "娱乐"},
 			},
 			Versions: []plugin.Version{
 				{

@@ -56,6 +56,7 @@ func (q *QQ) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "腾讯即时通信软件。",
 				Organization:    "Tencent",
 				OfficialWebsite: "https://im.qq.com/",
+				Tags:            []string{"即时通讯", "社交"},
 			},
 			Versions: versions,
 		},
