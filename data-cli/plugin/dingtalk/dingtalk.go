@@ -15,7 +15,7 @@ import (
 const (
 	dingtalkOfficialWebsite = "https://www.dingtalk.com/"
 	dingtalkDownloadPage    = "https://www.dingtalk.com/download"
-	dingtalkIconURL         = "https://www.dingtalk.com/favicon.ico"
+	dingtalkIconURL         = "https://gw.alicdn.com/imgextra/i3/O1CN01eMicSg1GVD4uXMWGv_!!6000000000627-73-tps-32-32.ico"
 )
 
 var dingtalkVersionPattern = regexp.MustCompile(`DingTalk_v([0-9]+(?:\.[0-9]+)+)`)

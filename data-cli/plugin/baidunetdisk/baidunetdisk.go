@@ -15,7 +15,7 @@ const (
 	baiduNetdiskOfficialWebsite = "https://pan.baidu.com/"
 	baiduNetdiskVersionPage     = "https://yun.baidu.com/disk/version"
 	baiduNetdiskChangeLogAPI    = "https://yun.baidu.com/disk/cmsdata?do=changelog&platform=%s&page=1&num=1"
-	baiduNetdiskIconURL         = "https://pan.baidu.com/favicon.ico"
+	baiduNetdiskIconURL         = "https://nd-static.bdstatic.com/box-static/lite-clouddisk-ui/res/static/images/favicon.ico"
 )
 
 var versionPattern = regexp.MustCompile(`V([0-9]+(?:\.[0-9]+)+)`)
