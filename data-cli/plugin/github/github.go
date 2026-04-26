@@ -43,6 +43,7 @@ type assetRule struct {
 	Keywords     []string `yaml:"keywords"`
 	Platform     string   `yaml:"platform"`
 	Architecture string   `yaml:"architecture"`
+	Package      string   `yaml:"package"`
 }
 
 type githubPlugin struct {
@@ -194,6 +195,7 @@ func normalizeRepoConfig(repo repoConfig) (repoConfig, bool) {
 		}
 		repo.Assets[index].Platform = strings.TrimSpace(repo.Assets[index].Platform)
 		repo.Assets[index].Architecture = strings.TrimSpace(repo.Assets[index].Architecture)
+		repo.Assets[index].Package = strings.TrimSpace(repo.Assets[index].Package)
 	}
 
 	return repo, true
@@ -203,6 +205,7 @@ func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Varian
 	type variantKey struct {
 		platform     string
 		architecture string
+		pkg          string
 	}
 
 	variantMap := map[variantKey][]plugin.Link{}
@@ -220,13 +223,17 @@ func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Varian
 				continue
 			}
 			matched = true
-			key := variantKey{platform: defaultString(rule.Platform, "通用"), architecture: defaultString(rule.Architecture, "通用")}
+			key := variantKey{
+				platform:     defaultString(rule.Platform, "通用"),
+				architecture: defaultString(rule.Architecture, "通用"),
+				pkg:          strings.ToLower(strings.TrimSpace(rule.Package)),
+			}
 			// 始终使用真实文件名作为链接标签，与 GitHub Releases 页面保持一致
 			variantMap[key] = append(variantMap[key], plugin.Link{Type: "direct", Label: assetName, URL: assetURL})
 		}
 
 		if len(rules) == 0 && !matched {
-			key := variantKey{platform: "通用", architecture: "通用"}
+			key := variantKey{platform: "通用", architecture: "通用", pkg: ""}
 			variantMap[key] = append(variantMap[key], plugin.Link{Type: "direct", Label: assetName, URL: assetURL})
 		}
 	}
@@ -237,6 +244,9 @@ func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Varian
 	}
 	sort.Slice(keys, func(i, j int) bool {
 		if keys[i].platform == keys[j].platform {
+			if keys[i].architecture == keys[j].architecture {
+				return keys[i].pkg < keys[j].pkg
+			}
 			return keys[i].architecture < keys[j].architecture
 		}
 		return keys[i].platform < keys[j].platform
@@ -244,8 +254,12 @@ func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Varian
 
 	variants := make([]plugin.Variant, 0, len(keys))
 	for _, key := range keys {
+		archLabel := key.architecture
+		if key.pkg != "" {
+			archLabel = fmt.Sprintf("%s (%s)", archLabel, key.pkg)
+		}
 		variants = append(variants, plugin.Variant{
-			Architecture: key.architecture,
+			Architecture: archLabel,
 			Platform:     key.platform,
 			Links:        variantMap[key],
 		})

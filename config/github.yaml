@@ -74,6 +74,60 @@ repos:
         platform: macOS
         architecture: arm64
 
+  - id: easytier
+    owner: EasyTier
+    repo: EasyTier
+    name: EasyTier
+    description: EasyTier 是一个去中心化的 Mesh VPN，支持 WireGuard。
+    organization: EasyTier
+    officialWebsite: https://easytier.cn
+    icon: https://avatars.githubusercontent.com/u/169161851?v=4
+    tags: [网络工具, VPN]
+    assets:
+      - keywords: [gui, x64, .exe]
+        platform: Windows
+        architecture: x64
+      - keywords: [gui, x86_64, .exe]
+        platform: Windows
+        architecture: x64
+      - keywords: [gui, arm64, .exe]
+        platform: Windows
+        architecture: arm64
+      - keywords: [gui, x64, .dmg]
+        platform: macOS
+        architecture: x64
+      - keywords: [gui, x86_64, .dmg]
+        platform: macOS
+        architecture: x64
+      - keywords: [gui,aarch64,dmg]
+        platform: macOS
+        architecture: arm64
+      - platform: Linux
+        architecture: x64
+        package: deb
+        keywords: [gui,amd64, .deb]
+      - platform: Linux
+        architecture: arm64
+        package: deb
+        keywords: [gui,arm64, .deb]
+
+      - platform: Linux
+        architecture: x64
+        package: rpm
+        keywords: [gui,amd64, .rpm]
+      - platform: Linux
+        architecture: aarch64
+        package: rpm
+        keywords: [gui,aarch64, .rpm]
+
+      - platform: Linux
+        architecture: x64
+        package: appimage
+        keywords: [gui,amd64, .AppImage]
+      - platform: Linux
+        architecture: aarch64
+        package: appimage
+        keywords: [gui, aarch64, .AppImage]
   # 继续新增仓库时，按下面结构复制即可：
   # - id: neovim
   #   owner: neovim
