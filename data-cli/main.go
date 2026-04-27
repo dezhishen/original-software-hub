@@ -24,6 +24,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/baidunetdisk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/dingtalk"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/firefox"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/huorong"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/neteasecloudmusic"

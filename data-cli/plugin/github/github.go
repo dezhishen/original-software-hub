@@ -26,6 +26,7 @@ type pluginConfig struct {
 
 type repoConfig struct {
 	ID              string      `yaml:"id"`
+	Disabled        bool        `yaml:"disabled"`
 	Owner           string      `yaml:"owner"`
 	Repo            string      `yaml:"repo"`
 	Name            string      `yaml:"name"`
@@ -70,6 +71,10 @@ func init() {
 
 	repos := make([]repoConfig, 0, len(cfg.Repos))
 	for _, repo := range cfg.Repos {
+		if repo.Disabled {
+			log.Printf("[github] skip disabled repo: %s/%s", repo.Owner, repo.Repo)
+			continue
+		}
 		normalized, ok := normalizeRepoConfig(repo)
 		if !ok {
 			log.Printf("[github] skip invalid repo config: owner=%q repo=%q", repo.Owner, repo.Repo)

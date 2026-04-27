@@ -23,3 +23,5 @@ node_modules/
 
 # Generated frontend data
 frontend/data/
+frontend/assets/css/tailwind.css
+frontend/assets/software-icons/

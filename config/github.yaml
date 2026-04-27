@@ -17,6 +17,7 @@ token: ""
 repos:
   # 可直接运行的示例：GitHub CLI
   - id: github-cli
+    disabled: true
     owner: cli
     repo: cli
     name: GitHub CLI
@@ -46,6 +47,7 @@ repos:
         architecture: arm64
 
   - id: openlist
+    disabled: true
     owner: openlistteam
     repo: openlist
     name: OpenList
