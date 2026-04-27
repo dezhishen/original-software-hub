@@ -27,6 +27,21 @@ function contentType(filePath) {
   return MIME_TYPES[ext] || "application/octet-stream";
 }
 
+function cacheHeaders(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".html" || ext === ".js" || ext === ".json" || ext === ".css") {
+    return {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0"
+    };
+  }
+
+  return {
+    "Cache-Control": "public, max-age=3600"
+  };
+}
+
 function safePathFromUrl(urlPath) {
   const cleanPath = decodeURIComponent((urlPath || "/").split("?")[0]);
   const normalized = path.normalize(cleanPath).replace(/^([.][.][/\\])+/, "");
@@ -57,7 +72,10 @@ const server = createServer(async (req, res) => {
     }
 
     const data = await readFile(finalPath);
-    res.writeHead(200, { "Content-Type": contentType(finalPath) });
+    res.writeHead(200, {
+      "Content-Type": contentType(finalPath),
+      ...cacheHeaders(finalPath)
+    });
     res.end(data);
   } catch {
     res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });

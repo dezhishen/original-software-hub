@@ -4,7 +4,7 @@
     endpoint: {
       type: "json",
       url: "./data/json",
-      indexPath: "index.json",
+      indexPath: "index.json?v=__APP_VERSION__",
       timeoutMs: 8000
     }
   };

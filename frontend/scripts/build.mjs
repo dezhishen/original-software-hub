@@ -9,6 +9,11 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const sourceDir = path.resolve(scriptDir, "..");
 const outputDir = path.join(sourceDir, "dist");
 const ignoredNames = new Set(["dist", "node_modules", "package.json", "package-lock.json", ".gitignore", "scripts"]);
+const APP_BUILD_VERSION = process.env.APP_BUILD_VERSION || String(Date.now());
+
+function injectBuildVersion(content) {
+  return content.replaceAll("__APP_VERSION__", APP_BUILD_VERSION);
+}
 
 async function collectFiles(dir, files = []) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -39,7 +44,7 @@ function getOutputPath(filePath) {
 
 async function buildHtml(sourcePath, outputPath) {
   const input = await readFile(sourcePath, "utf8");
-  const output = await minifyHtml(input, {
+  const output = await minifyHtml(injectBuildVersion(input), {
     collapseBooleanAttributes: true,
     collapseInlineTagWhitespace: true,
     collapseWhitespace: true,
@@ -65,7 +70,7 @@ async function buildHtml(sourcePath, outputPath) {
 
 async function buildJs(sourcePath, outputPath) {
   const input = await readFile(sourcePath, "utf8");
-  const result = await minifyJs(input, {
+  const result = await minifyJs(injectBuildVersion(input), {
     compress: {
       passes: 2,
       pure_getters: true
