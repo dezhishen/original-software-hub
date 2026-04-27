@@ -202,19 +202,46 @@ func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, err
 		return all, nil
 	}
 
-	selectedNames := map[string]struct{}{}
+	// Parse included and excluded plugin names
+	includeAll := false
+	included := make(map[string]struct{})
+	excluded := make(map[string]struct{})
+	
 	for _, name := range strings.Split(raw, ",") {
 		n := strings.TrimSpace(strings.ToLower(name))
 		if n == "" {
 			continue
 		}
-		selectedNames[n] = struct{}{}
+		
+		// Check for "all" keyword
+		if n == "all" {
+			includeAll = true
+			continue
+		}
+		
+		// Support exclusion syntax: -pluginname
+		if strings.HasPrefix(n, "-") {
+			excluded[n[1:]] = struct{}{}
+		} else {
+			included[n] = struct{}{}
+		}
 	}
-	if len(selectedNames) == 0 {
+	
+	// If "all" keyword or only exclusions provided, include all except excluded
+	if includeAll || (len(included) == 0 && len(excluded) > 0) {
+		for _, p := range all {
+			name := strings.ToLower(strings.TrimSpace(p.Name()))
+			if _, ok := excluded[name]; !ok {
+				included[name] = struct{}{}
+			}
+		}
+	}
+	
+	if len(included) == 0 {
 		return nil, fmt.Errorf("invalid -plugins value: %q", pluginsArg)
 	}
 
-	filtered := make([]plugin.Plugin, 0, len(selectedNames))
+	filtered := make([]plugin.Plugin, 0, len(included))
 	found := map[string]struct{}{}
 	available := make([]string, 0, len(all))
 	for _, p := range all {
@@ -223,14 +250,14 @@ func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, err
 			continue
 		}
 		available = append(available, name)
-		if _, ok := selectedNames[name]; ok {
+		if _, ok := included[name]; ok {
 			filtered = append(filtered, p)
 			found[name] = struct{}{}
 		}
 	}
 
 	missing := make([]string, 0)
-	for name := range selectedNames {
+	for name := range included {
 		if _, ok := found[name]; !ok {
 			missing = append(missing, name)
 		}
