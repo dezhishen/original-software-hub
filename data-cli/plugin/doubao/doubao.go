@@ -12,7 +12,7 @@ const (
 	doubaoName         = "豆包客户端"
 	doubaoDescription  = "ByteDance Doubao - AI Assistant and Chat Client for Desktop"
 	doubaoOfficialURL  = "https://www.doubao.com"
-	doubaoIconURL      = "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/static/logo_180x180.png"
+	doubaoIconURL      = "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/doubao/desktop_online_web/static/image/logo-doubao.7d723a57.png"
 	doubaoOrganization = "ByteDance"
 )
 
