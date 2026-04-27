@@ -21,9 +21,11 @@ import (
 
 	// Blank-import each plugin to trigger its init() registration.
 	// Uncomment or add plugins here to include them in the build.
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/alipan"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/baidunetdisk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/dingtalk"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/doubao"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/firefox"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/huorong"
@@ -31,6 +33,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qqmusic"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencentmeeting"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wecom"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wps"
