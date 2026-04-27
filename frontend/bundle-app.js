@@ -208,12 +208,32 @@
     return `<span class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-600">${fallback}</span>`;
   }
 
+  function renderDetailHeroIconBackground(software) {
+    const icon = String(software?.icon || "").trim();
+    if (/^https?:\/\//i.test(icon) || icon.startsWith("/") || icon.startsWith("./")) {
+      return `
+        <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[1.6rem]">
+          <div class="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-brand-500/10 blur-3xl dark:bg-brand-500/15"></div>
+          <div class="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-amber-200/35 blur-3xl dark:bg-slate-600/20"></div>
+          <div class="absolute inset-0 opacity-[0.12] blur-2xl dark:opacity-[0.16]" style="background-image:url('${escapeAttr(icon)}');background-size:220px;background-repeat:no-repeat;background-position:right 1.5rem center;"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/75 dark:from-slate-800 dark:via-slate-800/94 dark:to-slate-800/72"></div>
+        </div>`;
+    }
+
+    return `
+      <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[1.6rem]">
+        <div class="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-brand-500/12 blur-3xl dark:bg-brand-500/18"></div>
+        <div class="absolute -left-8 bottom-0 h-28 w-28 rounded-full bg-amber-200/35 blur-3xl dark:bg-slate-600/20"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/96 to-white/82 dark:from-slate-800 dark:via-slate-800/95 dark:to-slate-800/78"></div>
+      </div>`;
+  }
+
   function normalizeLink(item) {
     if (!isObject(item)) return null;
     const type = String(item.type || "").trim().toLowerCase();
     const label = String(item.label || "").trim();
     const url = String(item.url || "").trim();
-    if (!label || !url || type !== "direct") return null;
+    if (!label || !url || !["direct", "webpage"].includes(type)) return null;
     return { type, label, url };
   }
 
@@ -338,16 +358,35 @@
 
     const currentPlatform = detectCurrentPlatform();
     const currentArchitecture = detectCurrentArchitecture();
+    const detailIconMarkup = renderSoftwareIcon(software);
+    const detailIconBackground = renderDetailHeroIconBackground(software);
 
     container.className = "text-left";
     container.innerHTML = `
-      <div class="mb-5 grid gap-2 border-b border-slate-200 pb-5 dark:border-slate-700">
-        <h2 class="text-2xl font-semibold text-slate-900 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
-        <p class="text-sm leading-6 text-slate-600 dark:text-slate-400">${escapeHtml(software.description)}</p>
-        <p class="text-sm text-slate-500 dark:text-slate-400">所属机构：${escapeHtml(software.organization)}</p>
-        <p class="text-xs text-slate-500 dark:text-slate-400">当前检测环境：<span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span></p>
-        <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
-           href="${escapeAttr(software.officialWebsite)}">访问官网</a>
+      <div class="relative mb-5 overflow-hidden rounded-[1.6rem] border border-slate-200/90 bg-white/95 p-5 shadow-[0_10px_24px_rgba(15,70,56,0.08)] dark:border-slate-700/80 dark:bg-slate-800/92 dark:shadow-[0_10px_24px_rgba(2,6,23,0.35)] md:p-6">
+        ${detailIconBackground}
+        <div class="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div class="min-w-0 flex-1">
+            <div class="mb-4 flex items-center gap-4">
+              <div class="shrink-0 rounded-2xl border border-white/70 bg-white/85 p-2 shadow-[0_8px_22px_rgba(15,70,56,0.10)] backdrop-blur dark:border-slate-700/80 dark:bg-slate-800/85 dark:shadow-[0_8px_22px_rgba(2,6,23,0.32)]">
+                <span class="block [&>img]:h-14 [&>img]:w-14 [&>img]:rounded-xl [&>img]:border-white/80 [&>img]:bg-white [&>img]:p-1.5 [&>span]:h-14 [&>span]:w-14 [&>span]:rounded-xl [&>span]:border-white/80 [&>span]:bg-white/90 dark:[&>img]:border-slate-700 dark:[&>img]:bg-slate-800 dark:[&>span]:border-slate-700 dark:[&>span]:bg-slate-800/90">${detailIconMarkup}</span>
+              </div>
+              <div class="min-w-0">
+                <p class="inline-flex rounded-full border border-brand-500/20 bg-brand-50/80 px-2.5 py-1 text-[11px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/30 dark:bg-slate-700/55 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">SOFTWARE DETAIL</p>
+                <h2 class="mt-3 text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
+              </div>
+            </div>
+            <p class="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300">${escapeHtml(software.description)}</p>
+            <div class="mt-4 flex flex-wrap items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400">
+              <span class="rounded-full bg-white/80 px-3 py-1 shadow-sm dark:bg-slate-800/80">所属机构：${escapeHtml(software.organization)}</span>
+              <span class="rounded-full bg-brand-50 px-3 py-1 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">当前检测环境：${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span>
+            </div>
+          </div>
+          <div class="relative flex shrink-0 items-center">
+            <a class="inline-flex w-fit items-center rounded-xl border border-brand-500/35 bg-brand-50 px-4 py-2.5 text-sm font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
+              href="${escapeAttr(software.officialWebsite)}">访问官网</a>
+          </div>
+        </div>
       </div>
       <div id="versionsContainer" class="grid gap-4"></div>
     `;
@@ -392,9 +431,14 @@
           const isCurrentDevice = hasCurrentDeviceRow && index === 0;
           const directLinks = (variant.links || [])
             .map(
-              (link) =>
-                `<a class="inline-flex items-center rounded-md border border-brand-500/30 bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
-                    href="${escapeAttr(link.url)}">${escapeHtml(link.label)}</a>`
+              (link) => {
+                const tone = link.type === "webpage"
+                  ? "border-slate-300 bg-white text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
+                  : "border-brand-500/30 bg-brand-50 text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700";
+                const suffix = link.type === "webpage" ? "<span class=\"ml-1 text-[10px] font-medium opacity-70\">页面</span>" : "";
+                return `<a class="inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-semibold ${tone}" target="_blank" rel="noopener noreferrer"
+                    href="${escapeAttr(link.url)}">${escapeHtml(link.label)}${suffix}</a>`;
+              }
             )
             .join("");
 
@@ -422,7 +466,7 @@
             ? `<div class="overflow-x-auto">
                 <table class="min-w-full border-collapse">
                   <thead class="bg-slate-100 dark:bg-slate-900/55">
-                    <tr><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">直接下载</th></tr>
+                    <tr><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
                   </thead>
                   <tbody class="divide-y divide-slate-200 dark:divide-slate-700 dark:bg-slate-800">${variantRows}</tbody>
                 </table>

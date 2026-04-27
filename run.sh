@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
+skip_data="${1:-}"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRONTEND_DIR="$ROOT_DIR/frontend"
 PORT="${PORT:-5173}"
-
+DATA_DIR="$ROOT_DIR/data-cli"
+if [ "$skip_data" != "skip-data" ]; then
+    echo "[data-cli] 生成数据..."
+    cd "$DATA_DIR"
+    go run .
+    cd ../
+fi
 cd "$FRONTEND_DIR"
 
 if ! command -v npm >/dev/null 2>&1; then

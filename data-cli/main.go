@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 	"unicode"
 
@@ -25,6 +26,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wecom"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wps"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
 	"github.com/mozillazg/go-pinyin"
@@ -33,6 +35,7 @@ import (
 func main() {
 	outDir := flag.String("out", "../frontend/data/json", "Output directory for index.json, software-list.json and versions/")
 	pluginsArg := flag.String("plugins", "all", "Plugins to run: all or comma-separated names (e.g. weixin,qq)")
+	concurrency := flag.Int("concurrency", 3, "Maximum number of plugins to run concurrently")
 	flag.Parse()
 
 	jsonDir := filepath.Join(*outDir, "versions")
@@ -55,15 +58,15 @@ func main() {
 	updatedAt := nowUTC.Format(time.RFC3339)
 
 	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
-	for _, p := range plugins {
-		fmt.Printf("[%s] fetching data...\n", p.Name())
-		items, err := p.Fetch()
-		if err != nil {
-			log.Printf("[%s] Fetch error: %v", p.Name(), err)
+	fetchResults := fetchPluginsConcurrently(plugins, *concurrency)
+	for _, result := range fetchResults {
+		p := result.Plugin
+		if result.Err != nil {
+			log.Printf("[%s] Fetch error: %v", p.Name(), result.Err)
 			continue
 		}
 
-		for _, entry := range items {
+		for _, entry := range result.Items {
 			softwareID := entry.Item.ID
 			if softwareID == "" {
 				log.Printf("[%s] skip item with empty id", p.Name())
@@ -125,6 +128,72 @@ func main() {
 	}
 
 	fmt.Println("Done.")
+}
+
+type pluginJob struct {
+	Index  int
+	Plugin plugin.Plugin
+}
+
+type pluginFetchResult struct {
+	Index  int
+	Plugin plugin.Plugin
+	Items  []plugin.SoftwareData
+	Err    error
+}
+
+func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []pluginFetchResult {
+	if len(plugins) == 0 {
+		return nil
+	}
+	if maxConcurrency < 1 {
+		maxConcurrency = 1
+	}
+	if maxConcurrency > len(plugins) {
+		maxConcurrency = len(plugins)
+	}
+
+	jobs := make(chan pluginJob)
+	results := make(chan pluginFetchResult, len(plugins))
+
+	var wg sync.WaitGroup
+	worker := func() {
+		defer wg.Done()
+		for job := range jobs {
+			fmt.Printf("[%s] fetching data...\n", job.Plugin.Name())
+			items, err := job.Plugin.Fetch()
+			results <- pluginFetchResult{
+				Index:  job.Index,
+				Plugin: job.Plugin,
+				Items:  items,
+				Err:    err,
+			}
+		}
+	}
+
+	for i := 0; i < maxConcurrency; i++ {
+		wg.Add(1)
+		go worker()
+	}
+
+	for i, p := range plugins {
+		jobs <- pluginJob{Index: i, Plugin: p}
+	}
+	close(jobs)
+
+	wg.Wait()
+	close(results)
+
+	out := make([]pluginFetchResult, 0, len(plugins))
+	for result := range results {
+		out = append(out, result)
+	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].Index < out[j].Index
+	})
+
+	return out
 }
 
 func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, error) {
