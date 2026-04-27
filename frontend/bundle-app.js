@@ -118,17 +118,14 @@
 
     filtered.forEach((software) => {
       const card = document.createElement("article");
-      card.className = "relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
+      card.className = "software-card relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
       const iconMarkup = renderSoftwareIcon(software);
-      const rawIcon = String(software?.icon || "").trim();
-      const bgWatermark = rawIcon
-        ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-24 w-24 select-none opacity-[0.12] dark:opacity-[0.10]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
-        : "";
+      const cardIconBackground = renderCardIconBackground(software);
       const tagsMarkup = (software.tags || [])
         .map(tag => `<button type="button" data-tag="${escapeAttr(tag)}" class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 transition hover:bg-brand-100 dark:bg-slate-700/50 dark:text-brand-400 dark:hover:bg-slate-700">#${escapeHtml(tag)}</button>`)
         .join("");
       card.innerHTML = `
-        ${bgWatermark}
+        ${cardIconBackground}
         <div class="relative mb-3 flex items-center gap-3">
           ${iconMarkup}
           <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h3>
@@ -210,19 +207,81 @@
     return `<span class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-600">${fallback}</span>`;
   }
 
-  function renderDetailHeroIconBackground(software) {
+  function renderCardIconBackground(software) {
     const icon = String(software?.icon || "").trim();
-    if (/^https?:\/\//i.test(icon) || icon.startsWith("/") || icon.startsWith("./")) {
-      return `
-        <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
-          <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-brand-500/8 blur-3xl dark:bg-brand-500/12"></div>
-          <div class="absolute -left-12 -bottom-8 h-40 w-40 rounded-full bg-amber-200/25 blur-3xl dark:bg-slate-600/15"></div>
-          <div class="absolute inset-0 opacity-[0.32] blur-sm dark:opacity-[0.26]" style="background-image:url('${escapeAttr(icon)}');background-size:300px;background-repeat:no-repeat;background-position:right -1rem center;"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-white/20 to-white/10 dark:from-slate-800/40 dark:via-slate-800/30 dark:to-slate-800/20"></div>
-        </div>`;
+    if (!(icon && (/^https?:\/\//i.test(icon) || icon.startsWith("/") || icon.startsWith("./")))) {
+      return "";
     }
 
-    return "";
+    return `
+      <div class="software-card-bg pointer-events-none absolute inset-0">
+        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-brand-500/10 blur-2xl dark:bg-brand-500/14"></div>
+        <div class="absolute -left-5 -bottom-5 h-20 w-20 rounded-full bg-amber-200/35 blur-2xl dark:bg-slate-600/18"></div>
+        <div class="software-card-bg-icon absolute inset-0 opacity-[0.26] blur-[2px] dark:opacity-[0.2]" style="background-image:url('${escapeAttr(icon)}');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white/32 via-white/20 to-white/10 dark:from-slate-800/45 dark:via-slate-800/30 dark:to-slate-800/18"></div>
+      </div>`;
+  }
+
+  function toCssUrl(url) {
+    const normalized = String(url || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    return `url("${normalized}")`;
+  }
+
+  let detailBgEnterTimer = 0;
+
+  function triggerDetailPageBackgroundEnter(body) {
+    if (!body) return;
+    if (detailBgEnterTimer) {
+      clearTimeout(detailBgEnterTimer);
+      detailBgEnterTimer = 0;
+    }
+    body.classList.remove("detail-icon-bg-enter");
+    void body.offsetWidth;
+    body.classList.add("detail-icon-bg-enter");
+    detailBgEnterTimer = window.setTimeout(() => {
+      body.classList.remove("detail-icon-bg-enter");
+      detailBgEnterTimer = 0;
+    }, 620);
+  }
+
+  function setDetailPageIconBackground(software) {
+    const body = document.body;
+    if (!body) return;
+
+    const icon = String(software?.icon || "").trim();
+    const isImageUrl = /^https?:\/\//i.test(icon) || icon.startsWith("/") || icon.startsWith("./");
+
+    if (!isImageUrl) {
+      body.classList.remove("detail-icon-bg");
+      body.classList.remove("detail-icon-bg-enter");
+      body.style.removeProperty("--detail-icon-url");
+      return;
+    }
+
+    body.classList.add("detail-icon-bg");
+    body.style.setProperty("--detail-icon-url", toCssUrl(icon));
+    triggerDetailPageBackgroundEnter(body);
+  }
+
+  function renderDetailHeroIconBackground() {
+    return `
+      <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
+        <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-brand-500/8 blur-3xl dark:bg-brand-500/12"></div>
+        <div class="absolute -left-12 -bottom-8 h-40 w-40 rounded-full bg-amber-200/25 blur-3xl dark:bg-slate-600/15"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-white/20 to-white/10 dark:from-slate-800/40 dark:via-slate-800/30 dark:to-slate-800/20"></div>
+      </div>`;
+  }
+
+  function clearDetailPageIconBackground() {
+    const body = document.body;
+    if (!body) return;
+    if (detailBgEnterTimer) {
+      clearTimeout(detailBgEnterTimer);
+      detailBgEnterTimer = 0;
+    }
+    body.classList.remove("detail-icon-bg");
+    body.classList.remove("detail-icon-bg-enter");
+    body.style.removeProperty("--detail-icon-url");
   }
 
   function normalizeLink(item) {
@@ -359,7 +418,7 @@
     const currentPlatform = detectCurrentPlatform();
     const currentArchitecture = detectCurrentArchitecture();
     const detailIconMarkup = renderSoftwareIcon(software);
-    const detailIconBackground = renderDetailHeroIconBackground(software);
+    const detailIconBackground = renderDetailHeroIconBackground();
     const tagsMarkup = (software.tags || [])
       .map(tag => `<span class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-400">#${escapeHtml(tag)}</span>`)
       .join(" ");
@@ -530,6 +589,7 @@
   }
 
   function renderHomeLayout(dom) {
+    clearDetailPageIconBackground();
     dom.homeHero?.classList.remove("hidden");
     dom.detailHero?.classList.add("hidden");
     dom.homeSection?.classList.remove("hidden");
@@ -538,6 +598,7 @@
   }
 
   function renderDetailLayout(dom, software, updatedAt) {
+    setDetailPageIconBackground(software);
     dom.homeHero?.classList.add("hidden");
     dom.detailHero?.classList.remove("hidden");
     dom.homeSection?.classList.add("hidden");

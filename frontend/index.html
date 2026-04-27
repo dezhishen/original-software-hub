@@ -14,30 +14,107 @@
         } catch (_) {}
       })();
     </script>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                50: "#f3faf8",
-                500: "#0f9d84",
-                700: "#0b6b5a"
-              }
-            }
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href="./assets/icons/favicon.ico" />
+    <link rel="stylesheet" href="./assets/css/tailwind.css" />
+    <style>
+      body {
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        background-image:
+          radial-gradient(42% 42% at 84% 16%, rgba(15, 157, 132, 0.16), transparent 72%),
+          radial-gradient(34% 34% at 14% 88%, rgba(245, 158, 11, 0.14), transparent 75%),
+          var(--detail-icon-url, none);
+        background-repeat: no-repeat, no-repeat, no-repeat;
+        background-position: 82% 14%, 12% 90%, calc(100% + 14rem) 50%;
+        background-size: 44vw 44vw, 36vw 36vw, auto 88vh;
+        filter: blur(2.6px) saturate(1.05);
+        transform: translate3d(2.2rem, 0, 0) scale(1.03);
+        transform-origin: 88% 50%;
+      }
+
+      body.detail-icon-bg::before {
+        opacity: 0.3;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+
+      body.detail-icon-bg-enter::before {
+        animation: detail-bg-enter 560ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .dark body::before {
+        background-image:
+          radial-gradient(42% 42% at 84% 16%, rgba(15, 157, 132, 0.2), transparent 74%),
+          radial-gradient(34% 34% at 14% 88%, rgba(100, 116, 139, 0.2), transparent 76%),
+          var(--detail-icon-url, none);
+      }
+
+      .dark body.detail-icon-bg::before {
+        opacity: 0.38;
+      }
+
+      @keyframes detail-bg-enter {
+        from {
+          opacity: 0;
+          transform: translate3d(3.4rem, 0, 0) scale(1.06);
+        }
+        to {
+          opacity: 0.3;
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+      }
+
+      @media (max-width: 768px) {
+        body::before {
+          background-position: 82% 14%, 12% 90%, calc(100% + 6rem) 36%;
+          background-size: 62vw 62vw, 44vw 44vw, auto 68vh;
+          filter: blur(2.2px) saturate(1.04);
+          transform: translate3d(1.2rem, 0, 0) scale(1.02);
+        }
+
+        body.detail-icon-bg::before {
+          opacity: 0.24;
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+
+        @keyframes detail-bg-enter {
+          from {
+            opacity: 0;
+            transform: translate3d(2rem, 0, 0) scale(1.05);
+          }
+          to {
+            opacity: 0.24;
+            transform: translate3d(0, 0, 0) scale(1);
           }
         }
-      };
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+      }
+
+      .software-card-bg-icon {
+        background-repeat: no-repeat;
+        background-position: calc(100% + 1.6rem) 52%;
+        background-size: auto 168%;
+        transform: scale(1);
+        transition: transform 0.42s ease, background-position 0.42s ease;
+      }
+
+      .software-card:hover .software-card-bg-icon {
+        transform: scale(1.035);
+        background-position: calc(100% + 2.4rem) 50%;
+      }
+    </style>
   </head>
   <body class="min-h-screen bg-gradient-to-br from-[#fffcf4] via-[#f8fbf9] to-[#f2f7f5] text-slate-900 transition-colors dark:from-[#0d1117] dark:via-[#101826] dark:to-[#0f1d2b] dark:text-slate-100" style="font-family: 'Noto Sans SC', sans-serif;">
     <header id="homeHero" class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-9 pb-5 text-left">
@@ -78,7 +155,7 @@
       </section>
     </main>
 
-    <footer id="appFooter" class="fixed bottom-0 left-0 right-0 z-30 mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pb-8 pt-2 text-xs text-slate-400 space-y-1 dark:text-slate-500 bg-gradient-to-t from-white via-white/95 to-white/0 dark:from-slate-950 dark:via-slate-950/95 dark:to-slate-950/0"></footer>
+    <footer id="appFooter" class="relative z-30 mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pb-5 pt-3 text-xs text-slate-400 space-y-1 dark:text-slate-500 bg-gradient-to-t from-white/85 via-white/60 to-white/0 dark:from-slate-950/85 dark:via-slate-950/60 dark:to-slate-950/0 md:fixed md:bottom-0 md:left-0 md:right-0 md:pb-8 md:pt-2 md:bg-gradient-to-t md:from-white md:via-white/95 md:to-white/0 md:dark:from-slate-950 md:dark:via-slate-950/95 md:dark:to-slate-950/0"></footer>
 
     <button id="darkModeToggle" type="button" aria-label="切换夜间模式" class="fixed top-4 right-4 z-40 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-slate-600 shadow-sm backdrop-blur-sm transition hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-800/90 dark:text-slate-300 dark:hover:text-brand-500"></button>
 
