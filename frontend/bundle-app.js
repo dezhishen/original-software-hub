@@ -7,12 +7,12 @@
   if (!APP_DATA_SOURCE_CONFIG) {
     throw new Error("缺少 APP_DATA_SOURCE_CONFIG，请先加载 config.js");
   }
+  const dataRepository = window.OSH_DATA_REPOSITORY;
+  if (!dataRepository) {
+    throw new Error("缺少 OSH_DATA_REPOSITORY，请先加载 bundle-shared.js");
+  }
 
   // ── shared/constants ───────────────────────────────────────────────────────
-  const DEFAULT_JSONP_TIMEOUT_MS = 8000;
-  const DEFAULT_JSONP_CALLBACK_PARAM = "callback";
-
-  // ── shared/utils ───────────────────────────────────────────────────────────
   function escapeHtml(value) {
     return String(value)
       .replaceAll("&", "&amp;")
@@ -28,11 +28,6 @@
 
   function isObject(value) {
     return value !== null && typeof value === "object";
-  }
-
-  function toPositiveNumber(value, fallback) {
-    const num = Number(value);
-    return num > 0 ? num : fallback;
   }
 
   function relativeTime(dateStr) {
@@ -68,220 +63,44 @@
     return `<time datetime="${escapeAttr(date.toISOString())}" title="${escapeAttr(realTime + "（北京时间）")}" class="cursor-help underline decoration-dotted decoration-slate-400">${escapeHtml(rel)}</time>`;
   }
 
-  // ── infra/http/json-client ─────────────────────────────────────────────────
-  async function fetchJson(url) {
-    const response = await fetch(url, { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${url}`);
-    }
-    return response.json();
-  }
-
-  // ── infra/http/jsonp-client ────────────────────────────────────────────────
-  function fetchJsonp(source) {
-    const url = source.url;
-    const callbackParam = source.callbackParam || DEFAULT_JSONP_CALLBACK_PARAM;
-    const timeoutMs = source.timeoutMs || DEFAULT_JSONP_TIMEOUT_MS;
-    const callbackName = `__jsonp_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      let settled = false;
-      const previousFixedCallback = window.callback;
-
-      const cleanup = () => {
-        settled = true;
-        delete window[callbackName];
-        if (previousFixedCallback === undefined) {
-          delete window.callback;
-        } else {
-          window.callback = previousFixedCallback;
-        }
-        script.remove();
-      };
-
-      const timer = setTimeout(() => {
-        if (!settled) {
-          cleanup();
-          reject(new Error(`JSONP timeout: ${url}`));
-        }
-      }, timeoutMs);
-
-      window[callbackName] = (data) => {
-        clearTimeout(timer);
-        cleanup();
-        resolve(data);
-      };
-
-      // 兼容固定 callback(...) 的静态 JSONP 文件。
-      window.callback = (data) => {
-        clearTimeout(timer);
-        cleanup();
-        resolve(data);
-      };
-
-      script.onerror = () => {
-        clearTimeout(timer);
-        cleanup();
-        reject(new Error(`JSONP load error: ${url}`));
-      };
-
-      const separator = url.includes("?") ? "&" : "?";
-      script.src = `${url}${separator}${encodeURIComponent(callbackParam)}=${callbackName}`;
-      document.head.appendChild(script);
-    });
-  }
-
-  // ── infra/http/source-client ───────────────────────────────────────────────
-  async function fetchBySource(source) {
-    if (source.mode === "jsonp") {
-      return fetchJsonp(source);
-    }
-    return fetchJson(source.url);
-  }
-
-  // ── infra/config/config-normalizer ─────────────────────────────────────────
-  function normalizeDataSourceConfig(config) {
-    if (!isObject(config)) {
-      throw new Error("数据源配置格式错误");
-    }
-
-    const endpoint = config.endpoint;
-    if (!isObject(endpoint)) {
-      throw new Error("数据源配置缺少 endpoint");
-    }
-
-    const type = String(endpoint.type || "json").trim().toLowerCase();
-    const url = String(endpoint.url || "").trim();
-    const indexPath = String(endpoint.indexPath || "index.json").trim() || "index.json";
-    const callbackParam =
-      String(endpoint.callbackParam || DEFAULT_JSONP_CALLBACK_PARAM).trim() ||
-      DEFAULT_JSONP_CALLBACK_PARAM;
-    const timeoutMs = toPositiveNumber(endpoint.timeoutMs, DEFAULT_JSONP_TIMEOUT_MS);
-
-    if (!url) throw new Error("数据源配置缺少 endpoint.url");
-    if (type !== "json" && type !== "jsonp") throw new Error("endpoint.type 仅支持 json 或 jsonp");
-
-    return { endpoint: { type, url, indexPath, callbackParam, timeoutMs } };
-  }
-
-  // ── infra/config/config-repository ─────────────────────────────────────────
-  function resolveUrl(baseUrl, path) {
-    const base = String(baseUrl).endsWith("/") ? baseUrl : `${baseUrl}/`;
-    return new URL(path, new URL(base, window.location.href)).toString();
-  }
-
-  async function loadDataSourceConfig() {
-    const normalized = normalizeDataSourceConfig(APP_DATA_SOURCE_CONFIG);
-    const { type, url, indexPath, callbackParam, timeoutMs } = normalized.endpoint;
-
-    const indexSource = {
-      mode: type,
-      url: resolveUrl(url, indexPath),
-      callbackParam,
-      timeoutMs
-    };
-
-    const indexPayload = await fetchBySource(indexSource);
-
-    const softwareListEntry = indexPayload?.softwareList;
-    let listPath, listMode;
-
-    if (isObject(softwareListEntry)) {
-      listPath = String(softwareListEntry.path || "").trim();
-      listMode = String(softwareListEntry.mode || type).trim().toLowerCase() || type;
-    } else {
-      listPath = String(softwareListEntry || "").trim();
-      listMode = type;
-    }
-
-    if (!listPath) throw new Error("index 缺少 softwareList.path");
-
-    return {
-      generatedAt: String(indexPayload?.meta?.generatedAt || "").trim(),
-      softwareList: {
-        mode: listMode,
-        url: resolveUrl(url, listPath),
-        callbackParam,
-        timeoutMs
-      },
-      softwareSourceDefaults: {
-        mode: type,
-        baseUrl: url,
-        callbackParam,
-        timeoutMs
-      }
-    };
-  }
-
-  // ── domain/validators/payload-validator ────────────────────────────────────
-  function normalizeSoftwareSource(source) {
-    if (typeof source === "string") {
-      return source.trim() || null;
-    }
-    if (!isObject(source)) return null;
-
-    const path = String(source.path || source.url || "").trim();
-    if (!path) return null;
-
-    const mode = String(source.mode || source.type || "").trim().toLowerCase();
-    if (mode && mode !== "json" && mode !== "jsonp") return null;
-
-    const result = { path };
-    if (mode) result.mode = mode;
-
-    const callbackParam = String(source.callbackParam || "").trim();
-    if (callbackParam) result.callbackParam = callbackParam;
-
-    const timeoutMs = Number(source.timeoutMs);
-    if (timeoutMs > 0) result.timeoutMs = timeoutMs;
-
-    return result;
-  }
-
-  function normalizeSoftwareItem(item) {
-    if (!isObject(item)) return null;
-
-    const id = String(item.id || "").trim();
-    const name = String(item.name || "").trim();
-    const icon = String(item.icon || "").trim();
-    const organization = String(item.organization || "").trim();
-    const officialWebsite = String(item.officialWebsite || "").trim();
-    const source = normalizeSoftwareSource(item.source);
-
-    if (!id || !name || !organization || !officialWebsite || !source) return null;
-
-    return {
-      id,
-      name,
-      pinyin: String(item.pinyin || "").trim().toLowerCase(),
-      icon,
-      description: String(item.description || "").trim(),
-      organization,
-      officialWebsite,
-      tags: Array.isArray(item.tags)
-        ? item.tags.map((tag) => String(tag || "").trim()).filter(Boolean)
-        : [],
-      source
-    };
-  }
-
-  function normalizeSoftwareListPayload(payload) {
-    const items = Array.isArray(payload?.items) ? payload.items : [];
-    return { items: items.map(normalizeSoftwareItem).filter(Boolean) };
-  }
-
   // ── ui/pages/home-page ─────────────────────────────────────────────────────
-  function getHomeDom() {
+  function getAppDom() {
     return {
+      homeHero: document.querySelector("#homeHero"),
+      detailHero: document.querySelector("#detailHero"),
+      detailBreadcrumb: document.querySelector("#detailBreadcrumb"),
+      breadcrumbHomeLink: document.querySelector("#breadcrumbHomeLink"),
+      breadcrumbCurrent: document.querySelector("#breadcrumbCurrent"),
+      detailHomeLink: document.querySelector("#detailHomeLink"),
+      smartBackButton: document.querySelector("#smartBackButton"),
+      homeSection: document.querySelector("#homeSection"),
+      detailSection: document.querySelector("#detailSection"),
+      detailContainer: document.querySelector("#softwareDetail"),
       list: document.querySelector("#softwareList"),
-      searchInput: document.querySelector("#searchInput")
+      searchInput: document.querySelector("#searchInput"),
+      loadingOverlay: document.querySelector("#loadingOverlay"),
+      loadingMessage: document.querySelector("#loadingMessage")
     };
   }
 
-  function bindHomeEvents(dom, handlers) {
+  function bindAppEvents(dom, handlers) {
     dom.searchInput?.addEventListener("input", (event) => {
       handlers.onKeywordChange(event.target.value);
+    });
+
+    dom.smartBackButton?.addEventListener("click", (event) => {
+      event.preventDefault();
+      handlers.onBack();
+    });
+
+    dom.breadcrumbHomeLink?.addEventListener("click", (event) => {
+      event.preventDefault();
+      handlers.onNavigateHome();
+    });
+
+    dom.detailHomeLink?.addEventListener("click", (event) => {
+      event.preventDefault();
+      handlers.onNavigateHome();
     });
   }
 
@@ -389,39 +208,352 @@
     return `<span class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-600">${fallback}</span>`;
   }
 
+  function normalizeLink(item) {
+    if (!isObject(item)) return null;
+    const type = String(item.type || "").trim().toLowerCase();
+    const label = String(item.label || "").trim();
+    const url = String(item.url || "").trim();
+    if (!label || !url || type !== "direct") return null;
+    return { type, label, url };
+  }
+
+  function normalizeVariant(item) {
+    if (!isObject(item)) return null;
+    const architecture = String(item.architecture || "").trim();
+    const platform = String(item.platform || "").trim();
+    const links = Array.isArray(item.links)
+      ? item.links.map(normalizeLink).filter(Boolean)
+      : [];
+    return { architecture, platform, links };
+  }
+
+  function normalizeVersion(item) {
+    if (!isObject(item)) return null;
+    const version = String(item.version || "").trim();
+    const releaseDate = String(item.releaseDate || "").trim();
+    const officialUrl = String(item.officialUrl || "").trim();
+    const variants = Array.isArray(item.variants)
+      ? item.variants.map(normalizeVariant).filter(Boolean)
+      : [];
+    return { version, releaseDate, officialUrl, variants };
+  }
+
+  function normalizeSoftwareVersionPayload(payload) {
+    const raw = Array.isArray(payload?.versions)
+      ? payload.versions
+      : Array.isArray(payload)
+        ? payload
+        : [];
+    return { versions: raw.map(normalizeVersion).filter(Boolean) };
+  }
+
+  function renderDetailEmpty(container, title, description) {
+    if (!container) return;
+    container.className = "min-h-[280px] grid place-items-center text-center";
+    container.innerHTML = `<div><h2 class="text-xl font-semibold text-slate-700 dark:text-slate-200" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(title)}</h2><p class="mt-2 text-sm text-slate-500 dark:text-slate-400">${escapeHtml(description || "")}</p></div>`;
+  }
+
+  function detectCurrentPlatform() {
+    const ua = String(navigator.userAgent || "").toLowerCase();
+    const platform = String((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "").toLowerCase();
+    const source = `${ua} ${platform}`;
+
+    if (/iphone|ipad|ipod/.test(source)) return { id: "ios", label: "iOS" };
+    if (/android/.test(source)) return { id: "android", label: "Android" };
+    if (/mac|darwin/.test(source)) return { id: "macos", label: "macOS" };
+    if (/win/.test(source)) return { id: "windows", label: "Windows" };
+    if (/linux|x11/.test(source)) return { id: "linux", label: "Linux" };
+    return { id: "web", label: "Web" };
+  }
+
+  function detectCurrentArchitecture() {
+    const ua = String(navigator.userAgent || "").toLowerCase();
+    const uaArch = String((navigator.userAgentData && navigator.userAgentData.architecture) || "").toLowerCase();
+    const source = `${uaArch} ${ua}`;
+
+    if (/arm64|aarch64|armv8/.test(source)) return { id: "arm64", label: "ARM64" };
+    if (/x86_64|win64|wow64|amd64|x64/.test(source)) return { id: "x64", label: "x64" };
+    if (/i[3-6]86|x86/.test(source)) return { id: "x86", label: "x86" };
+    return { id: "universal", label: "通用" };
+  }
+
+  function platformMatchesCurrent(variantPlatform, currentPlatformId) {
+    const platform = String(variantPlatform || "").toLowerCase();
+    if (!platform) return false;
+
+    switch (currentPlatformId) {
+      case "windows":
+        return platform.includes("windows");
+      case "macos":
+        return platform.includes("mac");
+      case "linux":
+        return platform.includes("linux");
+      case "android":
+        return platform.includes("android");
+      case "ios":
+        return platform.includes("ios") || platform.includes("iphone") || platform.includes("ipad");
+      case "web":
+        return platform.includes("web");
+      default:
+        return false;
+    }
+  }
+
+  function architectureScore(variantArchitecture, currentArchId) {
+    const architecture = String(variantArchitecture || "").toLowerCase();
+    const has = (keyword) => architecture.includes(keyword);
+
+    if (has("universal") || has("通用")) return 85;
+
+    switch (currentArchId) {
+      case "arm64":
+        if (has("arm64") || has("arm")) return 100;
+        if (has("x64") || has("amd64")) return 55;
+        if (has("x86") || has("32")) return 35;
+        break;
+      case "x64":
+        if (has("x64") || has("amd64")) return 100;
+        if (has("x86/x64")) return 100;
+        if (has("x86") || has("32")) return 70;
+        if (has("arm64") || has("arm")) return 40;
+        break;
+      case "x86":
+        if (has("x86") || has("32")) return 100;
+        if (has("x64") || has("amd64")) return 60;
+        if (has("arm64") || has("arm")) return 30;
+        break;
+      default:
+        return 50;
+    }
+
+    return 50;
+  }
+
+  function renderSoftwareDetail({ container, software, versions }) {
+    if (!container) return;
+    if (!software) {
+      renderDetailEmpty(container, "请选择一个软件", "");
+      return;
+    }
+
+    const currentPlatform = detectCurrentPlatform();
+    const currentArchitecture = detectCurrentArchitecture();
+
+    container.className = "text-left";
+    container.innerHTML = `
+      <div class="mb-5 grid gap-2 border-b border-slate-200 pb-5 dark:border-slate-700">
+        <h2 class="text-2xl font-semibold text-slate-900 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
+        <p class="text-sm leading-6 text-slate-600 dark:text-slate-400">${escapeHtml(software.description)}</p>
+        <p class="text-sm text-slate-500 dark:text-slate-400">所属机构：${escapeHtml(software.organization)}</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">当前检测环境：<span class="rounded-full bg-brand-50 px-2 py-0.5 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span></p>
+        <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-sm font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
+           href="${escapeAttr(software.officialWebsite)}">访问官网</a>
+      </div>
+      <div id="versionsContainer" class="grid gap-4"></div>
+    `;
+
+    const versionsContainer = container.querySelector("#versionsContainer");
+    if (!versionsContainer) return;
+
+    if (!Array.isArray(versions) || versions.length === 0) {
+      versionsContainer.innerHTML =
+        '<p class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">暂无版本信息，请访问官网获取最新版本。</p>';
+      return;
+    }
+
+    versions.forEach((versionItem) => {
+      const card = document.createElement("div");
+      card.className = "overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-[0_4px_12px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_8px_16px_rgba(15,157,132,0.12)] dark:border-slate-700/80 dark:bg-slate-800/90 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
+
+      const officialBtn = versionItem.officialUrl
+        ? `<a class="inline-flex items-center rounded-md border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100 dark:border-amber-700/60 dark:bg-amber-900/25 dark:text-amber-300 dark:hover:bg-amber-900/40" target="_blank" rel="noopener noreferrer"
+              href="${escapeAttr(versionItem.officialUrl)}">前往官网发布页</a>`
+        : "";
+
+      const sortedVariants = [...(versionItem.variants || [])].sort((left, right) => {
+        const leftPlatformScore = platformMatchesCurrent(left.platform, currentPlatform.id) ? 1 : 0;
+        const rightPlatformScore = platformMatchesCurrent(right.platform, currentPlatform.id) ? 1 : 0;
+        if (leftPlatformScore !== rightPlatformScore) return rightPlatformScore - leftPlatformScore;
+
+        if (leftPlatformScore === 1) {
+          const leftArchScore = architectureScore(left.architecture, currentArchitecture.id);
+          const rightArchScore = architectureScore(right.architecture, currentArchitecture.id);
+          if (leftArchScore !== rightArchScore) return rightArchScore - leftArchScore;
+        }
+
+        return 0;
+      });
+
+      const firstVariant = sortedVariants[0];
+      const hasCurrentDeviceRow = !!firstVariant && platformMatchesCurrent(firstVariant.platform, currentPlatform.id);
+
+      const variantRows = sortedVariants
+        .map((variant, index) => {
+          const isCurrentDevice = hasCurrentDeviceRow && index === 0;
+          const directLinks = (variant.links || [])
+            .map(
+              (link) =>
+                `<a class="inline-flex items-center rounded-md border border-brand-500/30 bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
+                    href="${escapeAttr(link.url)}">${escapeHtml(link.label)}</a>`
+            )
+            .join("");
+
+          const directLinksHtml = directLinks
+            ? `<div class="flex flex-wrap gap-2">${directLinks}</div>`
+            : "暂无直链";
+
+          return `
+            <tr class="bg-white even:bg-slate-50 hover:bg-slate-100/70 dark:bg-slate-800 dark:even:bg-slate-800/75 dark:hover:bg-slate-700/60 ${isCurrentDevice ? "font-semibold" : ""}">
+              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[11px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
+              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
+              <td class="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
+            </tr>`;
+        })
+        .join("");
+
+      card.innerHTML = `
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-3 dark:border-slate-700 dark:bg-slate-900/45">
+          <span class="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(versionItem.version || "-")}</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
+          ${officialBtn}
+        </div>
+        ${
+          variantRows
+            ? `<div class="overflow-x-auto">
+                <table class="min-w-full border-collapse">
+                  <thead class="bg-slate-100 dark:bg-slate-900/55">
+                    <tr><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">直接下载</th></tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700 dark:bg-slate-800">${variantRows}</tbody>
+                </table>
+              </div>`
+            : '<p class="px-4 py-5 text-sm text-slate-600 dark:text-slate-400">该版本暂无构建信息。</p>'
+        }
+      `;
+
+      versionsContainer.appendChild(card);
+    });
+  }
+
   // ── app/bootstrap ──────────────────────────────────────────────────────────
+  function showOverlay(overlay, messageNode, message) {
+    if (!overlay) return;
+    if (messageNode && message) {
+      messageNode.textContent = message;
+    }
+    overlay.style.display = "";
+    overlay.classList.remove("hidden");
+  }
+
   function hideOverlay(overlay) {
     if (!overlay) return;
     overlay.classList.add("hidden");
     setTimeout(() => { overlay.style.display = "none"; }, 400);
   }
 
+  function getRouteSoftwareId() {
+    return new URLSearchParams(window.location.search).get("id") || "";
+  }
+
+  function buildRouteUrl(softwareId) {
+    const nextUrl = new URL("./index.html", window.location.href);
+    if (softwareId) {
+      nextUrl.searchParams.set("id", softwareId);
+    }
+    return nextUrl.toString();
+  }
+
+  function renderHomeLayout(dom) {
+    dom.homeHero?.classList.remove("hidden");
+    dom.homeSection?.classList.remove("hidden");
+    dom.detailHero?.classList.add("hidden");
+    dom.detailBreadcrumb?.classList.add("hidden");
+    dom.detailSection?.classList.add("hidden");
+    document.title = "Original Software Hub";
+  }
+
+  function renderDetailLayout(dom, softwareName) {
+    dom.homeHero?.classList.add("hidden");
+    dom.homeSection?.classList.add("hidden");
+    dom.detailHero?.classList.remove("hidden");
+    dom.detailBreadcrumb?.classList.remove("hidden");
+    dom.detailSection?.classList.remove("hidden");
+    if (dom.breadcrumbCurrent) {
+      dom.breadcrumbCurrent.textContent = softwareName || "详情";
+    }
+    document.title = softwareName ? `${softwareName} - Original Software Hub` : "下载详情 - Original Software Hub";
+  }
+
   async function bootstrapHomeApp() {
     initDarkMode();
-    const dom = getHomeDom();
-    const loadingOverlay = document.querySelector("#loadingOverlay");
-    const state = { softwares: [], keyword: "" };
+    const dom = getAppDom();
+    const state = {
+      softwares: [],
+      keyword: "",
+      latestRenderToken: 0
+    };
 
-    bindHomeEvents(dom, {
+    bindAppEvents(dom, {
       onKeywordChange(keyword) {
         state.keyword = keyword.trim().toLowerCase();
-        renderAll();
+        if (!getRouteSoftwareId()) {
+          renderHomeList();
+        }
+      },
+      onBack() {
+        const referrer = document.referrer || "";
+        const hasHistory = window.history.length > 1;
+        const isSameOriginReferrer = referrer.startsWith(window.location.origin);
+
+        if (hasHistory && isSameOriginReferrer) {
+          window.history.back();
+          return;
+        }
+
+        navigateToHome({ replace: true });
+      },
+      onNavigateHome() {
+        navigateToHome();
       }
     });
 
+    window.addEventListener("popstate", () => {
+      renderCurrentRoute();
+    });
+
     try {
-      const dataSource = await loadDataSourceConfig();
-      const rawList = await fetchBySource(dataSource.softwareList);
-      state.softwares = normalizeSoftwareListPayload(rawList).items;
-      renderAll();
-      renderAppFooter(dataSource.generatedAt);
-      hideOverlay(loadingOverlay);
+      showOverlay(dom.loadingOverlay, dom.loadingMessage, "正在加载软件列表...");
+      const catalog = await dataRepository.loadSoftwareCatalog();
+      state.softwares = catalog.softwares;
+      renderAppFooter(catalog.generatedAt);
+      await renderCurrentRoute();
     } catch (error) {
-      hideOverlay(loadingOverlay);
+      hideOverlay(dom.loadingOverlay);
+      renderHomeLayout(dom);
       showLoadError(dom, error);
     }
 
-    function renderAll() {
+    function navigateToHome(options) {
+      const replace = !!options?.replace;
+      const targetUrl = buildRouteUrl("");
+      const method = replace ? "replaceState" : "pushState";
+      window.history[method]({}, "", targetUrl);
+      renderCurrentRoute();
+    }
+
+    function navigateToSoftware(softwareId, options) {
+      const replace = !!options?.replace;
+      const targetUrl = buildRouteUrl(softwareId);
+      const method = replace ? "replaceState" : "pushState";
+      window.history[method]({ softwareId }, "", targetUrl);
+      renderCurrentRoute();
+    }
+
+    function renderHomeList() {
+      renderHomeLayout(dom);
+      if (dom.searchInput && dom.searchInput.value !== state.keyword) {
+        dom.searchInput.value = state.keyword;
+      }
       renderSoftwareList({
         container: dom.list,
         softwares: state.softwares,
@@ -431,14 +563,57 @@
           if (!cleanTag) return;
           state.keyword = `#${cleanTag.toLowerCase()}`;
           if (dom.searchInput) dom.searchInput.value = `#${cleanTag}`;
-          renderAll();
+          renderHomeList();
         },
         onSelect(softwareId) {
-          const nextUrl = new URL("./software-detail.html", window.location.href);
-          nextUrl.searchParams.set("id", softwareId);
-          window.location.href = nextUrl.toString();
+          navigateToSoftware(softwareId);
         }
       });
+    }
+
+    async function renderCurrentRoute() {
+      const routeSoftwareId = getRouteSoftwareId().trim();
+      const renderToken = ++state.latestRenderToken;
+
+      if (!routeSoftwareId) {
+        renderHomeList();
+        hideOverlay(dom.loadingOverlay);
+        return;
+      }
+
+      renderDetailLayout(dom, "详情");
+      renderDetailEmpty(dom.detailContainer, "正在准备详情", "请稍候...");
+      showOverlay(dom.loadingOverlay, dom.loadingMessage, "正在加载详情...");
+
+      try {
+        const software = await dataRepository.getSoftwareById(routeSoftwareId);
+        if (renderToken !== state.latestRenderToken) return;
+
+        if (!software) {
+          renderDetailLayout(dom, "未找到软件");
+          renderDetailEmpty(dom.detailContainer, "未找到软件", "请返回目录页选择有效的软件。");
+          hideOverlay(dom.loadingOverlay);
+          return;
+        }
+
+        renderDetailLayout(dom, software.name);
+        const rawVersions = await dataRepository.loadSoftwareVersions(software);
+        if (renderToken !== state.latestRenderToken) return;
+
+        const { versions } = normalizeSoftwareVersionPayload(rawVersions);
+        renderSoftwareDetail({
+          container: dom.detailContainer,
+          software,
+          versions
+        });
+        hideOverlay(dom.loadingOverlay);
+      } catch (error) {
+        if (renderToken !== state.latestRenderToken) return;
+        const message = error instanceof Error ? error.message : "未知错误";
+        renderDetailLayout(dom, "加载失败");
+        renderDetailEmpty(dom.detailContainer, "加载失败", `详情加载失败：${message}`);
+        hideOverlay(dom.loadingOverlay);
+      }
     }
   }
 

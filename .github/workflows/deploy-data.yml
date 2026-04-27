@@ -24,6 +24,13 @@ jobs:
         with:
           go-version-file: data-cli/go.mod
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Generate latest data
         working-directory: data-cli
         env:
@@ -31,10 +38,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: go run .
 
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build minified frontend
+        working-directory: frontend
+        run: npm run build
+
       - name: Publish frontend (with data) to page branch
         uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
           branch: page
-          folder: frontend
+          folder: frontend/dist
           clean: true
           single-commit: true
