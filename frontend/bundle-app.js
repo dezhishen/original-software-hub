@@ -67,12 +67,11 @@
   function getAppDom() {
     return {
       homeHero: document.querySelector("#homeHero"),
+      homeHeroMeta: document.querySelector("#homeHeroMeta"),
       detailHero: document.querySelector("#detailHero"),
-      detailBreadcrumb: document.querySelector("#detailBreadcrumb"),
-      breadcrumbHomeLink: document.querySelector("#breadcrumbHomeLink"),
-      breadcrumbCurrent: document.querySelector("#breadcrumbCurrent"),
-      detailHomeLink: document.querySelector("#detailHomeLink"),
-      smartBackButton: document.querySelector("#smartBackButton"),
+      detailHeroTitle: document.querySelector("#detailHeroTitle"),
+      detailHeroDescription: document.querySelector("#detailHeroDescription"),
+      detailHeroMeta: document.querySelector("#detailHeroMeta"),
       homeSection: document.querySelector("#homeSection"),
       detailSection: document.querySelector("#detailSection"),
       detailContainer: document.querySelector("#softwareDetail"),
@@ -86,21 +85,6 @@
   function bindAppEvents(dom, handlers) {
     dom.searchInput?.addEventListener("input", (event) => {
       handlers.onKeywordChange(event.target.value);
-    });
-
-    dom.smartBackButton?.addEventListener("click", (event) => {
-      event.preventDefault();
-      handlers.onBack();
-    });
-
-    dom.breadcrumbHomeLink?.addEventListener("click", (event) => {
-      event.preventDefault();
-      handlers.onNavigateHome();
-    });
-
-    dom.detailHomeLink?.addEventListener("click", (event) => {
-      event.preventDefault();
-      handlers.onNavigateHome();
     });
   }
 
@@ -166,12 +150,30 @@
     return { filtered, firstId: filtered[0]?.id || "" };
   }
 
-  function renderAppFooter(updatedAt) {
+  function renderHomeHeroMeta(dom, updatedAt) {
+    if (!dom?.homeHeroMeta) return;
+    if (!updatedAt) {
+      dom.homeHeroMeta.textContent = "";
+      return;
+    }
+
+    dom.homeHeroMeta.innerHTML = `数据更新于 ${relativeTime(updatedAt)}`;
+  }
+
+  function renderDetailHeroMeta(dom, updatedAt) {
+    if (!dom?.detailHeroMeta) return;
+    if (!updatedAt) {
+      dom.detailHeroMeta.textContent = "";
+      return;
+    }
+
+    dom.detailHeroMeta.innerHTML = `数据更新于 ${relativeTime(updatedAt)}`;
+  }
+
+  function renderAppFooter() {
     const footer = document.querySelector("#appFooter");
     if (!footer) return;
-    const timeHtml = updatedAt ? `数据更新时间：${relativeTime(updatedAt)}` : "";
     footer.innerHTML = [
-      timeHtml,
       `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用，建议优先前往软件官网下载安装。</p>`
     ].filter(Boolean).join("\n");
   }
@@ -212,20 +214,13 @@
     const icon = String(software?.icon || "").trim();
     if (/^https?:\/\//i.test(icon) || icon.startsWith("/") || icon.startsWith("./")) {
       return `
-        <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[1.6rem]">
-          <div class="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-brand-500/10 blur-3xl dark:bg-brand-500/15"></div>
-          <div class="absolute -left-10 bottom-0 h-32 w-32 rounded-full bg-amber-200/35 blur-3xl dark:bg-slate-600/20"></div>
-          <div class="absolute inset-0 opacity-[0.12] blur-2xl dark:opacity-[0.16]" style="background-image:url('${escapeAttr(icon)}');background-size:220px;background-repeat:no-repeat;background-position:right 1.5rem center;"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/75 dark:from-slate-800 dark:via-slate-800/94 dark:to-slate-800/72"></div>
+        <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
+          <div class="absolute -bottom-6 -right-6 h-28 w-28 opacity-[0.08] blur-xl dark:opacity-[0.06]" style="background-image:url('${escapeAttr(icon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>
+          <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/0 to-white/35 dark:to-slate-800/25"></div>
         </div>`;
     }
 
-    return `
-      <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[1.6rem]">
-        <div class="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-brand-500/12 blur-3xl dark:bg-brand-500/18"></div>
-        <div class="absolute -left-8 bottom-0 h-28 w-28 rounded-full bg-amber-200/35 blur-3xl dark:bg-slate-600/20"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/96 to-white/82 dark:from-slate-800 dark:via-slate-800/95 dark:to-slate-800/78"></div>
-      </div>`;
+    return "";
   }
 
   function normalizeLink(item) {
@@ -264,7 +259,10 @@
       : Array.isArray(payload)
         ? payload
         : [];
-    return { versions: raw.map(normalizeVersion).filter(Boolean) };
+    return {
+      updatedAt: String(payload?.updatedAt || "").trim(),
+      versions: raw.map(normalizeVersion).filter(Boolean)
+    };
   }
 
   function renderDetailEmpty(container, title, description) {
@@ -349,7 +347,7 @@
     return 50;
   }
 
-  function renderSoftwareDetail({ container, software, versions }) {
+  function renderSoftwareDetail({ container, software, versions, onBack, onNavigateHome }) {
     if (!container) return;
     if (!software) {
       renderDetailEmpty(container, "请选择一个软件", "");
@@ -360,52 +358,74 @@
     const currentArchitecture = detectCurrentArchitecture();
     const detailIconMarkup = renderSoftwareIcon(software);
     const detailIconBackground = renderDetailHeroIconBackground(software);
+    const tagsMarkup = (software.tags || [])
+      .map(tag => `<span class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-400">#${escapeHtml(tag)}</span>`)
+      .join(" ");
 
     container.className = "text-left";
     container.innerHTML = `
-      <div class="relative mb-5 overflow-hidden rounded-[1.6rem] border border-slate-200/90 bg-white/95 p-5 shadow-[0_10px_24px_rgba(15,70,56,0.08)] dark:border-slate-700/80 dark:bg-slate-800/92 dark:shadow-[0_10px_24px_rgba(2,6,23,0.35)] md:p-6">
+      <article class="relative overflow-hidden rounded-xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]">
         ${detailIconBackground}
-        <div class="relative flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="relative flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <div class="min-w-0 flex-1">
-            <div class="mb-4 flex items-center gap-4">
-              <div class="shrink-0 rounded-2xl border border-white/70 bg-white/85 p-2 shadow-[0_8px_22px_rgba(15,70,56,0.10)] backdrop-blur dark:border-slate-700/80 dark:bg-slate-800/85 dark:shadow-[0_8px_22px_rgba(2,6,23,0.32)]">
-                <span class="block [&>img]:h-14 [&>img]:w-14 [&>img]:rounded-xl [&>img]:border-white/80 [&>img]:bg-white [&>img]:p-1.5 [&>span]:h-14 [&>span]:w-14 [&>span]:rounded-xl [&>span]:border-white/80 [&>span]:bg-white/90 dark:[&>img]:border-slate-700 dark:[&>img]:bg-slate-800 dark:[&>span]:border-slate-700 dark:[&>span]:bg-slate-800/90">${detailIconMarkup}</span>
+            <div class="mb-2 flex flex-wrap items-center gap-2">
+              <button type="button" data-detail-back class="inline-flex items-center rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20">
+                ← 返回上一页
+              </button>
+              <button type="button" data-detail-home class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                回到软件目录
+              </button>
+            </div>
+            <div class="mb-3 flex items-center gap-3">
+              <div class="shrink-0">
+                <span class="block [&>img]:h-12 [&>img]:w-12 [&>img]:rounded-lg [&>img]:border [&>img]:border-slate-200 [&>img]:bg-white [&>img]:p-1 [&>span]:inline-flex [&>span]:h-12 [&>span]:w-12 [&>span]:items-center [&>span]:justify-center [&>span]:rounded-lg [&>span]:border [&>span]:border-slate-200 [&>span]:bg-slate-50 dark:[&>img]:border-slate-700 dark:[&>img]:bg-slate-800 dark:[&>span]:border-slate-700 dark:[&>span]:bg-slate-800/90">${detailIconMarkup}</span>
               </div>
-              <div class="min-w-0">
-                <p class="inline-flex rounded-full border border-brand-500/20 bg-brand-50/80 px-2.5 py-1 text-[11px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/30 dark:bg-slate-700/55 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">SOFTWARE DETAIL</p>
-                <h2 class="mt-3 text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h2>
+              <div class="min-w-0 flex flex-1 flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <span class="rounded-full bg-white/80 px-2.5 py-1 shadow-sm dark:bg-slate-800/80">所属机构：${escapeHtml(software.organization)}</span>
+                <span class="rounded-full bg-brand-50 px-2.5 py-1 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">当前检测环境：${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span>
               </div>
             </div>
-            <p class="max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300">${escapeHtml(software.description)}</p>
-            <div class="mt-4 flex flex-wrap items-center gap-2.5 text-sm text-slate-500 dark:text-slate-400">
-              <span class="rounded-full bg-white/80 px-3 py-1 shadow-sm dark:bg-slate-800/80">所属机构：${escapeHtml(software.organization)}</span>
-              <span class="rounded-full bg-brand-50 px-3 py-1 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">当前检测环境：${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span>
-            </div>
+            ${tagsMarkup ? `<div class="mt-3 flex flex-wrap gap-1.5">${tagsMarkup}</div>` : ""}
           </div>
           <div class="relative flex shrink-0 items-center">
-            <a class="inline-flex w-fit items-center rounded-xl border border-brand-500/35 bg-brand-50 px-4 py-2.5 text-sm font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
+            <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
               href="${escapeAttr(software.officialWebsite)}">访问官网</a>
           </div>
         </div>
-      </div>
-      <div id="versionsContainer" class="grid gap-4"></div>
+        <section class="relative mt-4 border-t border-slate-200/90 pt-3 dark:border-slate-700/80">
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">版本信息</h3>
+              <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">以下版本与下载入口均归属于 ${escapeHtml(software.name)}</p>
+            </div>
+          </div>
+          <div id="versionsContainer" class="grid gap-2.5"></div>
+        </section>
+      </article>
     `;
+
+    container.querySelector("[data-detail-back]")?.addEventListener("click", () => {
+      onBack?.();
+    });
+    container.querySelector("[data-detail-home]")?.addEventListener("click", () => {
+      onNavigateHome?.();
+    });
 
     const versionsContainer = container.querySelector("#versionsContainer");
     if (!versionsContainer) return;
 
     if (!Array.isArray(versions) || versions.length === 0) {
       versionsContainer.innerHTML =
-        '<p class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-6 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">暂无版本信息，请访问官网获取最新版本。</p>';
+        '<p class="rounded-lg border border-slate-200 bg-slate-50/90 px-3 py-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-400">暂无版本信息，请访问官网获取最新版本。</p>';
       return;
     }
 
     versions.forEach((versionItem) => {
       const card = document.createElement("div");
-      card.className = "overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-[0_4px_12px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/40 hover:shadow-[0_8px_16px_rgba(15,157,132,0.12)] dark:border-slate-700/80 dark:bg-slate-800/90 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
+      card.className = "overflow-hidden rounded-lg border border-slate-200/90 bg-white/95 dark:border-slate-700/80 dark:bg-slate-800/90";
 
       const officialBtn = versionItem.officialUrl
-        ? `<a class="inline-flex items-center rounded-md border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 hover:bg-amber-100 dark:border-amber-700/60 dark:bg-amber-900/25 dark:text-amber-300 dark:hover:bg-amber-900/40" target="_blank" rel="noopener noreferrer"
+          ? `<a class="inline-flex items-center rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100 dark:border-amber-700/60 dark:bg-amber-900/25 dark:text-amber-300 dark:hover:bg-amber-900/40" target="_blank" rel="noopener noreferrer"
               href="${escapeAttr(versionItem.officialUrl)}">前往官网发布页</a>`
         : "";
 
@@ -436,29 +456,29 @@
                   ? "border-slate-300 bg-white text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
                   : "border-brand-500/30 bg-brand-50 text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700";
                 const suffix = link.type === "webpage" ? "<span class=\"ml-1 text-[10px] font-medium opacity-70\">页面</span>" : "";
-                return `<a class="inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-semibold ${tone}" target="_blank" rel="noopener noreferrer"
+                return `<a class="inline-flex items-center rounded-md border px-2 py-1 text-[11px] font-semibold ${tone}" target="_blank" rel="noopener noreferrer"
                     href="${escapeAttr(link.url)}">${escapeHtml(link.label)}${suffix}</a>`;
               }
             )
             .join("");
 
           const directLinksHtml = directLinks
-            ? `<div class="flex flex-wrap gap-2">${directLinks}</div>`
+            ? `<div class="flex flex-wrap gap-1.5">${directLinks}</div>`
             : "暂无直链";
 
           return `
             <tr class="bg-white even:bg-slate-50 hover:bg-slate-100/70 dark:bg-slate-800 dark:even:bg-slate-800/75 dark:hover:bg-slate-700/60 ${isCurrentDevice ? "font-semibold" : ""}">
-              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[11px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
-              <td class="whitespace-nowrap px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
-              <td class="px-3 py-2 text-sm text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
+              <td class="whitespace-nowrap px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[10px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
+              <td class="whitespace-nowrap px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
+              <td class="px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
             </tr>`;
         })
         .join("");
 
       card.innerHTML = `
-        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-3 dark:border-slate-700 dark:bg-slate-900/45">
-          <span class="rounded-full bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(versionItem.version || "-")}</span>
-          <span class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-700 dark:bg-slate-900/45">
+          <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(versionItem.version || "-")}</span>
+          <span class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
           ${officialBtn}
         </div>
         ${
@@ -466,12 +486,12 @@
             ? `<div class="overflow-x-auto">
                 <table class="min-w-full border-collapse">
                   <thead class="bg-slate-100 dark:bg-slate-900/55">
-                    <tr><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-3 py-2 text-left text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
+                    <tr><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
                   </thead>
                   <tbody class="divide-y divide-slate-200 dark:divide-slate-700 dark:bg-slate-800">${variantRows}</tbody>
                 </table>
               </div>`
-            : '<p class="px-4 py-5 text-sm text-slate-600 dark:text-slate-400">该版本暂无构建信息。</p>'
+            : '<p class="px-3 py-4 text-sm text-slate-600 dark:text-slate-400">该版本暂无构建信息。</p>'
         }
       `;
 
@@ -509,23 +529,27 @@
 
   function renderHomeLayout(dom) {
     dom.homeHero?.classList.remove("hidden");
-    dom.homeSection?.classList.remove("hidden");
     dom.detailHero?.classList.add("hidden");
-    dom.detailBreadcrumb?.classList.add("hidden");
+    dom.homeSection?.classList.remove("hidden");
     dom.detailSection?.classList.add("hidden");
     document.title = "Original Software Hub";
   }
 
-  function renderDetailLayout(dom, softwareName) {
+  function renderDetailLayout(dom, software, updatedAt) {
     dom.homeHero?.classList.add("hidden");
-    dom.homeSection?.classList.add("hidden");
     dom.detailHero?.classList.remove("hidden");
-    dom.detailBreadcrumb?.classList.remove("hidden");
+    dom.homeSection?.classList.add("hidden");
     dom.detailSection?.classList.remove("hidden");
-    if (dom.breadcrumbCurrent) {
-      dom.breadcrumbCurrent.textContent = softwareName || "详情";
+    const softwareName = String(software?.name || "").trim();
+    const softwareDescription = String(software?.description || "").trim();
+    if (dom.detailHeroTitle) {
+      dom.detailHeroTitle.textContent = softwareName || "软件详情";
     }
-    document.title = softwareName ? `${softwareName} - Original Software Hub` : "下载详情 - Original Software Hub";
+    if (dom.detailHeroDescription) {
+      dom.detailHeroDescription.textContent = softwareDescription || "查看软件介绍、版本发布时间和下载入口。";
+    }
+    renderDetailHeroMeta(dom, updatedAt);
+    document.title = softwareName ? `${softwareName} - Original Software Hub` : "Original Software Hub";
   }
 
   async function bootstrapHomeApp() {
@@ -569,7 +593,8 @@
       showOverlay(dom.loadingOverlay, dom.loadingMessage, "正在加载软件列表...");
       const catalog = await dataRepository.loadSoftwareCatalog();
       state.softwares = catalog.softwares;
-      renderAppFooter(catalog.generatedAt);
+      renderHomeHeroMeta(dom, catalog.generatedAt);
+      renderAppFooter();
       await renderCurrentRoute();
     } catch (error) {
       hideOverlay(dom.loadingOverlay);
@@ -625,7 +650,7 @@
         return;
       }
 
-      renderDetailLayout(dom, "详情");
+      renderDetailLayout(dom, "详情", "");
       renderDetailEmpty(dom.detailContainer, "正在准备详情", "请稍候...");
       showOverlay(dom.loadingOverlay, dom.loadingMessage, "正在加载详情...");
 
@@ -634,27 +659,43 @@
         if (renderToken !== state.latestRenderToken) return;
 
         if (!software) {
-          renderDetailLayout(dom, "未找到软件");
+          renderDetailLayout(dom, { name: "未找到软件", description: "请返回目录页选择有效的软件。" }, "");
           renderDetailEmpty(dom.detailContainer, "未找到软件", "请返回目录页选择有效的软件。");
           hideOverlay(dom.loadingOverlay);
           return;
         }
 
-        renderDetailLayout(dom, software.name);
+        renderDetailLayout(dom, software, "");
         const rawVersions = await dataRepository.loadSoftwareVersions(software);
         if (renderToken !== state.latestRenderToken) return;
 
-        const { versions } = normalizeSoftwareVersionPayload(rawVersions);
+        const { versions, updatedAt } = normalizeSoftwareVersionPayload(rawVersions);
+        renderDetailLayout(dom, software, updatedAt);
         renderSoftwareDetail({
           container: dom.detailContainer,
           software,
-          versions
+          versions,
+          onBack() {
+            const referrer = document.referrer || "";
+            const hasHistory = window.history.length > 1;
+            const isSameOriginReferrer = referrer.startsWith(window.location.origin);
+
+            if (hasHistory && isSameOriginReferrer) {
+              window.history.back();
+              return;
+            }
+
+            navigateToHome({ replace: true });
+          },
+          onNavigateHome() {
+            navigateToHome();
+          }
         });
         hideOverlay(dom.loadingOverlay);
       } catch (error) {
         if (renderToken !== state.latestRenderToken) return;
         const message = error instanceof Error ? error.message : "未知错误";
-        renderDetailLayout(dom, "加载失败");
+        renderDetailLayout(dom, { name: "加载失败", description: `详情加载失败：${message}` }, "");
         renderDetailEmpty(dom.detailContainer, "加载失败", `详情加载失败：${message}`);
         hideOverlay(dom.loadingOverlay);
       }

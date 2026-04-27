@@ -40,35 +40,20 @@
     />
   </head>
   <body class="min-h-screen bg-gradient-to-br from-[#fffcf4] via-[#f8fbf9] to-[#f2f7f5] text-slate-900 transition-colors dark:from-[#0d1117] dark:via-[#101826] dark:to-[#0f1d2b] dark:text-slate-100" style="font-family: 'Noto Sans SC', sans-serif;">
-
-    <nav id="detailBreadcrumb" class="sticky top-3 z-30 mx-auto hidden w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))]" aria-label="面包屑导航">
-      <ol class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm shadow-[0_6px_16px_rgba(15,70,56,0.08)] dark:border-slate-700 dark:bg-slate-800/90 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]">
-        <li><a id="breadcrumbHomeLink" class="font-semibold text-[#0a4f45] hover:underline dark:text-brand-500" href="./index.html">软件目录</a></li>
-        <li aria-hidden="true" class="text-slate-400 dark:text-slate-600">/</li>
-        <li id="breadcrumbCurrent" aria-current="page" class="font-semibold text-slate-700 dark:text-slate-200">详情</li>
-      </ol>
-    </nav>
-
     <header id="homeHero" class="mx-auto w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-9 pb-5 text-left">
       <p class="inline-flex rounded-full border border-brand-500/25 bg-brand-50/70 px-3 py-1 text-[11px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/70 dark:text-brand-500" style="font-family: 'Space Grotesk', sans-serif;">ORIGINAL SOFTWARE HUB</p>
-      <h1 class="mt-4 text-3xl font-semibold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">常用软件官方下载入口</h1>
+      <h1 class="mt-4 text-3xl font-semibold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">常用软件下载导航</h1>
       <p class="mt-3 max-w-3xl text-[15px] leading-7 text-slate-600 dark:text-slate-400">
-        汇总常见软件的官网与版本信息，帮助你更快定位合适的平台与安装包。
+        帮你快速找到常见软件的官网、适合自己设备的版本，以及对应的官方下载方式。
       </p>
+      <p id="homeHeroMeta" class="mt-3 text-sm text-slate-500 dark:text-slate-400"></p>
     </header>
 
-    <header id="detailHero" class="mx-auto hidden w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-6 pb-5 text-left">
-      <p class="inline-flex rounded-full border border-brand-500/25 bg-brand-50/70 px-3 py-1 text-[11px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/70 dark:text-brand-500" style="font-family: 'Space Grotesk', sans-serif;">DOWNLOAD DETAIL</p>
-      <h1 class="mt-4 text-3xl font-semibold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">下载详情</h1>
-      <p class="mt-3 max-w-3xl text-[15px] leading-7 text-slate-600 dark:text-slate-400">查看软件简介、版本发布时间和各平台下载入口。</p>
-      <div class="mt-5 flex flex-wrap items-center gap-3">
-        <button id="smartBackButton" type="button" class="inline-flex items-center rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20">
-          ← 返回上一页
-        </button>
-        <a id="detailHomeLink" href="./index.html" class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300">
-          回到软件目录
-        </a>
-      </div>
+    <header id="detailHero" class="mx-auto hidden w-[min(1600px,calc(100%-1rem))] md:w-[min(1600px,calc(100%-2.5rem))] pt-9 pb-5 text-left">
+      <p class="inline-flex rounded-full border border-brand-500/25 bg-brand-50/70 px-3 py-1 text-[11px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/70 dark:text-brand-500" style="font-family: 'Space Grotesk', sans-serif;">SOFTWARE DETAIL</p>
+      <h1 id="detailHeroTitle" class="mt-4 text-3xl font-semibold leading-tight md:text-5xl dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">软件详情</h1>
+      <p id="detailHeroDescription" class="mt-3 max-w-3xl text-[15px] leading-7 text-slate-600 dark:text-slate-400">查看软件介绍、版本发布时间和下载入口。</p>
+      <p id="detailHeroMeta" class="mt-3 text-sm text-slate-500 dark:text-slate-400"></p>
     </header>
 
     <div id="loadingOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-white/90 backdrop-blur-sm transition-opacity duration-300 dark:bg-slate-900/90">
@@ -85,7 +70,7 @@
         <div id="softwareList" class="grid h-[62vh] auto-rows-max content-start grid-cols-1 gap-4 overflow-y-auto overscroll-contain pt-2 pr-1 sm:grid-cols-3 xl:grid-cols-4" aria-live="polite"></div>
       </section>
 
-      <section id="detailSection" class="hidden rounded-2xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-6 dark:border-slate-700 dark:bg-slate-800/88 dark:shadow-[0_8px_20px_rgba(2,6,23,0.35)]">
+      <section id="detailSection" class="hidden p-0">
         <div id="softwareDetail" class="min-h-[300px] text-left">
           <h2>正在准备详情</h2>
           <p>请稍候...</p>
