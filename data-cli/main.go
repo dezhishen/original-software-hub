@@ -29,11 +29,11 @@ import (
 )
 
 func main() {
-	outDir := flag.String("out", "../frontend/data", "Output directory (json/ will be created inside)")
+	outDir := flag.String("out", "../frontend/data/json", "Output directory for index.json, software-list.json and versions/")
 	pluginsArg := flag.String("plugins", "all", "Plugins to run: all or comma-separated names (e.g. weixin,qq)")
 	flag.Parse()
 
-	jsonDir := filepath.Join(*outDir, "json", "versions")
+	jsonDir := filepath.Join(*outDir, "versions")
 	if err := resetDir(jsonDir); err != nil {
 		log.Fatalf("reset json dir: %v", err)
 	}
@@ -102,7 +102,7 @@ func main() {
 		UpdatedAt: updatedAt,
 		Items:     listItems,
 	}
-	if err := writeJSON(filepath.Join(*outDir, "json", "software-list.json"), softwareList); err != nil {
+	if err := writeJSON(filepath.Join(*outDir, "software-list.json"), softwareList); err != nil {
 		log.Fatalf("write software-list.json: %v", err)
 	}
 
@@ -118,7 +118,7 @@ func main() {
 			TimeoutMs: 8000,
 		},
 	}
-	if err := writeJSON(filepath.Join(*outDir, "json", "index.json"), indexJSON); err != nil {
+	if err := writeJSON(filepath.Join(*outDir, "index.json"), indexJSON); err != nil {
 		log.Fatalf("write index.json: %v", err)
 	}
 
