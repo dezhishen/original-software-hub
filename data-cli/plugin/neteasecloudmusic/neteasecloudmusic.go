@@ -54,7 +54,7 @@ func (n *NeteaseCloudMusic) Fetch() ([]plugin.SoftwareData, error) {
 				Name:            "网易云音乐",
 				Icon:            neteaseIconURL,
 				Description:     "网易云音乐官方客户端，支持多端音乐播放。",
-				Organization:    "NetEase",
+				Organization:    "网易公司",
 				OfficialWebsite: neteaseWebsite,
 				Tags:            []string{"音乐", "流媒体"},
 			},

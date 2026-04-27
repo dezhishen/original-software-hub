@@ -3,8 +3,6 @@ package qqmusic
 import (
 	"fmt"
 	"net/http"
-	"net/url"
-	"path"
 	"regexp"
 	"strings"
 	"time"
@@ -18,6 +16,8 @@ const (
 	qqMusicDownloadURL = "https://y.qq.com/download/download.html"
 	qqMusicWebsiteURL  = "https://y.qq.com/"
 	qqMusicIconURL     = "https://y.qq.com/favicon.ico"
+	qqMusicWindowsPage = "https://y.qq.com/download/welcome_pc_v15/index.html?ADTAG=YQQ"
+	qqMusicMacPage     = "https://y.qq.com/download/mac.html?part=1&ADTAG=YQQ"
 )
 
 var (
@@ -119,10 +119,6 @@ func fetchQQMusicDesktopVersions() ([]plugin.Version, error) {
 }
 
 func buildWindowsVersion(item *html.Node, version, releaseDate string) *plugin.Version {
-	downloadURL := normalizeSpace(attr(item, `.//a[@data-type='1']`, "data-url"))
-	if downloadURL == "" {
-		return nil
-	}
 	if version == "" {
 		version = "latest"
 	}
@@ -139,7 +135,7 @@ func buildWindowsVersion(item *html.Node, version, releaseDate string) *plugin.V
 				Architecture: "x64/x86",
 				Platform:     "Windows",
 				Links: []plugin.Link{
-					{Type: "direct", Label: "QQ音乐 Windows 安装包", URL: downloadURL},
+					{Type: "webpage", Label: "QQ音乐 Windows 下载页", URL: qqMusicWindowsPage},
 				},
 			},
 		},
@@ -147,10 +143,6 @@ func buildWindowsVersion(item *html.Node, version, releaseDate string) *plugin.V
 }
 
 func buildMacVersion(item *html.Node, version, releaseDate string) *plugin.Version {
-	downloadURL := normalizeSpace(attr(item, `.//a[@data-type='2']`, "data-url"))
-	if downloadURL == "" {
-		return nil
-	}
 	if version == "" {
 		version = "latest"
 	}
@@ -167,7 +159,7 @@ func buildMacVersion(item *html.Node, version, releaseDate string) *plugin.Versi
 				Architecture: "universal",
 				Platform:     "macOS",
 				Links: []plugin.Link{
-					{Type: "direct", Label: "QQ音乐 macOS 安装包 (dmg)", URL: downloadURL},
+					{Type: "webpage", Label: "QQ音乐 macOS 下载页", URL: qqMusicMacPage},
 				},
 			},
 		},
@@ -175,33 +167,6 @@ func buildMacVersion(item *html.Node, version, releaseDate string) *plugin.Versi
 }
 
 func buildLinuxVersion(item *html.Node, version, releaseDate string) *plugin.Version {
-	nodes, _ := htmlquery.QueryAll(item, `.//a[contains(@class,'popup_list__link') and @data-url]`)
-	if len(nodes) == 0 {
-		return nil
-	}
-	links := make([]plugin.Link, 0, len(nodes))
-	seen := map[string]struct{}{}
-
-	for _, n := range nodes {
-		u := normalizeSpace(htmlquery.SelectAttr(n, "data-url"))
-		if u == "" {
-			continue
-		}
-		if _, ok := seen[u]; ok {
-			continue
-		}
-		seen[u] = struct{}{}
-
-		label := normalizeSpace(htmlquery.InnerText(n))
-		if label == "" {
-			label = fileNameFromURL(u)
-		}
-		links = append(links, plugin.Link{Type: "direct", Label: label, URL: u})
-	}
-
-	if len(links) == 0 {
-		return nil
-	}
 	if version == "" {
 		version = "latest"
 	}
@@ -217,7 +182,9 @@ func buildLinuxVersion(item *html.Node, version, releaseDate string) *plugin.Ver
 			{
 				Architecture: "x64",
 				Platform:     "Linux",
-				Links:        links,
+				Links: []plugin.Link{
+					{Type: "webpage", Label: "QQ音乐 Linux 下载页", URL: qqMusicDownloadURL},
+				},
 			},
 		},
 	}
@@ -229,14 +196,6 @@ func nodeText(root *html.Node, xpath string) string {
 		return ""
 	}
 	return htmlquery.InnerText(n)
-}
-
-func attr(root *html.Node, xpath, key string) string {
-	n, err := htmlquery.Query(root, xpath)
-	if err != nil || n == nil {
-		return ""
-	}
-	return htmlquery.SelectAttr(n, key)
 }
 
 func versionFromText(s string) string {
@@ -260,16 +219,4 @@ func releaseDateFromItem(item *html.Node) string {
 
 func normalizeSpace(s string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(s)), " ")
-}
-
-func fileNameFromURL(raw string) string {
-	parsed, err := url.Parse(strings.TrimSpace(raw))
-	if err != nil {
-		return strings.TrimSpace(raw)
-	}
-	name := strings.TrimSpace(path.Base(parsed.Path))
-	if name == "" || name == "." || name == "/" {
-		return strings.TrimSpace(raw)
-	}
-	return name
 }
