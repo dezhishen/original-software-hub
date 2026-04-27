@@ -122,11 +122,11 @@
       const iconMarkup = renderSoftwareIcon(software);
       const rawIcon = String(software?.icon || "").trim();
       const bgWatermark = rawIcon
-        ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-24 w-24 select-none opacity-[0.05] dark:opacity-[0.035]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
+        ? `<div class="pointer-events-none absolute -bottom-3 -right-3 h-24 w-24 select-none opacity-[0.12] dark:opacity-[0.10]" style="background-image:url('${escapeAttr(rawIcon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>`
         : "";
       const tagsMarkup = (software.tags || [])
         .map(tag => `<button type="button" data-tag="${escapeAttr(tag)}" class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 transition hover:bg-brand-100 dark:bg-slate-700/50 dark:text-brand-400 dark:hover:bg-slate-700">#${escapeHtml(tag)}</button>`)
-        .join(" ");
+        .join("");
       card.innerHTML = `
         ${bgWatermark}
         <div class="relative mb-3 flex items-center gap-3">
@@ -215,8 +215,10 @@
     if (/^https?:\/\//i.test(icon) || icon.startsWith("/") || icon.startsWith("./")) {
       return `
         <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
-          <div class="absolute -bottom-6 -right-6 h-28 w-28 opacity-[0.08] blur-xl dark:opacity-[0.06]" style="background-image:url('${escapeAttr(icon)}');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>
-          <div class="absolute inset-0 bg-gradient-to-br from-white/0 via-white/0 to-white/35 dark:to-slate-800/25"></div>
+          <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-brand-500/8 blur-3xl dark:bg-brand-500/12"></div>
+          <div class="absolute -left-12 -bottom-8 h-40 w-40 rounded-full bg-amber-200/25 blur-3xl dark:bg-slate-600/15"></div>
+          <div class="absolute inset-0 opacity-[0.32] blur-sm dark:opacity-[0.26]" style="background-image:url('${escapeAttr(icon)}');background-size:300px;background-repeat:no-repeat;background-position:right -1rem center;"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-white/20 to-white/10 dark:from-slate-800/40 dark:via-slate-800/30 dark:to-slate-800/20"></div>
         </div>`;
     }
 
@@ -364,7 +366,7 @@
 
     container.className = "text-left";
     container.innerHTML = `
-      <article class="relative overflow-hidden rounded-xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]">
+      <article class="relative overflow-hidden rounded-xl border border-slate-200/90 bg-white/20 backdrop-blur-sm p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] dark:border-slate-700/80 dark:bg-slate-800/40 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]">
         ${detailIconBackground}
         <div class="relative flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <div class="min-w-0 flex-1">
@@ -395,7 +397,7 @@
         <section class="relative mt-4 border-t border-slate-200/90 pt-3 dark:border-slate-700/80">
           <div class="mb-2 flex items-center justify-between gap-3">
             <div>
-              <h3 class="text-sm font-semibold text-slate-800 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">版本信息</h3>
+              <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200" style="font-family: 'Space Grotesk', sans-serif;">版本信息</h3>
               <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">以下版本与下载入口均归属于 ${escapeHtml(software.name)}</p>
             </div>
           </div>
@@ -422,10 +424,10 @@
 
     versions.forEach((versionItem) => {
       const card = document.createElement("div");
-      card.className = "overflow-hidden rounded-lg border border-slate-200/90 bg-white/95 dark:border-slate-700/80 dark:bg-slate-800/90";
+      card.className = "overflow-hidden rounded-lg border border-slate-200/90 bg-white/20 dark:border-slate-700/80 dark:bg-slate-800/20";
 
       const officialBtn = versionItem.officialUrl
-          ? `<a class="inline-flex items-center rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100 dark:border-amber-700/60 dark:bg-amber-900/25 dark:text-amber-300 dark:hover:bg-amber-900/40" target="_blank" rel="noopener noreferrer"
+          ? `<a class="inline-flex items-center rounded-md border border-amber-300/50 bg-amber-100/20 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100/30 dark:border-amber-700/40 dark:bg-amber-900/15 dark:text-amber-300 dark:hover:bg-amber-900/25" target="_blank" rel="noopener noreferrer"
               href="${escapeAttr(versionItem.officialUrl)}">前往官网发布页</a>`
         : "";
 
@@ -467,7 +469,7 @@
             : "暂无直链";
 
           return `
-            <tr class="bg-white even:bg-slate-50 hover:bg-slate-100/70 dark:bg-slate-800 dark:even:bg-slate-800/75 dark:hover:bg-slate-700/60 ${isCurrentDevice ? "font-semibold" : ""}">
+            <tr class="bg-white/10 even:bg-slate-50/10 hover:bg-slate-100/20 dark:bg-slate-800/10 dark:even:bg-slate-800/15 dark:hover:bg-slate-700/20 ${isCurrentDevice ? "font-semibold" : ""}">
               <td class="whitespace-nowrap px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[10px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
               <td class="whitespace-nowrap px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
               <td class="px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
@@ -476,7 +478,7 @@
         .join("");
 
       card.innerHTML = `
-        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-700 dark:bg-slate-900/45">
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200/50 bg-white/10 px-3 py-2.5 dark:border-slate-700/50 dark:bg-slate-800/10">
           <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(versionItem.version || "-")}</span>
           <span class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
           ${officialBtn}
@@ -485,10 +487,10 @@
           variantRows
             ? `<div class="overflow-x-auto">
                 <table class="min-w-full border-collapse">
-                  <thead class="bg-slate-100 dark:bg-slate-900/55">
+                  <thead class="bg-transparent dark:bg-transparent">
                     <tr><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
                   </thead>
-                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700 dark:bg-slate-800">${variantRows}</tbody>
+                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-transparent dark:bg-transparent">${variantRows}</tbody>
                 </table>
               </div>`
             : '<p class="px-3 py-4 text-sm text-slate-600 dark:text-slate-400">该版本暂无构建信息。</p>'
