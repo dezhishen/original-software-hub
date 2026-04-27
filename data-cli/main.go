@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -142,6 +143,11 @@ type pluginFetchResult struct {
 	Err    error
 }
 
+const (
+	defaultFetchRetries   = 3
+	defaultRetryBaseDelay = time.Second
+)
+
 func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []pluginFetchResult {
 	if len(plugins) == 0 {
 		return nil
@@ -161,7 +167,7 @@ func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []plu
 		defer wg.Done()
 		for job := range jobs {
 			fmt.Printf("[%s] fetching data...\n", job.Plugin.Name())
-			items, err := job.Plugin.Fetch()
+			items, err := fetchWithRetry(job.Plugin, defaultFetchRetries, defaultRetryBaseDelay)
 			results <- pluginFetchResult{
 				Index:  job.Index,
 				Plugin: job.Plugin,
@@ -196,52 +202,61 @@ func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []plu
 	return out
 }
 
+func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) ([]plugin.SoftwareData, error) {
+	if maxAttempts < 1 {
+		maxAttempts = 1
+	}
+	if baseDelay <= 0 {
+		baseDelay = time.Second
+	}
+
+	var lastErr error
+	for attempt := 1; attempt <= maxAttempts; attempt++ {
+		items, err := p.Fetch()
+		if err == nil {
+			return items, nil
+		}
+
+		lastErr = err
+		if attempt == maxAttempts {
+			break
+		}
+
+		delay := retryDelay(baseDelay, attempt)
+		log.Printf("[%s] fetch failed (attempt %d/%d): %v; retry in %s", p.Name(), attempt, maxAttempts, err, delay)
+		time.Sleep(delay)
+	}
+
+	return nil, fmt.Errorf("after %d attempts: %w", maxAttempts, lastErr)
+}
+
+func retryDelay(base time.Duration, attempt int) time.Duration {
+	if attempt < 1 {
+		attempt = 1
+	}
+	factor := math.Pow(2, float64(attempt-1))
+	return time.Duration(float64(base) * factor)
+}
+
 func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, error) {
 	raw := strings.TrimSpace(strings.ToLower(pluginsArg))
 	if raw == "" || raw == "all" {
 		return all, nil
 	}
 
-	// Parse included and excluded plugin names
-	includeAll := false
-	included := make(map[string]struct{})
-	excluded := make(map[string]struct{})
-	
+	selectedNames := map[string]struct{}{}
 	for _, name := range strings.Split(raw, ",") {
 		n := strings.TrimSpace(strings.ToLower(name))
 		if n == "" {
 			continue
 		}
-		
-		// Check for "all" keyword
-		if n == "all" {
-			includeAll = true
-			continue
-		}
-		
-		// Support exclusion syntax: -pluginname
-		if strings.HasPrefix(n, "-") {
-			excluded[n[1:]] = struct{}{}
-		} else {
-			included[n] = struct{}{}
-		}
+		selectedNames[n] = struct{}{}
 	}
-	
-	// If "all" keyword or only exclusions provided, include all except excluded
-	if includeAll || (len(included) == 0 && len(excluded) > 0) {
-		for _, p := range all {
-			name := strings.ToLower(strings.TrimSpace(p.Name()))
-			if _, ok := excluded[name]; !ok {
-				included[name] = struct{}{}
-			}
-		}
-	}
-	
-	if len(included) == 0 {
+	if len(selectedNames) == 0 {
 		return nil, fmt.Errorf("invalid -plugins value: %q", pluginsArg)
 	}
 
-	filtered := make([]plugin.Plugin, 0, len(included))
+	filtered := make([]plugin.Plugin, 0, len(selectedNames))
 	found := map[string]struct{}{}
 	available := make([]string, 0, len(all))
 	for _, p := range all {
@@ -250,14 +265,14 @@ func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, err
 			continue
 		}
 		available = append(available, name)
-		if _, ok := included[name]; ok {
+		if _, ok := selectedNames[name]; ok {
 			filtered = append(filtered, p)
 			found[name] = struct{}{}
 		}
 	}
 
 	missing := make([]string, 0)
-	for name := range included {
+	for name := range selectedNames {
 		if _, ok := found[name]; !ok {
 			missing = append(missing, name)
 		}

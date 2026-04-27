@@ -36,7 +36,7 @@ jobs:
         env:
           OSH_GITHUB_TOKEN: ${{ secrets.OSH_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: go run . -plugins="all,-wps"
+        run: go run .
 
       - name: Install frontend dependencies
         working-directory: frontend
