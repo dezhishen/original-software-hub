@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
-	"github.com/dezhishen/original-software-hub/data-cli/util"
 )
 
 func init() {
@@ -21,7 +20,7 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 	// For the stable channel, the version can be fetched from the
 	// Chrome release endpoint; here we use a static known version
 	// as a starting placeholder.
-	version, releaseDate, officialURL, err := util.FetchChromeLatestStable()
+	version, releaseDate, officialURL, err := fetchLatestStable()
 	if err != nil {
 		return nil, fmt.Errorf("chrome: %w", err)
 	}

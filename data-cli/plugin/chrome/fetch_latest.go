@@ -1,5 +1,4 @@
-// Package util provides shared helpers for data-cli plugins.
-package util
+package chrome
 
 import (
 	"encoding/json"
@@ -8,17 +7,16 @@ import (
 	"time"
 )
 
-const chromeReleasesAPI = "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1&offset=0"
+const releasesAPI = "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Windows&num=1&offset=0"
 
-type chromeRelease struct {
+type release struct {
 	Version string `json:"version"`
-	Time    int64  `json:"time"` // Unix ms
+	Time    int64  `json:"time"`
 }
 
-// FetchChromeLatestStable returns (version, releaseDate, officialURL, error).
-func FetchChromeLatestStable() (string, string, string, error) {
+func fetchLatestStable() (string, string, string, error) {
 	client := &http.Client{Timeout: 15 * time.Second}
-	resp, err := client.Get(chromeReleasesAPI)
+	resp, err := client.Get(releasesAPI)
 	if err != nil {
 		return "", "", "", fmt.Errorf("http get: %w", err)
 	}
@@ -28,7 +26,7 @@ func FetchChromeLatestStable() (string, string, string, error) {
 		return "", "", "", fmt.Errorf("unexpected status %d", resp.StatusCode)
 	}
 
-	var releases []chromeRelease
+	var releases []release
 	if err := json.NewDecoder(resp.Body).Decode(&releases); err != nil {
 		return "", "", "", fmt.Errorf("decode: %w", err)
 	}

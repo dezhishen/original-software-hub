@@ -1,4 +1,4 @@
-package util
+package tencentmeeting
 
 import (
 	"encoding/json"
@@ -9,10 +9,9 @@ import (
 	"time"
 )
 
-const tencentMeetingDownloadAPI = "https://meeting.tencent.com/web-service/query-download-info"
+const downloadAPI = "https://meeting.tencent.com/web-service/query-download-info"
 
-// TencentMeetingDownloadItem is one package item from Tencent Meeting download API.
-type TencentMeetingDownloadItem struct {
+type downloadItem struct {
 	Channel  string `json:"channel"`
 	Platform string `json:"platform"`
 	URL      string `json:"url"`
@@ -20,13 +19,12 @@ type TencentMeetingDownloadItem struct {
 	SubDate  string `json:"sub-date"`
 }
 
-type tencentMeetingDownloadResp struct {
-	Code     int                          `json:"code"`
-	InfoList []TencentMeetingDownloadItem `json:"info-list"`
+type downloadResp struct {
+	Code     int            `json:"code"`
+	InfoList []downloadItem `json:"info-list"`
 }
 
-// FetchTencentMeetingDownloadInfo fetches official download metadata from Tencent Meeting.
-func FetchTencentMeetingDownloadInfo() ([]TencentMeetingDownloadItem, error) {
+func fetchDownloadInfo() ([]downloadItem, error) {
 	downloadConfig := []map[string]any{
 		{"package-type": "app", "channel": "0300000000", "platform": "mac", "arch": "x86_64"},
 		{"package-type": "app", "channel": "0300000000", "platform": "mac", "arch": "arm64"},
@@ -45,7 +43,7 @@ func FetchTencentMeetingDownloadInfo() ([]TencentMeetingDownloadItem, error) {
 	}
 
 	nonce := randomNonce(16)
-	apiURL := fmt.Sprintf("%s?q=%s&nonce=%s", tencentMeetingDownloadAPI, url.QueryEscape(string(qRaw)), nonce)
+	apiURL := fmt.Sprintf("%s?q=%s&nonce=%s", downloadAPI, url.QueryEscape(string(qRaw)), nonce)
 
 	client := &http.Client{Timeout: 20 * time.Second}
 	resp, err := client.Get(apiURL)
@@ -58,7 +56,7 @@ func FetchTencentMeetingDownloadInfo() ([]TencentMeetingDownloadItem, error) {
 		return nil, fmt.Errorf("unexpected status %d", resp.StatusCode)
 	}
 
-	var payload tencentMeetingDownloadResp
+	var payload downloadResp
 	if err := json.NewDecoder(resp.Body).Decode(&payload); err != nil {
 		return nil, fmt.Errorf("decode response: %w", err)
 	}

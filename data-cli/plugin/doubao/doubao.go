@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
-	"github.com/dezhishen/original-software-hub/data-cli/util"
 )
 
 const (
@@ -28,7 +27,7 @@ func (d *Doubao) Name() string {
 }
 
 func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
-	info, err := util.FetchDoubaoDownloadInfo()
+	info, err := fetchDownloadInfo()
 	if err != nil {
 		return nil, fmt.Errorf("fetch doubao info: %w", err)
 	}

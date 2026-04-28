@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
-	"github.com/dezhishen/original-software-hub/data-cli/util"
 	"gopkg.in/yaml.v3"
 )
 
@@ -108,7 +107,7 @@ func (p *githubPlugin) fetchReposInternal() ([]plugin.SoftwareData, error) {
 	log.Printf("[github] fetch start repos=%d", len(p.repos))
 
 	for _, repo := range p.repos {
-		release, err := util.FetchGitHubLatestReleaseWithToken(repo.Owner, repo.Repo, p.token)
+		release, err := fetchLatestReleaseWithToken(repo.Owner, repo.Repo, p.token)
 		if err != nil {
 			return nil, fmt.Errorf("fetch latest release for %s/%s: %w", repo.Owner, repo.Repo, err)
 		}
@@ -126,7 +125,7 @@ func (p *githubPlugin) fetchReposInternal() ([]plugin.SoftwareData, error) {
 			Versions: []plugin.Version{
 				{
 					Version:     strings.TrimSpace(release.TagName),
-					ReleaseDate: util.FormatGitHubDate(strings.TrimSpace(release.PublishedAt)),
+					ReleaseDate: formatReleaseDate(strings.TrimSpace(release.PublishedAt)),
 					OfficialURL: strings.TrimSpace(release.HTMLURL),
 					Variants:    buildVariants(release.Assets, repo.Assets),
 				},
@@ -219,7 +218,7 @@ func normalizeRepoConfig(repo repoConfig) (repoConfig, bool) {
 	return repo, true
 }
 
-func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Variant {
+func buildVariants(assets []githubAsset, rules []assetRule) []plugin.Variant {
 	type variantKey struct {
 		platform     string
 		architecture string
@@ -285,7 +284,7 @@ func buildVariants(assets []util.GitHubAsset, rules []assetRule) []plugin.Varian
 	return variants
 }
 
-func matchesAssetRule(asset util.GitHubAsset, rule assetRule) bool {
+func matchesAssetRule(asset githubAsset, rule assetRule) bool {
 	if len(rule.Keywords) == 0 {
 		return false
 	}

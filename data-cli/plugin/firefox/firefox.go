@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
-	"github.com/dezhishen/original-software-hub/data-cli/util"
 )
 
 func init() {
@@ -17,7 +16,7 @@ type Firefox struct{}
 func (f *Firefox) Name() string { return "firefox" }
 
 func (f *Firefox) Fetch() ([]plugin.SoftwareData, error) {
-	version, releaseDate, officialURL, err := util.FetchFirefoxLatestStable()
+	version, releaseDate, officialURL, err := fetchLatestStable()
 	if err != nil {
 		return nil, fmt.Errorf("firefox: %w", err)
 	}

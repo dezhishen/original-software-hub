@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
-	"github.com/dezhishen/original-software-hub/data-cli/util"
 )
 
 const (
@@ -28,7 +27,7 @@ func (a *Alipan) Name() string {
 }
 
 func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
-	info, err := util.FetchAlipanDownloadInfo()
+	info, err := fetchDownloadInfo()
 	if err != nil {
 		return nil, fmt.Errorf("fetch alipan info: %w", err)
 	}
@@ -96,7 +95,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 	}
 
 	// iOS
-	if info.IOSUrl != "" {
+	if info.IOSURL != "" {
 		variants = append(variants, plugin.Variant{
 			Architecture: "arm64",
 			Platform:     "iOS",
@@ -104,7 +103,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 				{
 					Type:  "store",
 					Label: "阿里云盘 App Store",
-					URL:   info.IOSUrl,
+					URL:   info.IOSURL,
 				},
 			},
 		})

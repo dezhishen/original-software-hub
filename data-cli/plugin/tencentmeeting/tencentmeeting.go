@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
-	"github.com/dezhishen/original-software-hub/data-cli/util"
 )
 
 const (
@@ -27,12 +26,12 @@ func (t *TencentMeeting) Name() string {
 }
 
 func (t *TencentMeeting) Fetch() ([]plugin.SoftwareData, error) {
-	items, err := util.FetchTencentMeetingDownloadInfo()
+	items, err := fetchDownloadInfo()
 	if err != nil {
 		return nil, fmt.Errorf("fetch tencent meeting download info: %w", err)
 	}
 
-	byPlatform := map[string]util.TencentMeetingDownloadItem{}
+	byPlatform := map[string]downloadItem{}
 	for _, it := range items {
 		if it.Platform == "" || it.URL == "" {
 			continue
