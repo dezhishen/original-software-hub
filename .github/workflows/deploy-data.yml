@@ -42,6 +42,7 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version-file: data-cli/go.mod
+          cache-dependency-path: data-cli/go.sum
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
