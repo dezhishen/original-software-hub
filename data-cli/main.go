@@ -95,7 +95,9 @@ func main() {
 
 	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
 	fetchResults := fetchPluginsConcurrently(plugins, *concurrency, *scheduleOrder)
+	changedCount := 0
 	unchangedCount := 0
+	skipUnsupportedCount := 0
 	writtenCount := 0
 	totalEntries := 0
 	pluginFetchErrors := 0
@@ -111,26 +113,37 @@ func main() {
 		}
 
 		pluginItemCount := 0
+		pluginChangedCount := 0
 		pluginUnchangedCount := 0
+		pluginSkipUnsupportedCount := 0
 		pluginWrittenCount := 0
 		pluginVersionWriteErrors := 0
 		pluginIconDownloadSuccess := 0
 		pluginIconDownloadErrors := 0
 
 		for _, fetched := range result.Items {
-			changed, entry, err := resolveDataByVersion(previousState, fetched, *skipUnchanged)
+			decision, err := resolveDataByVersionDecision(previousState, fetched, *skipUnchanged)
 			if err != nil {
 				log.Printf("[%s] resolve data by version: %v", p.Name(), err)
 				continue
 			}
+			changed := decision.Changed
+			entry := decision.Result
 
 			softwareID := entry.Item.ID
 			prevItem, hasPrevItem := prevItems[softwareID]
+			if !decision.SkipSupported {
+				skipUnsupportedCount++
+				pluginSkipUnsupportedCount++
+			}
 			if !changed {
 				unchangedCount++
 				pluginUnchangedCount++
-				log.Printf("[%s/%s] unchanged versions, skip write", p.Name(), softwareID)
+				log.Printf("[%s/%s] decision=skipped reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
 			} else {
+				changedCount++
+				pluginChangedCount++
+				log.Printf("[%s/%s] decision=changed reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
 				versionPayload := plugin.VersionPayload{
 					SoftwareID: softwareID,
 					UpdatedAt:  updatedAt,
@@ -177,7 +190,7 @@ func main() {
 			totalEntries++
 		}
 
-		log.Printf("[plugin-summary] name=%s mode=fetch items=%d unchanged=%d written=%d writeErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d", p.Name(), pluginItemCount, pluginUnchangedCount, pluginWrittenCount, pluginVersionWriteErrors, pluginIconDownloadSuccess, pluginIconDownloadErrors)
+		log.Printf("[plugin-summary] name=%s mode=fetch items=%d changed=%d skipped=%d skipUnsupported=%d written=%d writeErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d", p.Name(), pluginItemCount, pluginChangedCount, pluginUnchangedCount, pluginSkipUnsupportedCount, pluginWrittenCount, pluginVersionWriteErrors, pluginIconDownloadSuccess, pluginIconDownloadErrors)
 	}
 
 	sort.SliceStable(listItems, func(i, j int) bool {
@@ -224,7 +237,7 @@ func main() {
 	}
 
 	runDuration := time.Since(runStartedAt)
-	log.Printf("[summary] duration=%s selectedPlugins=%d pluginFetchErrors=%d processedEntries=%d listItems=%d versionsWritten=%d versionsUnchanged=%d versionWriteErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d listChanged=%t dataChanged=%t", runDuration, len(plugins), pluginFetchErrors, totalEntries, len(listItems), writtenCount, unchangedCount, versionWriteErrors, iconDownloadSuccess, iconDownloadErrors, listChanged, dataChanged)
+	log.Printf("[summary] duration=%s selectedPlugins=%d pluginFetchErrors=%d processedEntries=%d listItems=%d versionsChanged=%d versionsSkipped=%d skipUnsupported=%d versionsWritten=%d versionWriteErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d listChanged=%t dataChanged=%t", runDuration, len(plugins), pluginFetchErrors, totalEntries, len(listItems), changedCount, unchangedCount, skipUnsupportedCount, writtenCount, versionWriteErrors, iconDownloadSuccess, iconDownloadErrors, listChanged, dataChanged)
 	fmt.Println("Done.")
 }
 
@@ -683,33 +696,49 @@ func versionsEqual(a, b []plugin.Version) bool {
 	return reflect.DeepEqual(a, b)
 }
 
-// resolveDataByVersion centralizes unchanged/changed decision and previous-data reuse.
-// Return values follow: changed, result, err.
-func resolveDataByVersion(previous plugin.PreviousState, fetched plugin.SoftwareData, skipUnchanged bool) (bool, plugin.SoftwareData, error) {
+type versionDecision struct {
+	Changed       bool
+	Result        plugin.SoftwareData
+	SkipSupported bool
+	Reason        string
+}
+
+func resolveDataByVersionDecision(previous plugin.PreviousState, fetched plugin.SoftwareData, skipUnchanged bool) (versionDecision, error) {
 	entry := fetched
 	softwareID := strings.TrimSpace(entry.Item.ID)
 	if softwareID == "" {
-		return false, plugin.SoftwareData{}, fmt.Errorf("empty software id")
+		return versionDecision{}, fmt.Errorf("empty software id")
 	}
 
 	if !skipUnchanged {
-		return true, entry, nil
+		return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "skip-disabled"}, nil
 	}
 
 	oldPayload, hasOldPayload := previous.Versions[softwareID]
+	if !hasOldPayload {
+		return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "no-previous-version"}, nil
+	}
+
+	if !versionsEqual(oldPayload.Versions, entry.Versions) {
+		return versionDecision{Changed: true, Result: entry, SkipSupported: true, Reason: "version-changed"}, nil
+	}
+
 	oldItem, hasOldItem := previous.Items[softwareID]
-	changed := !(hasOldPayload && versionsEqual(oldPayload.Versions, entry.Versions))
-
-	if changed {
-		return true, entry, nil
+	if hasOldItem {
+		return versionDecision{Changed: false, Result: plugin.SoftwareData{Item: oldItem, Versions: oldPayload.Versions}, SkipSupported: true, Reason: "version-unchanged"}, nil
 	}
 
-	if hasOldPayload && hasOldItem {
-		return false, plugin.SoftwareData{Item: oldItem, Versions: oldPayload.Versions}, nil
-	}
+	return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "previous-item-missing"}, nil
+}
 
-	// Compare says unchanged, but previous data is incomplete. Fall back to current data.
-	return true, entry, nil
+// resolveDataByVersion centralizes unchanged/changed decision and previous-data reuse.
+// Return values follow: changed, result, err.
+func resolveDataByVersion(previous plugin.PreviousState, fetched plugin.SoftwareData, skipUnchanged bool) (bool, plugin.SoftwareData, error) {
+	decision, err := resolveDataByVersionDecision(previous, fetched, skipUnchanged)
+	if err != nil {
+		return false, plugin.SoftwareData{}, err
+	}
+	return decision.Changed, decision.Result, nil
 }
 
 func sortKeyForItem(item plugin.SoftwareItem) string {
