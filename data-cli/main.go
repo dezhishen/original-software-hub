@@ -34,6 +34,8 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qqmusic"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencentmeeting"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/todesk"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/uuremote"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wecom"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wps"
