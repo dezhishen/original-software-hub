@@ -56,7 +56,14 @@ func main() {
 	jsonDir := filepath.Join(*outDir, "versions")
 	frontendRootDir := filepath.Dir(filepath.Dir(*outDir))
 	iconsDir := filepath.Join(frontendRootDir, "assets", "software-icons")
-	prevVersions, prevItems := loadPreviousState(*outDir, jsonDir)
+	prevVersions, prevList, prevIndex := loadPreviousState(*outDir, jsonDir)
+	prevItems := make(map[string]plugin.SoftwareItem, len(prevList.Items))
+	for _, item := range prevList.Items {
+		if strings.TrimSpace(item.ID) == "" {
+			continue
+		}
+		prevItems[item.ID] = item
+	}
 
 	if err := ensureDir(jsonDir); err != nil {
 		log.Fatalf("ensure json dir: %v", err)
@@ -150,6 +157,16 @@ func main() {
 		return li < lj
 	})
 
+	listChanged := !reflect.DeepEqual(prevList.Items, listItems)
+	dataChanged := writtenCount > 0 || listChanged
+	if !dataChanged && strings.TrimSpace(prevList.UpdatedAt) != "" {
+		updatedAt = strings.TrimSpace(prevList.UpdatedAt)
+	}
+	generatedAt := updatedAt
+	if !dataChanged && strings.TrimSpace(prevIndex.Meta.GeneratedAt) != "" {
+		generatedAt = strings.TrimSpace(prevIndex.Meta.GeneratedAt)
+	}
+
 	softwareList := plugin.SoftwareListPayload{
 		UpdatedAt: updatedAt,
 		Items:     listItems,
@@ -161,7 +178,7 @@ func main() {
 	indexJSON := plugin.IndexPayload{
 		Meta: plugin.Meta{
 			Version:     "1.0.0",
-			GeneratedAt: updatedAt,
+			GeneratedAt: generatedAt,
 			Generator:   "data-cli",
 		},
 		SoftwareList: plugin.Source{
@@ -174,7 +191,7 @@ func main() {
 		log.Fatalf("write index.json: %v", err)
 	}
 
-	log.Printf("[summary] listItems=%d versionsWritten=%d versionsUnchanged=%d", len(listItems), writtenCount, unchangedCount)
+	log.Printf("[summary] listItems=%d versionsWritten=%d versionsUnchanged=%d listChanged=%t dataChanged=%t", len(listItems), writtenCount, unchangedCount, listChanged, dataChanged)
 	fmt.Println("Done.")
 }
 
@@ -579,26 +596,28 @@ func writeJSON(path string, v any) error {
 	return os.WriteFile(path, data, 0o644)
 }
 
-func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPayload, map[string]plugin.SoftwareItem) {
+func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPayload, plugin.SoftwareListPayload, plugin.IndexPayload) {
 	versionMap := map[string]plugin.VersionPayload{}
-	itemMap := map[string]plugin.SoftwareItem{}
+	listPayload := plugin.SoftwareListPayload{}
+	indexPayload := plugin.IndexPayload{}
 
 	listPath := filepath.Join(outDir, "software-list.json")
 	if data, err := os.ReadFile(listPath); err == nil {
-		var payload plugin.SoftwareListPayload
-		if err := json.Unmarshal(data, &payload); err == nil {
-			for _, item := range payload.Items {
-				if strings.TrimSpace(item.ID) == "" {
-					continue
-				}
-				itemMap[item.ID] = item
-			}
+		if err := json.Unmarshal(data, &listPayload); err != nil {
+			listPayload = plugin.SoftwareListPayload{}
+		}
+	}
+
+	indexPath := filepath.Join(outDir, "index.json")
+	if data, err := os.ReadFile(indexPath); err == nil {
+		if err := json.Unmarshal(data, &indexPayload); err != nil {
+			indexPayload = plugin.IndexPayload{}
 		}
 	}
 
 	entries, err := os.ReadDir(versionsDir)
 	if err != nil {
-		return versionMap, itemMap
+		return versionMap, listPayload, indexPayload
 	}
 	for _, ent := range entries {
 		if ent.IsDir() || !strings.HasSuffix(strings.ToLower(ent.Name()), ".json") {
@@ -619,7 +638,7 @@ func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPay
 		versionMap[payload.SoftwareID] = payload
 	}
 
-	return versionMap, itemMap
+	return versionMap, listPayload, indexPayload
 }
 
 func versionsEqual(a, b []plugin.Version) bool {

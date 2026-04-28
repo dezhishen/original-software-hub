@@ -167,6 +167,18 @@
     dom.detailHeroMeta.innerHTML = `数据更新于 ${relativeTime(updatedAt)}`;
   }
 
+  function startHeroMetaAutoRefresh(dom, getTimes) {
+    const refresh = () => {
+      const times = typeof getTimes === "function" ? getTimes() : {};
+      renderHomeHeroMeta(dom, times?.homeUpdatedAt || "");
+      renderDetailHeroMeta(dom, times?.detailUpdatedAt || "");
+    };
+
+    refresh();
+    const timer = window.setInterval(refresh, 60 * 1000);
+    return () => window.clearInterval(timer);
+  }
+
   function renderAppFooter() {
     const footer = document.querySelector("#appFooter");
     if (!footer) return;
@@ -621,8 +633,18 @@
     const state = {
       softwares: [],
       keyword: "",
-      latestRenderToken: 0
+      latestRenderToken: 0,
+      catalogGeneratedAt: "",
+      detailUpdatedAt: ""
     };
+    const stopHeroMetaAutoRefresh = startHeroMetaAutoRefresh(dom, () => ({
+      homeUpdatedAt: state.catalogGeneratedAt,
+      detailUpdatedAt: state.detailUpdatedAt
+    }));
+
+    window.addEventListener("beforeunload", () => {
+      stopHeroMetaAutoRefresh();
+    });
 
     bindAppEvents(dom, {
       onKeywordChange(keyword) {
@@ -656,7 +678,8 @@
       showOverlay(dom.loadingOverlay, dom.loadingMessage, "正在加载软件列表...");
       const catalog = await dataRepository.loadSoftwareCatalog();
       state.softwares = catalog.softwares;
-      renderHomeHeroMeta(dom, catalog.generatedAt);
+      state.catalogGeneratedAt = String(catalog.generatedAt || "").trim();
+      renderHomeHeroMeta(dom, state.catalogGeneratedAt);
       renderAppFooter();
       await renderCurrentRoute();
     } catch (error) {
@@ -708,12 +731,14 @@
       const renderToken = ++state.latestRenderToken;
 
       if (!routeSoftwareId) {
+        state.detailUpdatedAt = "";
         renderHomeList();
         hideOverlay(dom.loadingOverlay);
         return;
       }
 
       renderDetailLayout(dom, "详情", "");
+      state.detailUpdatedAt = "";
       renderDetailEmpty(dom.detailContainer, "正在准备详情", "请稍候...");
       showOverlay(dom.loadingOverlay, dom.loadingMessage, "正在加载详情...");
 
@@ -733,7 +758,8 @@
         if (renderToken !== state.latestRenderToken) return;
 
         const { versions, updatedAt } = normalizeSoftwareVersionPayload(rawVersions);
-        renderDetailLayout(dom, software, updatedAt);
+        state.detailUpdatedAt = updatedAt;
+        renderDetailLayout(dom, software, state.detailUpdatedAt);
         renderSoftwareDetail({
           container: dom.detailContainer,
           software,
