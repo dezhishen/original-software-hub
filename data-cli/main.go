@@ -13,6 +13,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 	"sync"
@@ -48,19 +49,20 @@ func main() {
 	outDir := flag.String("out", "../frontend/data/json", "Output directory for index.json, software-list.json and versions/")
 	pluginsArg := flag.String("plugins", "all", "Plugins to run: all or comma-separated names (e.g. weixin,qq)")
 	concurrency := flag.Int("concurrency", 3, "Maximum number of plugins to run concurrently")
+	scheduleOrder := flag.String("schedule-order", "priority", "Plugin scheduling order: input,alpha,priority")
+	skipUnchanged := flag.Bool("skip-unchanged", true, "Skip write/icon steps when software versions are unchanged from previous output")
 	flag.Parse()
 
 	jsonDir := filepath.Join(*outDir, "versions")
 	frontendRootDir := filepath.Dir(filepath.Dir(*outDir))
 	iconsDir := filepath.Join(frontendRootDir, "assets", "software-icons")
-	if err := resetDir(jsonDir); err != nil {
-		log.Fatalf("reset json dir: %v", err)
+	prevVersions, prevItems := loadPreviousState(*outDir, jsonDir)
+
+	if err := ensureDir(jsonDir); err != nil {
+		log.Fatalf("ensure json dir: %v", err)
 	}
-	if err := os.MkdirAll(jsonDir, 0o755); err != nil {
-		log.Fatalf("create json dir: %v", err)
-	}
-	if err := resetDir(iconsDir); err != nil {
-		log.Fatalf("reset icons dir: %v", err)
+	if err := ensureDir(iconsDir); err != nil {
+		log.Fatalf("ensure icons dir: %v", err)
 	}
 	iconDownloader := newIconDownloader(iconsDir, "./assets/software-icons")
 
@@ -72,11 +74,15 @@ func main() {
 		log.Println("no plugins registered, nothing to do")
 		return
 	}
+	log.Printf("[scheduler] plugins=%d concurrency=%d order=%s skipUnchanged=%t", len(plugins), *concurrency, strings.ToLower(strings.TrimSpace(*scheduleOrder)), *skipUnchanged)
+
 	nowUTC := time.Now().UTC()
 	updatedAt := nowUTC.Format(time.RFC3339)
 
 	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
-	fetchResults := fetchPluginsConcurrently(plugins, *concurrency)
+	fetchResults := fetchPluginsConcurrently(plugins, *concurrency, *scheduleOrder)
+	unchangedCount := 0
+	writtenCount := 0
 	for _, result := range fetchResults {
 		p := result.Plugin
 		if result.Err != nil {
@@ -91,22 +97,40 @@ func main() {
 				continue
 			}
 
-			versionPayload := plugin.VersionPayload{
-				SoftwareID: softwareID,
-				UpdatedAt:  updatedAt,
-				Versions:   entry.Versions,
-			}
-			if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), versionPayload); err != nil {
-				log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
-				continue
+			oldPayload, hasOld := prevVersions[softwareID]
+			unchanged := *skipUnchanged && hasOld && versionsEqual(oldPayload.Versions, entry.Versions)
+			if unchanged {
+				unchangedCount++
+				log.Printf("[%s/%s] unchanged versions, skip write", p.Name(), softwareID)
+			} else {
+				versionPayload := plugin.VersionPayload{
+					SoftwareID: softwareID,
+					UpdatedAt:  updatedAt,
+					Versions:   entry.Versions,
+				}
+				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), versionPayload); err != nil {
+					log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
+					continue
+				}
+				writtenCount++
 			}
 
 			item := entry.Item
-			if localIcon, err := iconDownloader.Download(softwareID, item.Icon); err != nil {
-				log.Printf("[%s/%s] download icon: %v", p.Name(), softwareID, err)
+			if unchanged {
+				if prevItem, ok := prevItems[softwareID]; ok && strings.TrimSpace(prevItem.Icon) != "" {
+					item.Icon = prevItem.Icon
+				}
 			} else {
-				item.Icon = localIcon
+				if localIcon, err := iconDownloader.Download(softwareID, item.Icon); err != nil {
+					log.Printf("[%s/%s] download icon: %v", p.Name(), softwareID, err)
+					if prevItem, ok := prevItems[softwareID]; ok && strings.TrimSpace(prevItem.Icon) != "" {
+						item.Icon = prevItem.Icon
+					}
+				} else {
+					item.Icon = localIcon
+				}
 			}
+
 			item.Pinyin = buildSearchPinyin(item.Name)
 			item.Source = plugin.Source{
 				Mode:      "json",
@@ -150,6 +174,7 @@ func main() {
 		log.Fatalf("write index.json: %v", err)
 	}
 
+	log.Printf("[summary] listItems=%d versionsWritten=%d versionsUnchanged=%d", len(listItems), writtenCount, unchangedCount)
 	fmt.Println("Done.")
 }
 
@@ -159,10 +184,12 @@ type pluginJob struct {
 }
 
 type pluginFetchResult struct {
-	Index  int
-	Plugin plugin.Plugin
-	Items  []plugin.SoftwareData
-	Err    error
+	Index    int
+	Plugin   plugin.Plugin
+	Items    []plugin.SoftwareData
+	Err      error
+	Attempts int
+	Duration time.Duration
 }
 
 const (
@@ -337,7 +364,7 @@ func isRemoteHTTPURL(raw string) bool {
 	return scheme == "http" || scheme == "https"
 }
 
-func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []pluginFetchResult {
+func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int, order string) []pluginFetchResult {
 	if len(plugins) == 0 {
 		return nil
 	}
@@ -350,29 +377,44 @@ func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []plu
 
 	jobs := make(chan pluginJob)
 	results := make(chan pluginFetchResult, len(plugins))
+	jobList := buildPluginJobs(plugins, order)
+	queued := make([]string, 0, len(jobList))
+	for _, j := range jobList {
+		queued = append(queued, j.Plugin.Name())
+	}
+	log.Printf("[scheduler] queue=%s", strings.Join(queued, ","))
 
 	var wg sync.WaitGroup
-	worker := func() {
+	worker := func(workerID int) {
 		defer wg.Done()
 		for job := range jobs {
-			fmt.Printf("[%s] fetching data...\n", job.Plugin.Name())
-			items, err := fetchWithRetry(job.Plugin, defaultFetchRetries, defaultRetryBaseDelay)
+			start := time.Now()
+			log.Printf("[scheduler] start plugin=%s order=%d worker=%d", job.Plugin.Name(), job.Index, workerID)
+			items, attempts, err := fetchWithRetry(job.Plugin, defaultFetchRetries, defaultRetryBaseDelay)
+			duration := time.Since(start)
+			if err != nil {
+				log.Printf("[scheduler] done plugin=%s status=failed attempts=%d duration=%s err=%v", job.Plugin.Name(), attempts, duration, err)
+			} else {
+				log.Printf("[scheduler] done plugin=%s status=ok attempts=%d duration=%s items=%d", job.Plugin.Name(), attempts, duration, len(items))
+			}
 			results <- pluginFetchResult{
-				Index:  job.Index,
-				Plugin: job.Plugin,
-				Items:  items,
-				Err:    err,
+				Index:    job.Index,
+				Plugin:   job.Plugin,
+				Items:    items,
+				Err:      err,
+				Attempts: attempts,
+				Duration: duration,
 			}
 		}
 	}
 
 	for i := 0; i < maxConcurrency; i++ {
 		wg.Add(1)
-		go worker()
+		go worker(i + 1)
 	}
 
-	for i, p := range plugins {
-		jobs <- pluginJob{Index: i, Plugin: p}
+	for _, job := range jobList {
+		jobs <- job
 	}
 	close(jobs)
 
@@ -391,7 +433,7 @@ func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int) []plu
 	return out
 }
 
-func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) ([]plugin.SoftwareData, error) {
+func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) ([]plugin.SoftwareData, int, error) {
 	if maxAttempts < 1 {
 		maxAttempts = 1
 	}
@@ -403,7 +445,7 @@ func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) (
 	for attempt := 1; attempt <= maxAttempts; attempt++ {
 		items, err := p.Fetch()
 		if err == nil {
-			return items, nil
+			return items, attempt, nil
 		}
 
 		lastErr = err
@@ -416,7 +458,57 @@ func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) (
 		time.Sleep(delay)
 	}
 
-	return nil, fmt.Errorf("after %d attempts: %w", maxAttempts, lastErr)
+	return nil, maxAttempts, fmt.Errorf("after %d attempts: %w", maxAttempts, lastErr)
+}
+
+func buildPluginJobs(plugins []plugin.Plugin, order string) []pluginJob {
+	jobs := make([]pluginJob, 0, len(plugins))
+	for i, p := range plugins {
+		jobs = append(jobs, pluginJob{Index: i, Plugin: p})
+	}
+
+	normalized := strings.ToLower(strings.TrimSpace(order))
+	switch normalized {
+	case "alpha":
+		sort.SliceStable(jobs, func(i, j int) bool {
+			return strings.ToLower(jobs[i].Plugin.Name()) < strings.ToLower(jobs[j].Plugin.Name())
+		})
+	case "priority":
+		sort.SliceStable(jobs, func(i, j int) bool {
+			ri := pluginPriorityRank(jobs[i].Plugin.Name())
+			rj := pluginPriorityRank(jobs[j].Plugin.Name())
+			if ri == rj {
+				return strings.ToLower(jobs[i].Plugin.Name()) < strings.ToLower(jobs[j].Plugin.Name())
+			}
+			return ri < rj
+		})
+	default:
+		// input order
+	}
+
+	for i := range jobs {
+		jobs[i].Index = i
+	}
+	return jobs
+}
+
+func pluginPriorityRank(name string) int {
+	name = strings.ToLower(strings.TrimSpace(name))
+	// Network-heavy or historically flaky sources are scheduled first
+	// so retries can overlap with other workers and reduce total wall time.
+	priority := map[string]int{
+		"github":         10,
+		"chrome":         20,
+		"firefox":        30,
+		"wps":            40,
+		"todesk":         50,
+		"uuremote":       60,
+		"tencentmeeting": 70,
+	}
+	if rank, ok := priority[name]; ok {
+		return rank
+	}
+	return 100
 }
 
 func retryDelay(base time.Duration, attempt int) time.Duration {
@@ -475,10 +567,7 @@ func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, err
 	return filtered, nil
 }
 
-func resetDir(path string) error {
-	if err := os.RemoveAll(path); err != nil {
-		return err
-	}
+func ensureDir(path string) error {
 	return os.MkdirAll(path, 0o755)
 }
 
@@ -488,6 +577,53 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	return os.WriteFile(path, data, 0o644)
+}
+
+func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPayload, map[string]plugin.SoftwareItem) {
+	versionMap := map[string]plugin.VersionPayload{}
+	itemMap := map[string]plugin.SoftwareItem{}
+
+	listPath := filepath.Join(outDir, "software-list.json")
+	if data, err := os.ReadFile(listPath); err == nil {
+		var payload plugin.SoftwareListPayload
+		if err := json.Unmarshal(data, &payload); err == nil {
+			for _, item := range payload.Items {
+				if strings.TrimSpace(item.ID) == "" {
+					continue
+				}
+				itemMap[item.ID] = item
+			}
+		}
+	}
+
+	entries, err := os.ReadDir(versionsDir)
+	if err != nil {
+		return versionMap, itemMap
+	}
+	for _, ent := range entries {
+		if ent.IsDir() || !strings.HasSuffix(strings.ToLower(ent.Name()), ".json") {
+			continue
+		}
+		filePath := filepath.Join(versionsDir, ent.Name())
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			continue
+		}
+		var payload plugin.VersionPayload
+		if err := json.Unmarshal(data, &payload); err != nil {
+			continue
+		}
+		if strings.TrimSpace(payload.SoftwareID) == "" {
+			continue
+		}
+		versionMap[payload.SoftwareID] = payload
+	}
+
+	return versionMap, itemMap
+}
+
+func versionsEqual(a, b []plugin.Version) bool {
+	return reflect.DeepEqual(a, b)
 }
 
 func sortKeyForItem(item plugin.SoftwareItem) string {

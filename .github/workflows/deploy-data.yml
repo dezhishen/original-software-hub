@@ -23,6 +23,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Restore previous version data from page branch
+        run: |
+          git fetch origin page --depth=1 2>/dev/null || true
+          if git rev-parse origin/page >/dev/null 2>&1; then
+            git checkout origin/page -- data/json/versions/ 2>/dev/null || true
+            if [ -d data/json/versions ]; then
+              mkdir -p frontend/data/json
+              cp -r data/json/versions frontend/data/json/
+              rm -rf data
+              echo "Restored $(ls frontend/data/json/versions/ | wc -l) version files from page branch"
+            fi
+          else
+            echo "page branch not found, skipping restore"
+          fi
+
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -40,7 +55,7 @@ jobs:
         env:
           OSH_GITHUB_TOKEN: ${{ secrets.OSH_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: go run .
+        run: go run . -concurrency 5 -schedule-order priority -skip-unchanged
 
       - name: Install frontend dependencies
         working-directory: frontend
