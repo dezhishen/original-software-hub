@@ -63,28 +63,32 @@ func (t *ToDesk) Fetch() ([]plugin.SoftwareData, error) {
 	versions := make([]plugin.Version, 0, 6)
 
 	if windowsURL != "" {
+		version := normalizeVersion(extractVersion(windowsURL))
+		releaseDate := fallbackReleaseDate("")
 		versions = append(versions, plugin.Version{
-			Version:     normalizeVersion(extractVersion(windowsURL)),
-			ReleaseDate: fallbackReleaseDate(""),
+			Version:     version,
+			ReleaseDate: releaseDate,
 			OfficialURL: todeskDownloadPage,
-			Variants: []plugin.Variant{{
+			Platforms: plugin.PlatformsFromVariants(version, releaseDate, todeskDownloadPage, []plugin.Variant{{
 				Architecture: "x64",
 				Platform:     "Windows",
 				Links:        []plugin.Link{{Type: "direct", Label: "ToDesk Windows 安装包", URL: windowsURL}},
-			}},
+			}}),
 		})
 	}
 
 	if macURL != "" {
+		version := normalizeVersion(extractVersion(macURL))
+		releaseDate := fallbackReleaseDate("")
 		versions = append(versions, plugin.Version{
-			Version:     normalizeVersion(extractVersion(macURL)),
-			ReleaseDate: fallbackReleaseDate(""),
+			Version:     version,
+			ReleaseDate: releaseDate,
 			OfficialURL: todeskDownloadPage,
-			Variants: []plugin.Variant{{
+			Platforms: plugin.PlatformsFromVariants(version, releaseDate, todeskDownloadPage, []plugin.Variant{{
 				Architecture: "universal",
 				Platform:     "macOS",
 				Links:        []plugin.Link{{Type: "direct", Label: "ToDesk macOS 安装包", URL: macURL}},
-			}},
+			}}),
 		})
 	}
 
@@ -103,52 +107,59 @@ func (t *ToDesk) Fetch() ([]plugin.SoftwareData, error) {
 			Version:     normalizeVersion(latestVersionFromURLs(linuxURLs)),
 			ReleaseDate: fallbackReleaseDate(parseDotDate(findMatch(html, todeskLinuxDatePattern))),
 			OfficialURL: todeskLinuxPage,
-			Variants:    linuxVariants,
+			Platforms:   plugin.PlatformsFromVariants(normalizeVersion(latestVersionFromURLs(linuxURLs)), fallbackReleaseDate(parseDotDate(findMatch(html, todeskLinuxDatePattern))), todeskLinuxPage, linuxVariants),
 		})
 	}
 
 	if androidURL != "" {
+		version := normalizeVersion(extractVersion(androidURL))
+		releaseDate := fallbackReleaseDate(parseDotDate(findMatch(html, todeskAndroidDatePattern)))
 		versions = append(versions, plugin.Version{
-			Version:     normalizeVersion(extractVersion(androidURL)),
-			ReleaseDate: fallbackReleaseDate(parseDotDate(findMatch(html, todeskAndroidDatePattern))),
+			Version:     version,
+			ReleaseDate: releaseDate,
 			OfficialURL: todeskDownloadPage,
-			Variants: []plugin.Variant{{
+			Platforms: plugin.PlatformsFromVariants(version, releaseDate, todeskDownloadPage, []plugin.Variant{{
 				Architecture: "arm64",
 				Platform:     "Android",
 				Links:        []plugin.Link{{Type: "direct", Label: "ToDesk Android 安装包", URL: androidURL}},
-			}},
+			}}),
 		})
 	}
 
 	if tvURL != "" {
+		version := normalizeVersion(extractTVVersion(tvURL))
+		releaseDate := fallbackReleaseDate("")
 		versions = append(versions, plugin.Version{
-			Version:     normalizeVersion(extractTVVersion(tvURL)),
-			ReleaseDate: fallbackReleaseDate(""),
+			Version:     version,
+			ReleaseDate: releaseDate,
 			OfficialURL: todeskDownloadPage,
-			Variants: []plugin.Variant{{
+			Platforms: plugin.PlatformsFromVariants(version, releaseDate, todeskDownloadPage, []plugin.Variant{{
 				Architecture: "arm64",
 				Platform:     "Android TV",
 				Links:        []plugin.Link{{Type: "direct", Label: "ToDesk TV 安装包", URL: tvURL}},
-			}},
+			}}),
 		})
 	}
 
 	if iosURL != "" {
+		version := normalizeVersion(findMatch(html, todeskIOSVersionPattern))
+		releaseDate := fallbackReleaseDate(parseDotDate(findMatch(html, todeskIOSDatePattern)))
 		versions = append(versions, plugin.Version{
-			Version:     normalizeVersion(findMatch(html, todeskIOSVersionPattern)),
-			ReleaseDate: fallbackReleaseDate(parseDotDate(findMatch(html, todeskIOSDatePattern))),
+			Version:     version,
+			ReleaseDate: releaseDate,
 			OfficialURL: todeskDownloadPage,
-			Variants: []plugin.Variant{{
+			Platforms: plugin.PlatformsFromVariants(version, releaseDate, todeskDownloadPage, []plugin.Variant{{
 				Architecture: "universal",
 				Platform:     "iOS / iPadOS",
 				Links:        []plugin.Link{{Type: "store", Label: "App Store", URL: iosURL}},
-			}},
+			}}),
 		})
 	}
 
 	if len(versions) == 0 {
 		return nil, fmt.Errorf("no downloadable variants found")
 	}
+	versions = mergeVersionsAsTabbed(versions)
 
 	return []plugin.SoftwareData{
 		{
@@ -164,6 +175,31 @@ func (t *ToDesk) Fetch() ([]plugin.SoftwareData, error) {
 			Versions: versions,
 		},
 	}, nil
+}
+
+func mergeVersionsAsTabbed(versions []plugin.Version) []plugin.Version {
+	if len(versions) <= 1 {
+		return versions
+	}
+
+	platforms := make([]plugin.PlatformRelease, 0, len(versions))
+	latestDate := ""
+	for _, version := range versions {
+		platforms = append(platforms, version.Platforms...)
+		if strings.TrimSpace(version.ReleaseDate) > latestDate {
+			latestDate = strings.TrimSpace(version.ReleaseDate)
+		}
+	}
+	if latestDate == "" {
+		latestDate = time.Now().UTC().Format("2006-01-02")
+	}
+
+	return []plugin.Version{{
+		Version:     "latest",
+		ReleaseDate: latestDate,
+		OfficialURL: todeskDownloadPage,
+		Platforms:   platforms,
+	}}
 }
 
 func fetchToDeskHTML() (string, error) {

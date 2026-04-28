@@ -43,7 +43,7 @@ func (w *WeCom) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: wecomDownloadPage,
-					Variants: []plugin.Variant{
+					Platforms: plugin.PlatformsFromVariants(version, releaseDate, wecomDownloadPage, []plugin.Variant{
 						{
 							Architecture: "x64",
 							Platform:     "Windows",
@@ -59,7 +59,7 @@ func (w *WeCom) Fetch() ([]plugin.SoftwareData, error) {
 							Platform:     "Linux",
 							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 Linux 下载", URL: wecomDownloadPage}},
 						},
-					},
+					}),
 				},
 			},
 		},

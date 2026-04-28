@@ -95,7 +95,7 @@ func (d *DingTalk) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: dingtalkDownloadPage,
-					Variants:    variants,
+					Platforms:   plugin.PlatformsFromVariants(version, releaseDate, dingtalkDownloadPage, variants),
 				},
 			},
 		},

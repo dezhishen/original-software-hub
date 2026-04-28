@@ -301,8 +301,30 @@
     const type = String(item.type || "").trim().toLowerCase();
     const label = String(item.label || "").trim();
     const url = String(item.url || "").trim();
-    if (!label || !url || !["direct", "webpage"].includes(type)) return null;
+    if (!label || !url || !["direct", "webpage", "store"].includes(type)) return null;
     return { type, label, url };
+  }
+
+  function normalizePlatformPackage(item) {
+    if (!isObject(item)) return null;
+    const architecture = String(item.architecture || "").trim();
+    const links = Array.isArray(item.links)
+      ? item.links.map(normalizeLink).filter(Boolean)
+      : [];
+    return { architecture, links };
+  }
+
+  function normalizePlatformRelease(item, fallback) {
+    if (!isObject(item)) return null;
+    const platform = String(item.platform || "").trim();
+    const version = String(item.version || fallback?.version || "").trim();
+    const releaseDate = String(item.releaseDate || fallback?.releaseDate || "").trim();
+    const officialUrl = String(item.officialUrl || fallback?.officialUrl || "").trim();
+    const packages = Array.isArray(item.packages)
+      ? item.packages.map(normalizePlatformPackage).filter(Boolean)
+      : [];
+    if (!platform) return null;
+    return { platform, version, releaseDate, officialUrl, packages };
   }
 
   function normalizeVariant(item) {
@@ -315,6 +337,27 @@
     return { architecture, platform, links };
   }
 
+  function buildPlatformReleasesFromVariants(variants, fallback) {
+    const groups = new Map();
+    (variants || []).forEach((variant) => {
+      const platformLabel = String(variant?.platform || "").trim() || "其他";
+      if (!groups.has(platformLabel)) {
+        groups.set(platformLabel, {
+          platform: platformLabel,
+          version: String(fallback?.version || "").trim(),
+          releaseDate: String(fallback?.releaseDate || "").trim(),
+          officialUrl: String(fallback?.officialUrl || "").trim(),
+          packages: []
+        });
+      }
+      groups.get(platformLabel).packages.push({
+        architecture: String(variant?.architecture || "").trim(),
+        links: Array.isArray(variant?.links) ? variant.links : []
+      });
+    });
+    return [...groups.values()];
+  }
+
   function normalizeVersion(item) {
     if (!isObject(item)) return null;
     const version = String(item.version || "").trim();
@@ -323,7 +366,16 @@
     const variants = Array.isArray(item.variants)
       ? item.variants.map(normalizeVariant).filter(Boolean)
       : [];
-    return { version, releaseDate, officialUrl, variants };
+    const platforms = Array.isArray(item.platforms)
+      ? item.platforms.map((entry) => normalizePlatformRelease(entry, { version, releaseDate, officialUrl })).filter(Boolean)
+      : [];
+    return {
+      version,
+      releaseDate,
+      officialUrl,
+      variants,
+      platforms: platforms.length ? platforms : buildPlatformReleasesFromVariants(variants, { version, releaseDate, officialUrl })
+    };
   }
 
   function normalizeSoftwareVersionPayload(payload) {
@@ -410,12 +462,11 @@
     return 40;
   }
 
-  function groupVariantsByPlatform(variants) {
+  function groupPlatformPackages(platformReleases) {
     const groups = new Map();
-    (variants || []).forEach((variant) => {
-      const platformLabel = String(variant?.platform || "").trim() || "其他";
-      if (!groups.has(platformLabel)) groups.set(platformLabel, []);
-      groups.get(platformLabel).push(variant);
+    (platformReleases || []).forEach((entry) => {
+      const platformLabel = String(entry?.platform || "").trim() || "其他";
+      if (!groups.has(platformLabel)) groups.set(platformLabel, entry);
     });
     return groups;
   }
@@ -497,37 +548,35 @@
       const card = document.createElement("div");
       card.className = "overflow-hidden rounded-lg border border-slate-200/90 bg-white/20 dark:border-slate-700/80 dark:bg-slate-800/20";
 
-      const officialBtn = versionItem.officialUrl
-          ? `<a class="inline-flex items-center rounded-md border border-amber-300/50 bg-amber-100/20 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100/30 dark:border-amber-700/40 dark:bg-amber-900/15 dark:text-amber-300 dark:hover:bg-amber-900/25" target="_blank" rel="noopener noreferrer"
-              href="${escapeAttr(versionItem.officialUrl)}">前往官网发布页</a>`
-        : "";
-
-      const platformGroups = groupVariantsByPlatform(versionItem.variants || []);
-      const platformTabs = [...platformGroups.keys()].sort((a, b) => {
+      const platformGroups = groupPlatformPackages(versionItem.platforms || []);
+      const sortedPlatformTabs = [...platformGroups.keys()].sort((a, b) => {
         const aCurrent = normalizePlatformId(a) === currentPlatform.id ? 1 : 0;
         const bCurrent = normalizePlatformId(b) === currentPlatform.id ? 1 : 0;
         if (aCurrent !== bCurrent) return bCurrent - aCurrent;
         return String(a).localeCompare(String(b), "zh-CN");
       });
+      const platformTabs = sortedPlatformTabs.length ? sortedPlatformTabs : ["全部平台"];
       const defaultPlatform = platformTabs[0] || "";
 
       const tabButtons = platformTabs.map((platformLabel, index) => {
         const isDefault = platformLabel === defaultPlatform;
         const isCurrent = normalizePlatformId(platformLabel) === currentPlatform.id;
-        return `<button type="button" role="tab" aria-selected="${isDefault ? "true" : "false"}" data-platform-tab="${escapeAttr(platformLabel)}" class="-mb-px border-b-2 px-3 py-2 text-[12px] font-semibold transition ${isDefault ? "border-brand-500 text-brand-700 dark:border-brand-400 dark:text-brand-300" : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:border-slate-600"}">${escapeHtml(platformLabel)}${isCurrent ? " <span class=\"ml-1 text-[10px] opacity-80\">当前</span>" : ""}</button>`;
+        const packageCount = (platformGroups.get(platformLabel)?.packages || []).length;
+        return `<button type="button" role="tab" aria-selected="${isDefault ? "true" : "false"}" data-platform-tab="${escapeAttr(platformLabel)}" class="-mb-px border-b-2 px-3 py-2 text-[12px] font-semibold transition ${isDefault ? "border-brand-500 text-brand-700 dark:border-brand-400 dark:text-brand-300" : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:border-slate-600"}">${escapeHtml(platformLabel)} <span class="ml-1 rounded bg-slate-200/80 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-700/70 dark:text-slate-300">${packageCount}</span>${isCurrent ? " <span class=\"ml-1 text-[10px] opacity-80\">当前</span>" : ""}</button>`;
       }).join("");
 
       const tabPanels = platformTabs.map((platformLabel) => {
-        const variants = [...(platformGroups.get(platformLabel) || [])].sort((left, right) => {
+        const platformEntry = platformGroups.get(platformLabel) || { platform: platformLabel, packages: [] };
+        const packages = [...(platformEntry.packages || [])].sort((left, right) => {
           const leftArchScore = architectureScore(left.architecture, currentArchitecture.id);
           const rightArchScore = architectureScore(right.architecture, currentArchitecture.id);
           if (leftArchScore !== rightArchScore) return rightArchScore - leftArchScore;
           return String(left.architecture || "").localeCompare(String(right.architecture || ""), "zh-CN");
         });
-        const firstVariant = variants[0];
+        const firstVariant = packages[0];
         const hasCurrentDeviceRow = !!firstVariant && platformMatchesCurrent(platformLabel, currentPlatform.id);
 
-        const variantRows = variants
+        const variantRows = packages
         .map((variant, index) => {
           const isCurrentDevice = hasCurrentDeviceRow && index === 0;
           const directLinks = (variant.links || [])
@@ -535,8 +584,14 @@
               (link) => {
                 const tone = link.type === "webpage"
                   ? "border-slate-300 bg-white text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
+                  : link.type === "store"
+                    ? "border-emerald-300/60 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-700/50 dark:bg-emerald-900/25 dark:text-emerald-300 dark:hover:bg-emerald-900/35"
                   : "border-brand-500/30 bg-brand-50 text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700";
-                const suffix = link.type === "webpage" ? "<span class=\"ml-1 text-[10px] font-medium opacity-70\">页面</span>" : "";
+                const suffix = link.type === "webpage"
+                  ? "<span class=\"ml-1 text-[10px] font-medium opacity-70\">页面</span>"
+                  : link.type === "store"
+                    ? "<span class=\"ml-1 text-[10px] font-medium opacity-70\">商店</span>"
+                    : "";
                 return `<a class="inline-flex items-center rounded-md border px-2 py-1 text-[11px] font-semibold ${tone}" target="_blank" rel="noopener noreferrer"
                     href="${escapeAttr(link.url)}">${escapeHtml(link.label)}${suffix}</a>`;
               }
@@ -549,20 +604,32 @@
 
           return `
             <tr class="bg-white/10 even:bg-slate-50/10 hover:bg-slate-100/20 dark:bg-slate-800/10 dark:even:bg-slate-800/15 dark:hover:bg-slate-700/20 ${isCurrentDevice ? "font-semibold" : ""}">
-              <td class="whitespace-nowrap px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${escapeHtml(variant.platform || "-")}${isCurrentDevice ? ' <span class="ml-1 text-[10px] font-semibold text-brand-700 dark:text-brand-300">当前设备</span>' : ""}</td>
               <td class="whitespace-nowrap px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${escapeHtml(variant.architecture || "-")}</td>
               <td class="px-2.5 py-2 text-[13px] text-slate-700 dark:text-slate-200">${directLinksHtml}</td>
             </tr>`;
         })
         .join("");
 
+        const platformMeta = `<div class="mb-2.5 border-b border-slate-200/70 bg-gradient-to-r from-sky-50/80 to-teal-50/70 px-3 py-2 dark:border-slate-700/70 dark:from-slate-800/50 dark:to-slate-800/20">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center rounded-md border border-sky-300/70 bg-sky-100/80 px-2 py-1 text-[11px] font-semibold text-sky-700 dark:border-sky-700/60 dark:bg-sky-900/30 dark:text-sky-300">平台：${escapeHtml(platformLabel)}</span>
+            <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(platformEntry.version || versionItem.version || "-")}</span>
+            <span class="text-[11px] text-slate-600 dark:text-slate-300">${escapeHtml(platformEntry.releaseDate || versionItem.releaseDate || "")}</span>
+            ${platformEntry.officialUrl
+            ? `<a class="inline-flex items-center rounded-md border border-amber-300/50 bg-amber-100/20 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100/30 dark:border-amber-700/40 dark:bg-amber-900/15 dark:text-amber-300 dark:hover:bg-amber-900/25" target="_blank" rel="noopener noreferrer" href="${escapeAttr(platformEntry.officialUrl)}">前往官网发布页</a>`
+            : ""}
+            <span class="text-[11px] text-slate-500 dark:text-slate-400">共 ${packages.length} 个安装包</span>
+          </div>
+        </div>`;
+
         return `<div role="tabpanel" data-platform-panel="${escapeAttr(platformLabel)}" class="${platformLabel === defaultPlatform ? "" : "hidden"}">
+          ${platformMeta}
           ${
             variantRows
               ? `<div class="overflow-x-auto">
                   <table class="min-w-full border-collapse">
                     <thead class="bg-transparent dark:bg-transparent">
-                      <tr><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
+                      <tr><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-transparent dark:bg-transparent">${variantRows}</tbody>
                   </table>
@@ -573,11 +640,6 @@
       }).join("");
 
       card.innerHTML = `
-        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200/50 bg-white/10 px-3 py-2.5 dark:border-slate-700/50 dark:bg-slate-800/10">
-          <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(versionItem.version || "-")}</span>
-          <span class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
-          ${officialBtn}
-        </div>
         ${platformTabs.length > 1 ? `<div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-slate-200/80 bg-slate-50/60 px-3 pt-2 dark:border-slate-700/70 dark:bg-slate-900/35">${tabButtons}</div>` : ""}
         <div class="platform-panels">${tabPanels}</div>
       `;

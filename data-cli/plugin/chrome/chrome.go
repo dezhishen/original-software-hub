@@ -39,7 +39,7 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: officialURL,
-					Variants: []plugin.Variant{
+					Platforms: plugin.PlatformsFromVariants(version, releaseDate, officialURL, []plugin.Variant{
 						{
 							Architecture: "x64",
 							Platform:     "Windows",
@@ -62,7 +62,7 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 								{Type: "direct", Label: "dmg 安装包", URL: "https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg"},
 							},
 						},
-					},
+					}),
 				},
 			},
 		},

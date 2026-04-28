@@ -110,7 +110,7 @@ func (b *BaiduNetdisk) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: baiduNetdiskVersionPage,
-					Variants:    variants,
+					Platforms:   plugin.PlatformsFromVariants(version, releaseDate, baiduNetdiskVersionPage, variants),
 				},
 			},
 		},

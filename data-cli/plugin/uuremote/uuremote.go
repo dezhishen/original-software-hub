@@ -113,13 +113,13 @@ func (u *UURemote) Fetch() ([]plugin.SoftwareData, error) {
 			Version:     version,
 			ReleaseDate: releaseDate,
 			OfficialURL: uuremoteDownloadPage,
-			Variants: []plugin.Variant{
+			Platforms: plugin.PlatformsFromVariants(version, releaseDate, uuremoteDownloadPage, []plugin.Variant{
 				{
 					Architecture: cfg.Arch,
 					Platform:     cfg.PlatformName,
 					Links:        links,
 				},
-			},
+			}),
 		})
 	}
 
@@ -136,15 +136,24 @@ func (u *UURemote) Fetch() ([]plugin.SoftwareData, error) {
 			Version:     fallbackVersion,
 			ReleaseDate: fallbackDate,
 			OfficialURL: uuremoteDownloadPage,
-			Variants: []plugin.Variant{
+			Platforms: plugin.PlatformsFromVariants(fallbackVersion, fallbackDate, uuremoteDownloadPage, []plugin.Variant{
 				{Architecture: "x64", Platform: "Windows", Links: []plugin.Link{{Type: "direct", Label: "UU远程 Windows 下载", URL: windowsURL}}},
-			},
+			}),
 		})
 	}
 
 	sort.SliceStable(versions, func(i, j int) bool {
-		return versions[i].Variants[0].Platform < versions[j].Variants[0].Platform
+		left := ""
+		right := ""
+		if len(versions[i].Platforms) > 0 {
+			left = versions[i].Platforms[0].Platform
+		}
+		if len(versions[j].Platforms) > 0 {
+			right = versions[j].Platforms[0].Platform
+		}
+		return left < right
 	})
+	versions = mergeVersionsAsTabbed(versions)
 
 	return []plugin.SoftwareData{
 		{
@@ -160,6 +169,31 @@ func (u *UURemote) Fetch() ([]plugin.SoftwareData, error) {
 			Versions: versions,
 		},
 	}, nil
+}
+
+func mergeVersionsAsTabbed(versions []plugin.Version) []plugin.Version {
+	if len(versions) <= 1 {
+		return versions
+	}
+
+	platforms := make([]plugin.PlatformRelease, 0, len(versions))
+	latestDate := ""
+	for _, version := range versions {
+		platforms = append(platforms, version.Platforms...)
+		if strings.TrimSpace(version.ReleaseDate) > latestDate {
+			latestDate = strings.TrimSpace(version.ReleaseDate)
+		}
+	}
+	if latestDate == "" {
+		latestDate = time.Now().UTC().Format("2006-01-02")
+	}
+
+	return []plugin.Version{{
+		Version:     "latest",
+		ReleaseDate: latestDate,
+		OfficialURL: uuremoteDownloadPage,
+		Platforms:   platforms,
+	}}
 }
 
 func extractPlatformVersionPages(jsCode string) map[string]string {

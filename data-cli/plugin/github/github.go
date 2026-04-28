@@ -127,11 +127,16 @@ func (p *githubPlugin) fetchReposInternal() ([]plugin.SoftwareData, error) {
 					Version:     strings.TrimSpace(release.TagName),
 					ReleaseDate: formatReleaseDate(strings.TrimSpace(release.PublishedAt)),
 					OfficialURL: strings.TrimSpace(release.HTMLURL),
-					Variants:    buildVariants(release.Assets, repo.Assets),
+					Platforms:   plugin.PlatformsFromVariants(strings.TrimSpace(release.TagName), formatReleaseDate(strings.TrimSpace(release.PublishedAt)), strings.TrimSpace(release.HTMLURL), buildVariants(release.Assets, repo.Assets)),
 				},
 			},
 		}
-		log.Printf("[github] repo id=%s owner=%s repo=%s version=%s assets=%d variants=%d", repo.ID, repo.Owner, repo.Repo, data.Versions[0].Version, len(release.Assets), len(data.Versions[0].Variants))
+		platformCount := len(data.Versions[0].Platforms)
+		packageCount := 0
+		for _, platform := range data.Versions[0].Platforms {
+			packageCount += len(platform.Packages)
+		}
+		log.Printf("[github] repo id=%s owner=%s repo=%s version=%s assets=%d platforms=%d packages=%d", repo.ID, repo.Owner, repo.Repo, data.Versions[0].Version, len(release.Assets), platformCount, packageCount)
 		items = append(items, data)
 	}
 	log.Printf("[github] fetch done repos=%d", len(p.repos))

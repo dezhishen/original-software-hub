@@ -112,7 +112,33 @@ func buildVersions(bundleText, linuxPageText string) ([]plugin.Version, error) {
 	if len(versions) == 0 {
 		return nil, fmt.Errorf("no wps download info extracted from official bundle")
 	}
+	versions = mergeVersionsAsTabbed(versions)
 	return versions, nil
+}
+
+func mergeVersionsAsTabbed(versions []plugin.Version) []plugin.Version {
+	if len(versions) <= 1 {
+		return versions
+	}
+
+	platforms := make([]plugin.PlatformRelease, 0, len(versions))
+	latestDate := ""
+	for _, version := range versions {
+		platforms = append(platforms, version.Platforms...)
+		if strings.TrimSpace(version.ReleaseDate) > latestDate {
+			latestDate = strings.TrimSpace(version.ReleaseDate)
+		}
+	}
+	if latestDate == "" {
+		latestDate = time.Now().UTC().Format("2006-01-02")
+	}
+
+	return []plugin.Version{{
+		Version:     "latest",
+		ReleaseDate: latestDate,
+		OfficialURL: wpsHomepageURL,
+		Platforms:   platforms,
+	}}
 }
 
 func buildWindowsVersion(bundleText string) *plugin.Version {
@@ -157,11 +183,12 @@ func buildWindowsVersion(bundleText string) *plugin.Version {
 		releaseDate = time.Now().UTC().Format("2006-01-02")
 	}
 
+	version := fmt.Sprintf("%d", latest.version)
 	return &plugin.Version{
-		Version:     fmt.Sprintf("Windows %d", latest.version),
+		Version:     version,
 		ReleaseDate: releaseDate,
 		OfficialURL: wpsHomepageURL,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(version, releaseDate, wpsHomepageURL, []plugin.Variant{
 			{
 				Architecture: "x64/x86",
 				Platform:     "Windows",
@@ -169,7 +196,7 @@ func buildWindowsVersion(bundleText string) *plugin.Version {
 					{Type: "direct", Label: fmt.Sprintf("WPS Setup %d (exe)", latest.version), URL: latest.url},
 				},
 			},
-		},
+		}),
 	}
 }
 
@@ -214,11 +241,12 @@ func buildMacVersion(bundleText string) *plugin.Version {
 		releaseDate = time.Now().UTC().Format("2006-01-02")
 	}
 
+	version := latest.version
 	return &plugin.Version{
-		Version:     fmt.Sprintf("macOS %s", latest.version),
+		Version:     version,
 		ReleaseDate: releaseDate,
 		OfficialURL: wpsHomepageURL,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(version, releaseDate, wpsHomepageURL, []plugin.Variant{
 			{
 				Architecture: "x64",
 				Platform:     "macOS",
@@ -226,7 +254,7 @@ func buildMacVersion(bundleText string) *plugin.Version {
 					{Type: "direct", Label: fmt.Sprintf("WPS Office %s (dmg)", latest.version), URL: latest.url},
 				},
 			},
-		},
+		}),
 	}
 }
 
@@ -239,11 +267,12 @@ func buildLinuxVersion(linuxPageText string) *plugin.Version {
 		releaseDate = time.Now().UTC().Format("2006-01-02")
 	}
 
+	versionLabel := version
 	return &plugin.Version{
-		Version:     fmt.Sprintf("Linux %s", version),
+		Version:     versionLabel,
 		ReleaseDate: releaseDate,
 		OfficialURL: wpsLinuxURL,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(versionLabel, releaseDate, wpsLinuxURL, []plugin.Variant{
 			{
 				Architecture: "x64",
 				Platform:     "Linux",
@@ -251,7 +280,7 @@ func buildLinuxVersion(linuxPageText string) *plugin.Version {
 					{Type: "webpage", Label: "WPS Linux 详情页", URL: wpsLinuxURL},
 				},
 			},
-		},
+		}),
 	}
 }
 

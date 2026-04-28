@@ -57,7 +57,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 			Links: []plugin.Link{
 				{
 					Type:  "direct",
-					Label: fmt.Sprintf("阿里云盘 macOS (Intel)"),
+					Label: "阿里云盘 macOS (Intel)",
 					URL:   info.MacIntelURL,
 				},
 			},
@@ -72,7 +72,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 			Links: []plugin.Link{
 				{
 					Type:  "direct",
-					Label: fmt.Sprintf("阿里云盘 macOS (Apple Silicon)"),
+					Label: "阿里云盘 macOS (Apple Silicon)",
 					URL:   info.MacARM64URL,
 				},
 			},
@@ -124,7 +124,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     info.Version,
 					ReleaseDate: info.ReleaseDate,
 					OfficialURL: info.DownloadPageURL,
-					Variants:    variants,
+					Platforms:   plugin.PlatformsFromVariants(info.Version, info.ReleaseDate, info.DownloadPageURL, variants),
 				},
 			},
 		},

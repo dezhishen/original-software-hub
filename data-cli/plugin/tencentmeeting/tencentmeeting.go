@@ -163,7 +163,7 @@ func (t *TencentMeeting) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: tencentMeetingDownloadPage,
-					Variants:    variants,
+					Platforms:   plugin.PlatformsFromVariants(version, releaseDate, tencentMeetingDownloadPage, variants),
 				},
 			},
 		},

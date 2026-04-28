@@ -62,12 +62,27 @@ type Variant struct {
 	Links        []Link `json:"links"`
 }
 
+// PlatformPackage is one package/build entry under a platform.
+type PlatformPackage struct {
+	Architecture string `json:"architecture"`
+	Links        []Link `json:"links"`
+}
+
+// PlatformRelease groups packages by platform and keeps platform-specific meta.
+type PlatformRelease struct {
+	Platform    string            `json:"platform"`
+	Version     string            `json:"version,omitempty"`
+	ReleaseDate string            `json:"releaseDate,omitempty"`
+	OfficialURL string            `json:"officialUrl,omitempty"`
+	Packages    []PlatformPackage `json:"packages"`
+}
+
 // Version represents one release of a software.
 type Version struct {
-	Version     string    `json:"version"`
-	ReleaseDate string    `json:"releaseDate"`
-	OfficialURL string    `json:"officialUrl"`
-	Variants    []Variant `json:"variants"`
+	Version     string            `json:"version"`
+	ReleaseDate string            `json:"releaseDate"`
+	OfficialURL string            `json:"officialUrl"`
+	Platforms   []PlatformRelease `json:"platforms,omitempty"`
 }
 
 // VersionPayload is the versions/<id>.json payload.

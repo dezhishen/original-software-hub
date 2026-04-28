@@ -109,7 +109,7 @@ func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     info.Version,
 					ReleaseDate: info.ReleaseDate,
 					OfficialURL: info.DownloadPageURL,
-					Variants:    variants,
+					Platforms:   plugin.PlatformsFromVariants(info.Version, info.ReleaseDate, info.DownloadPageURL, variants),
 				},
 			},
 		},

@@ -114,8 +114,34 @@ func fetchQQMusicDesktopVersions() ([]plugin.Version, error) {
 	if len(versions) == 0 {
 		return nil, fmt.Errorf("no desktop versions found")
 	}
+	versions = mergeVersionsAsTabbed(versions)
 
 	return versions, nil
+}
+
+func mergeVersionsAsTabbed(versions []plugin.Version) []plugin.Version {
+	if len(versions) <= 1 {
+		return versions
+	}
+
+	platforms := make([]plugin.PlatformRelease, 0, len(versions))
+	latestDate := ""
+	for _, version := range versions {
+		platforms = append(platforms, version.Platforms...)
+		if strings.TrimSpace(version.ReleaseDate) > latestDate {
+			latestDate = strings.TrimSpace(version.ReleaseDate)
+		}
+	}
+	if latestDate == "" {
+		latestDate = time.Now().UTC().Format("2006-01-02")
+	}
+
+	return []plugin.Version{{
+		Version:     "latest",
+		ReleaseDate: latestDate,
+		OfficialURL: qqMusicDownloadURL,
+		Platforms:   platforms,
+	}}
 }
 
 func buildWindowsVersion(item *html.Node, version, releaseDate string) *plugin.Version {
@@ -127,10 +153,10 @@ func buildWindowsVersion(item *html.Node, version, releaseDate string) *plugin.V
 	}
 
 	return &plugin.Version{
-		Version:     "Windows " + version,
+		Version:     version,
 		ReleaseDate: releaseDate,
 		OfficialURL: qqMusicDownloadURL,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(version, releaseDate, qqMusicDownloadURL, []plugin.Variant{
 			{
 				Architecture: "x64/x86",
 				Platform:     "Windows",
@@ -138,7 +164,7 @@ func buildWindowsVersion(item *html.Node, version, releaseDate string) *plugin.V
 					{Type: "webpage", Label: "QQ音乐 Windows 下载页", URL: qqMusicWindowsPage},
 				},
 			},
-		},
+		}),
 	}
 }
 
@@ -151,10 +177,10 @@ func buildMacVersion(item *html.Node, version, releaseDate string) *plugin.Versi
 	}
 
 	return &plugin.Version{
-		Version:     "macOS " + version,
+		Version:     version,
 		ReleaseDate: releaseDate,
 		OfficialURL: qqMusicDownloadURL,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(version, releaseDate, qqMusicDownloadURL, []plugin.Variant{
 			{
 				Architecture: "universal",
 				Platform:     "macOS",
@@ -162,7 +188,7 @@ func buildMacVersion(item *html.Node, version, releaseDate string) *plugin.Versi
 					{Type: "webpage", Label: "QQ音乐 macOS 下载页", URL: qqMusicMacPage},
 				},
 			},
-		},
+		}),
 	}
 }
 
@@ -175,10 +201,10 @@ func buildLinuxVersion(item *html.Node, version, releaseDate string) *plugin.Ver
 	}
 
 	return &plugin.Version{
-		Version:     "Linux " + version,
+		Version:     version,
 		ReleaseDate: releaseDate,
 		OfficialURL: qqMusicDownloadURL,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(version, releaseDate, qqMusicDownloadURL, []plugin.Variant{
 			{
 				Architecture: "x64",
 				Platform:     "Linux",
@@ -186,7 +212,7 @@ func buildLinuxVersion(item *html.Node, version, releaseDate string) *plugin.Ver
 					{Type: "webpage", Label: "QQ音乐 Linux 下载页", URL: qqMusicDownloadURL},
 				},
 			},
-		},
+		}),
 	}
 }
 

@@ -53,11 +53,11 @@ func (s *Steam) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     "latest",
 					ReleaseDate: releaseDate,
 					OfficialURL: steamOfficialWebsite,
-					Variants: []plugin.Variant{
+					Platforms: plugin.PlatformsFromVariants("latest", releaseDate, steamOfficialWebsite, []plugin.Variant{
 						buildVariant("x86/x64", "Windows", steamWindowsURL),
 						buildVariant("x64", "macOS", steamMacOSURL),
 						buildVariant("x64", "Linux", steamLinuxURL),
-					},
+					}),
 				},
 			},
 		},

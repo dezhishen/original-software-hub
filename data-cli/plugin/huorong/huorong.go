@@ -57,7 +57,7 @@ func (h *Huorong) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: huorongOfficialWebsite,
-					Variants:    variants,
+					Platforms:   plugin.PlatformsFromVariants(version, releaseDate, huorongOfficialWebsite, variants),
 				},
 			},
 		},

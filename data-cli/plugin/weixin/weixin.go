@@ -56,7 +56,7 @@ func (w *WeChat) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     info.version,
 					ReleaseDate: info.releaseDate,
 					OfficialURL: weixinUpdatesURL,
-					Variants:    info.variants,
+					Platforms:   plugin.PlatformsFromVariants(info.version, info.releaseDate, weixinUpdatesURL, info.variants),
 				},
 			},
 		},

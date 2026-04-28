@@ -37,7 +37,7 @@ func (f *Firefox) Fetch() ([]plugin.SoftwareData, error) {
 					Version:     version,
 					ReleaseDate: releaseDate,
 					OfficialURL: officialURL,
-					Variants: []plugin.Variant{
+					Platforms: plugin.PlatformsFromVariants(version, releaseDate, officialURL, []plugin.Variant{
 						{
 							Architecture: "x64",
 							Platform:     "Windows",
@@ -68,7 +68,7 @@ func (f *Firefox) Fetch() ([]plugin.SoftwareData, error) {
 								{Type: "direct", Label: "tar.bz2", URL: "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=zh-CN"},
 							},
 						},
-					},
+					}),
 				},
 			},
 		},

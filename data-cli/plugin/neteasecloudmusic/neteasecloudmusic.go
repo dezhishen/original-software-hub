@@ -113,16 +113,16 @@ func fetchNeteaseVersions() ([]plugin.Version, error) {
 
 	versions := make([]plugin.Version, 0, 3)
 	versions = append(versions, plugin.Version{
-		Version:     "Windows " + pcVersion,
+		Version:     pcVersion,
 		ReleaseDate: pcDate,
 		OfficialURL: neteaseDownloadPage,
-		Variants:    buildWindowsVariants(pcURL, uwpURL),
+		Platforms:   plugin.PlatformsFromVariants(pcVersion, pcDate, neteaseDownloadPage, buildWindowsVariants(pcURL, uwpURL)),
 	})
 	versions = append(versions, plugin.Version{
-		Version:     "macOS " + macVersion,
+		Version:     macVersion,
 		ReleaseDate: macDate,
 		OfficialURL: neteaseDownloadPage,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(macVersion, macDate, neteaseDownloadPage, []plugin.Variant{
 			{
 				Architecture: "universal",
 				Platform:     "macOS",
@@ -130,7 +130,7 @@ func fetchNeteaseVersions() ([]plugin.Version, error) {
 					{Type: "direct", Label: "网易云音乐 macOS 安装包 (dmg)", URL: macURL},
 				},
 			},
-		},
+		}),
 	})
 
 	if lv := buildLinuxVersion(linuxLinks); lv != nil {
@@ -243,16 +243,16 @@ func buildLinuxVersion(links []plugin.Link) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     "Linux " + version,
+		Version:     version,
 		ReleaseDate: releaseDate,
 		OfficialURL: neteaseDownloadPage,
-		Variants: []plugin.Variant{
+		Platforms: plugin.PlatformsFromVariants(version, releaseDate, neteaseDownloadPage, []plugin.Variant{
 			{
 				Architecture: "x64",
 				Platform:     "Linux",
 				Links:        links,
 			},
-		},
+		}),
 	}
 }
 

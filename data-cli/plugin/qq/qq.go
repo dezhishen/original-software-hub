@@ -46,6 +46,7 @@ func (q *QQ) Fetch() ([]plugin.SoftwareData, error) {
 	if len(versions) == 0 {
 		return nil, fmt.Errorf("qq pc config has no versions")
 	}
+	versions = mergeVersionsAsTabbed(versions)
 
 	return []plugin.SoftwareData{
 		{
@@ -61,6 +62,31 @@ func (q *QQ) Fetch() ([]plugin.SoftwareData, error) {
 			Versions: versions,
 		},
 	}, nil
+}
+
+func mergeVersionsAsTabbed(versions []plugin.Version) []plugin.Version {
+	if len(versions) <= 1 {
+		return versions
+	}
+
+	platforms := make([]plugin.PlatformRelease, 0, len(versions))
+	latestDate := ""
+	for _, version := range versions {
+		platforms = append(platforms, version.Platforms...)
+		if strings.TrimSpace(version.ReleaseDate) > latestDate {
+			latestDate = strings.TrimSpace(version.ReleaseDate)
+		}
+	}
+	if latestDate == "" {
+		latestDate = time.Now().UTC().Format("2006-01-02")
+	}
+
+	return []plugin.Version{{
+		Version:     "latest",
+		ReleaseDate: latestDate,
+		OfficialURL: "https://im.qq.com/",
+		Platforms:   platforms,
+	}}
 }
 
 type pcConfig struct {
@@ -129,10 +155,10 @@ func buildWindowsVersion(win windowsConfig) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     "Windows " + version,
+		Version:     version,
 		ReleaseDate: strings.TrimSpace(win.UpdateDate),
 		OfficialURL: "https://im.qq.com/pcqq/index.shtml",
-		Variants:    variants,
+		Platforms:   plugin.PlatformsFromVariants(version, strings.TrimSpace(win.UpdateDate), "https://im.qq.com/pcqq/index.shtml", variants),
 	}
 }
 
@@ -154,10 +180,10 @@ func buildLinuxVersion(linux linuxConfig) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     "Linux " + version,
+		Version:     version,
 		ReleaseDate: strings.TrimSpace(linux.UpdateDate),
 		OfficialURL: "https://im.qq.com/linuxqq/index.shtml",
-		Variants:    variants,
+		Platforms:   plugin.PlatformsFromVariants(version, strings.TrimSpace(linux.UpdateDate), "https://im.qq.com/linuxqq/index.shtml", variants),
 	}
 }
 
@@ -175,10 +201,10 @@ func buildMacOSVersion(mac macOSConfig) *plugin.Version {
 	}
 
 	return &plugin.Version{
-		Version:     "macOS " + version,
+		Version:     version,
 		ReleaseDate: strings.TrimSpace(mac.UpdateDate),
 		OfficialURL: "https://im.qq.com/macqq/index.shtml",
-		Variants:    variants,
+		Platforms:   plugin.PlatformsFromVariants(version, strings.TrimSpace(mac.UpdateDate), "https://im.qq.com/macqq/index.shtml", variants),
 	}
 }
 

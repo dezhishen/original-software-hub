@@ -6,15 +6,22 @@
       "version": "<VERSION>",
       "releaseDate": "<YYYY-MM-DD>",
       "officialUrl": "https://<OFFICIAL_RELEASE_URL>",
-      "variants": [
+      "platforms": [
         {
-          "architecture": "<ARCHITECTURE>",
           "platform": "<PLATFORM>",
-          "links": [
+          "version": "<PLATFORM_VERSION>",
+          "releaseDate": "<PLATFORM_RELEASE_DATE>",
+          "officialUrl": "https://<PLATFORM_RELEASE_URL>",
+          "packages": [
             {
-              "type": "direct",
-              "label": "<DOWNLOAD_LABEL>",
-              "url": "https://<DIRECT_DOWNLOAD_URL>"
+              "architecture": "<ARCHITECTURE>",
+              "links": [
+                {
+                  "type": "direct",
+                  "label": "<DOWNLOAD_LABEL>",
+                  "url": "https://<DIRECT_DOWNLOAD_URL>"
+                }
+              ]
             }
           ]
         }
