@@ -9,29 +9,6 @@
 - 数据每日自动更新（通过 GitHub Actions）
 - 纯静态前端，无后端服务依赖
 
-## 已收录软件
-
-| 软件 | 分类 |
-|------|------|
-| 微信 | 即时通讯 |
-| QQ | 即时通讯 |
-| 企业微信 | 办公协作 |
-| 钉钉 | 办公协作 |
-| 腾讯会议 | 会议 |
-| WPS Office | 办公套件 |
-| 豆包 | AI 工具 |
-| Chrome | 浏览器 |
-| Firefox | 浏览器 |
-| Steam | 游戏平台 |
-| 阿里云盘 | 网盘 |
-| 百度网盘 | 网盘 |
-| 网易云音乐 | 音乐 |
-| QQ 音乐 | 音乐 |
-| 火绒安全 | 安全 |
-| GitHub Desktop | 开发工具 |
-| ToDesk | 远程控制 |
-| UU 远程 | 远程控制 |
-
 ## 项目结构
 
 ```
@@ -72,11 +49,17 @@ npm install
 npm run dev
 ```
 
-## 新增软件插件
+## 插件位置说明
+
+- 插件目录：`data-cli/plugin/`
+- 每个软件插件建议使用独立目录：`data-cli/plugin/<name>/<name>.go`
+- 插件注册入口：`data-cli/main.go` 中的空导入列表（`_ ".../plugin/<name>"`）
+
+新增插件时：
 
 1. 在 `data-cli/plugin/<name>/` 下创建 `<name>.go`
 2. 实现 `plugin.Plugin` 接口（`Name()` + `Fetch()`），并在 `init()` 中注册
-3. 在 `data-cli/main.go` 中添加对应的 `_ ".../<name>"` 空导入
+3. 在 `data-cli/main.go` 中添加对应的空导入
 
 ## CI/CD
 
