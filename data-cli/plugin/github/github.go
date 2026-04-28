@@ -108,7 +108,7 @@ func (p *githubPlugin) Fetch() ([]plugin.SoftwareData, error) {
 	return items, nil
 }
 
-func (p *githubPlugin) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+func (p *githubPlugin) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
 	return p.fetchReposInternal(previous)
 }
 

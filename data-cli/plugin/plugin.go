@@ -110,16 +110,16 @@ type Plugin interface {
 	Fetch() ([]SoftwareData, error)
 }
 
-// IncrementalPlugin is an optional extension for plugins that can consume
-// previous outputs and report per-item unchanged status directly.
-type IncrementalPlugin interface {
-	FetchWithPrevious(previous PreviousState) ([]FetchResult, error)
+// ComparePlugin is an optional extension for plugins that can consume
+// previous outputs and return per-item compare results.
+type ComparePlugin interface {
+	CompareWithPrevious(previous PreviousState) ([]FetchResult, error)
 }
 
-// BuildFetchResults converts plain fetch outputs to incremental fetch results.
+// BuildCompareResults converts plain fetch outputs to compare results.
 // It marks one item as unchanged when previous state contains the same
 // software ID and the versions payload is deeply equal.
-func BuildFetchResults(items []SoftwareData, previous PreviousState) []FetchResult {
+func BuildCompareResults(items []SoftwareData, previous PreviousState) []FetchResult {
 	results := make([]FetchResult, 0, len(items))
 	for _, item := range items {
 		softwareID := strings.TrimSpace(item.Item.ID)

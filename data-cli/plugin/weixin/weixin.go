@@ -272,10 +272,10 @@ func buildVariants(version string, conf rawConf) []plugin.Variant {
 	return variants
 }
 
-func (x *WeChat) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+func (x *WeChat) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
 	items, err := x.Fetch()
 	if err != nil {
 		return nil, err
 	}
-	return plugin.BuildFetchResults(items, previous), nil
+	return plugin.BuildCompareResults(items, previous), nil
 }

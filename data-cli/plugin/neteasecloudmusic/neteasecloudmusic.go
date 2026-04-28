@@ -361,10 +361,10 @@ func mustParseURL(raw string) *url.URL {
 	return u
 }
 
-func (x *NeteaseCloudMusic) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+func (x *NeteaseCloudMusic) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
 	items, err := x.Fetch()
 	if err != nil {
 		return nil, err
 	}
-	return plugin.BuildFetchResults(items, previous), nil
+	return plugin.BuildCompareResults(items, previous), nil
 }

@@ -133,10 +133,10 @@ func fileNameFromURL(raw string) string {
 	return name
 }
 
-func (x *Steam) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+func (x *Steam) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
 	items, err := x.Fetch()
 	if err != nil {
 		return nil, err
 	}
-	return plugin.BuildFetchResults(items, previous), nil
+	return plugin.BuildCompareResults(items, previous), nil
 }
