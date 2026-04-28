@@ -122,6 +122,7 @@ func main() {
 		pluginIconDownloadErrors := 0
 
 		for _, fetched := range result.Items {
+			fetched = normalizeSoftwareDataByPlatform(fetched)
 			decision, err := resolveDataByVersionDecision(previousState, fetched, *skipUnchanged)
 			if err != nil {
 				log.Printf("[%s] resolve data by version: %v", p.Name(), err)
@@ -696,6 +697,51 @@ func versionsEqual(a, b []plugin.Version) bool {
 	return reflect.DeepEqual(a, b)
 }
 
+func normalizeSoftwareDataByPlatform(data plugin.SoftwareData) plugin.SoftwareData {
+	data.Versions = normalizeVersionsByPlatform(data.Versions)
+	return data
+}
+
+func normalizeVersionsByPlatform(versions []plugin.Version) []plugin.Version {
+	out := make([]plugin.Version, 0, len(versions))
+	for _, version := range versions {
+		v := version
+		v.Variants = normalizeVariantsByPlatform(version.Variants)
+		out = append(out, v)
+	}
+	return out
+}
+
+func normalizeVariantsByPlatform(variants []plugin.Variant) []plugin.Variant {
+	if len(variants) <= 1 {
+		return variants
+	}
+
+	grouped := make(map[string][]plugin.Variant)
+	platformOrder := make([]string, 0, len(variants))
+	for _, variant := range variants {
+		platform := strings.TrimSpace(variant.Platform)
+		if platform == "" {
+			platform = "Unknown"
+		}
+		if _, ok := grouped[platform]; !ok {
+			platformOrder = append(platformOrder, platform)
+		}
+		grouped[platform] = append(grouped[platform], variant)
+	}
+
+	sort.Strings(platformOrder)
+	out := make([]plugin.Variant, 0, len(variants))
+	for _, platform := range platformOrder {
+		group := grouped[platform]
+		sort.SliceStable(group, func(i, j int) bool {
+			return strings.ToLower(strings.TrimSpace(group[i].Architecture)) < strings.ToLower(strings.TrimSpace(group[j].Architecture))
+		})
+		out = append(out, group...)
+	}
+	return out
+}
+
 type versionDecision struct {
 	Changed       bool
 	Result        plugin.SoftwareData
@@ -715,17 +761,24 @@ func resolveDataByVersionDecision(previous plugin.PreviousState, fetched plugin.
 	}
 
 	oldPayload, hasOldPayload := previous.Versions[softwareID]
+	oldNormalizedVersions := normalizeVersionsByPlatform(oldPayload.Versions)
+	entryNormalizedVersions := normalizeVersionsByPlatform(entry.Versions)
+	entry.Versions = entryNormalizedVersions
 	if !hasOldPayload {
 		return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "no-previous-version"}, nil
 	}
 
-	if !versionsEqual(oldPayload.Versions, entry.Versions) {
+	if !versionsEqual(oldNormalizedVersions, entryNormalizedVersions) {
 		return versionDecision{Changed: true, Result: entry, SkipSupported: true, Reason: "version-changed"}, nil
+	}
+
+	if !versionsEqual(oldPayload.Versions, oldNormalizedVersions) {
+		return versionDecision{Changed: true, Result: entry, SkipSupported: true, Reason: "structure-normalized"}, nil
 	}
 
 	oldItem, hasOldItem := previous.Items[softwareID]
 	if hasOldItem {
-		return versionDecision{Changed: false, Result: plugin.SoftwareData{Item: oldItem, Versions: oldPayload.Versions}, SkipSupported: true, Reason: "version-unchanged"}, nil
+		return versionDecision{Changed: false, Result: plugin.SoftwareData{Item: oldItem, Versions: oldNormalizedVersions}, SkipSupported: true, Reason: "version-unchanged"}, nil
 	}
 
 	return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "previous-item-missing"}, nil

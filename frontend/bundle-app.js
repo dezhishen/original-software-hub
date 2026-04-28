@@ -360,64 +360,64 @@
   function detectCurrentArchitecture() {
     const ua = String(navigator.userAgent || "").toLowerCase();
     const uaArch = String((navigator.userAgentData && navigator.userAgentData.architecture) || "").toLowerCase();
-    const source = `${uaArch} ${ua}`;
+    const platform = String((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "").toLowerCase();
+    const bitness = String((navigator.userAgentData && navigator.userAgentData.bitness) || "").toLowerCase();
+    const source = `${uaArch} ${platform} ${bitness} ${ua}`;
 
     if (/arm64|aarch64|armv8/.test(source)) return { id: "arm64", label: "ARM64" };
-    if (/x86_64|win64|wow64|amd64|x64/.test(source)) return { id: "x64", label: "x64" };
-    if (/i[3-6]86|x86/.test(source)) return { id: "x86", label: "x86" };
+    if (/loongarch64|loong64/.test(source)) return { id: "loong64", label: "LoongArch64" };
+    if (/x86_64|x86-64|win64|wow64|amd64|x64|\b64\b/.test(source)) return { id: "x64", label: "x64" };
+    if (/i[3-6]86|\bx86\b|\b32\b/.test(source)) return { id: "x86", label: "x86" };
     return { id: "universal", label: "通用" };
   }
 
-  function platformMatchesCurrent(variantPlatform, currentPlatformId) {
+  function normalizePlatformId(variantPlatform) {
     const platform = String(variantPlatform || "").toLowerCase();
-    if (!platform) return false;
+    if (!platform) return "other";
+    if (platform.includes("windows")) return "windows";
+    if (platform.includes("mac")) return "macos";
+    if (platform.includes("linux")) return "linux";
+    if (platform.includes("android")) return "android";
+    if (platform.includes("ios") || platform.includes("iphone") || platform.includes("ipad")) return "ios";
+    if (platform.includes("web")) return "web";
+    return "other";
+  }
 
-    switch (currentPlatformId) {
-      case "windows":
-        return platform.includes("windows");
-      case "macos":
-        return platform.includes("mac");
-      case "linux":
-        return platform.includes("linux");
-      case "android":
-        return platform.includes("android");
-      case "ios":
-        return platform.includes("ios") || platform.includes("iphone") || platform.includes("ipad");
-      case "web":
-        return platform.includes("web");
-      default:
-        return false;
-    }
+  function normalizeArchitectureId(variantArchitecture) {
+    const architecture = String(variantArchitecture || "").toLowerCase();
+    if (!architecture) return "unknown";
+    if (architecture.includes("universal") || architecture.includes("通用")) return "universal";
+    if (/arm64|aarch64|armv8/.test(architecture)) return "arm64";
+    if (/loongarch64|loong64/.test(architecture)) return "loong64";
+    if (/x86_64|x86-64|amd64|x64/.test(architecture)) return "x64";
+    if (/i[3-6]86|\bx86\b|32/.test(architecture)) return "x86";
+    return "unknown";
+  }
+
+  function platformMatchesCurrent(variantPlatform, currentPlatformId) {
+    return normalizePlatformId(variantPlatform) === currentPlatformId;
   }
 
   function architectureScore(variantArchitecture, currentArchId) {
-    const architecture = String(variantArchitecture || "").toLowerCase();
-    const has = (keyword) => architecture.includes(keyword);
+    const archId = normalizeArchitectureId(variantArchitecture);
+    if (archId === "universal") return 85;
+    if (archId === currentArchId) return 100;
 
-    if (has("universal") || has("通用")) return 85;
+    if (currentArchId === "x64" && archId === "x86") return 70;
+    if (currentArchId === "arm64" && archId === "x64") return 55;
+    if (currentArchId === "x86" && archId === "x64") return 60;
+    if (archId === "unknown") return 45;
+    return 40;
+  }
 
-    switch (currentArchId) {
-      case "arm64":
-        if (has("arm64") || has("arm")) return 100;
-        if (has("x64") || has("amd64")) return 55;
-        if (has("x86") || has("32")) return 35;
-        break;
-      case "x64":
-        if (has("x64") || has("amd64")) return 100;
-        if (has("x86/x64")) return 100;
-        if (has("x86") || has("32")) return 70;
-        if (has("arm64") || has("arm")) return 40;
-        break;
-      case "x86":
-        if (has("x86") || has("32")) return 100;
-        if (has("x64") || has("amd64")) return 60;
-        if (has("arm64") || has("arm")) return 30;
-        break;
-      default:
-        return 50;
-    }
-
-    return 50;
+  function groupVariantsByPlatform(variants) {
+    const groups = new Map();
+    (variants || []).forEach((variant) => {
+      const platformLabel = String(variant?.platform || "").trim() || "其他";
+      if (!groups.has(platformLabel)) groups.set(platformLabel, []);
+      groups.get(platformLabel).push(variant);
+    });
+    return groups;
   }
 
   function renderSoftwareDetail({ container, software, versions, onBack, onNavigateHome }) {
@@ -502,24 +502,32 @@
               href="${escapeAttr(versionItem.officialUrl)}">前往官网发布页</a>`
         : "";
 
-      const sortedVariants = [...(versionItem.variants || [])].sort((left, right) => {
-        const leftPlatformScore = platformMatchesCurrent(left.platform, currentPlatform.id) ? 1 : 0;
-        const rightPlatformScore = platformMatchesCurrent(right.platform, currentPlatform.id) ? 1 : 0;
-        if (leftPlatformScore !== rightPlatformScore) return rightPlatformScore - leftPlatformScore;
+      const platformGroups = groupVariantsByPlatform(versionItem.variants || []);
+      const platformTabs = [...platformGroups.keys()].sort((a, b) => {
+        const aCurrent = normalizePlatformId(a) === currentPlatform.id ? 1 : 0;
+        const bCurrent = normalizePlatformId(b) === currentPlatform.id ? 1 : 0;
+        if (aCurrent !== bCurrent) return bCurrent - aCurrent;
+        return String(a).localeCompare(String(b), "zh-CN");
+      });
+      const defaultPlatform = platformTabs[0] || "";
 
-        if (leftPlatformScore === 1) {
+      const tabButtons = platformTabs.map((platformLabel, index) => {
+        const isDefault = platformLabel === defaultPlatform;
+        const isCurrent = normalizePlatformId(platformLabel) === currentPlatform.id;
+        return `<button type="button" data-platform-tab="${escapeAttr(platformLabel)}" class="rounded-md border px-2.5 py-1 text-[11px] font-semibold transition ${isDefault ? "border-brand-500/45 bg-brand-50 text-brand-700 dark:border-brand-500/50 dark:bg-slate-700/70 dark:text-brand-300" : "border-slate-300 bg-white/80 text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/70 dark:text-slate-300"}">${escapeHtml(platformLabel)}${isCurrent ? " <span class=\"ml-1 text-[10px]\">当前</span>" : ""}</button>`;
+      }).join("");
+
+      const tabPanels = platformTabs.map((platformLabel) => {
+        const variants = [...(platformGroups.get(platformLabel) || [])].sort((left, right) => {
           const leftArchScore = architectureScore(left.architecture, currentArchitecture.id);
           const rightArchScore = architectureScore(right.architecture, currentArchitecture.id);
           if (leftArchScore !== rightArchScore) return rightArchScore - leftArchScore;
-        }
+          return String(left.architecture || "").localeCompare(String(right.architecture || ""), "zh-CN");
+        });
+        const firstVariant = variants[0];
+        const hasCurrentDeviceRow = !!firstVariant && platformMatchesCurrent(platformLabel, currentPlatform.id);
 
-        return 0;
-      });
-
-      const firstVariant = sortedVariants[0];
-      const hasCurrentDeviceRow = !!firstVariant && platformMatchesCurrent(firstVariant.platform, currentPlatform.id);
-
-      const variantRows = sortedVariants
+        const variantRows = variants
         .map((variant, index) => {
           const isCurrentDevice = hasCurrentDeviceRow && index === 0;
           const directLinks = (variant.links || [])
@@ -548,25 +556,49 @@
         })
         .join("");
 
+        return `<div data-platform-panel="${escapeAttr(platformLabel)}" class="${platformLabel === defaultPlatform ? "" : "hidden"}">
+          ${
+            variantRows
+              ? `<div class="overflow-x-auto">
+                  <table class="min-w-full border-collapse">
+                    <thead class="bg-transparent dark:bg-transparent">
+                      <tr><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-transparent dark:bg-transparent">${variantRows}</tbody>
+                  </table>
+                </div>`
+              : '<p class="px-3 py-4 text-sm text-slate-600 dark:text-slate-400">该平台暂无构建信息。</p>'
+          }
+        </div>`;
+      }).join("");
+
       card.innerHTML = `
         <div class="flex flex-wrap items-center gap-2 border-b border-slate-200/50 bg-white/10 px-3 py-2.5 dark:border-slate-700/50 dark:bg-slate-800/10">
           <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(versionItem.version || "-")}</span>
           <span class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
           ${officialBtn}
         </div>
-        ${
-          variantRows
-            ? `<div class="overflow-x-auto">
-                <table class="min-w-full border-collapse">
-                  <thead class="bg-transparent dark:bg-transparent">
-                    <tr><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">平台</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">架构</th><th class="px-2.5 py-2 text-left text-[11px] font-semibold tracking-wide text-slate-600 dark:text-slate-300">下载入口</th></tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-200 dark:divide-slate-700 bg-transparent dark:bg-transparent">${variantRows}</tbody>
-                </table>
-              </div>`
-            : '<p class="px-3 py-4 text-sm text-slate-600 dark:text-slate-400">该版本暂无构建信息。</p>'
-        }
+        ${platformTabs.length > 1 ? `<div class="flex flex-wrap gap-1.5 border-b border-slate-200/50 px-3 py-2 dark:border-slate-700/50">${tabButtons}</div>` : ""}
+        <div class="platform-panels">${tabPanels}</div>
       `;
+
+      if (platformTabs.length > 1) {
+        const buttons = card.querySelectorAll("[data-platform-tab]");
+        const panels = card.querySelectorAll("[data-platform-panel]");
+        const activate = (platformLabel) => {
+          buttons.forEach((btn) => {
+            const active = btn.getAttribute("data-platform-tab") === platformLabel;
+            btn.className = `rounded-md border px-2.5 py-1 text-[11px] font-semibold transition ${active ? "border-brand-500/45 bg-brand-50 text-brand-700 dark:border-brand-500/50 dark:bg-slate-700/70 dark:text-brand-300" : "border-slate-300 bg-white/80 text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/70 dark:text-slate-300"}`;
+          });
+          panels.forEach((panel) => {
+            const active = panel.getAttribute("data-platform-panel") === platformLabel;
+            panel.classList.toggle("hidden", !active);
+          });
+        };
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => activate(btn.getAttribute("data-platform-tab") || defaultPlatform));
+        });
+      }
 
       versionsContainer.appendChild(card);
     });
