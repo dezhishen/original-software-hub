@@ -264,3 +264,11 @@ func fileNameFromURL(raw string) string {
 	}
 	return name
 }
+
+func (x *QQ) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+	items, err := x.Fetch()
+	if err != nil {
+		return nil, err
+	}
+	return plugin.BuildFetchResults(items, previous), nil
+}

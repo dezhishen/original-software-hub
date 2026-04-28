@@ -245,3 +245,11 @@ func parseReleaseDate(s string) string {
 	}
 	return fmt.Sprintf("%s-%s-%s", m[1], m[2], m[3])
 }
+
+func (x *UURemote) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+	items, err := x.Fetch()
+	if err != nil {
+		return nil, err
+	}
+	return plugin.BuildFetchResults(items, previous), nil
+}

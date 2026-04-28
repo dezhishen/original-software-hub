@@ -220,3 +220,11 @@ func releaseDateFromItem(item *html.Node) string {
 func normalizeSpace(s string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(s)), " ")
 }
+
+func (x *QQMusic) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+	items, err := x.Fetch()
+	if err != nil {
+		return nil, err
+	}
+	return plugin.BuildFetchResults(items, previous), nil
+}

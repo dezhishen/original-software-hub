@@ -69,3 +69,11 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
+
+func (x *Chrome) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+	items, err := x.Fetch()
+	if err != nil {
+		return nil, err
+	}
+	return plugin.BuildFetchResults(items, previous), nil
+}
