@@ -116,11 +116,3 @@ func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
-
-func (x *Doubao) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	items, err := x.Fetch()
-	if err != nil {
-		return nil, err
-	}
-	return plugin.BuildCompareResults(items, previous), nil
-}

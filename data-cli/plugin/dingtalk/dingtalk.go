@@ -248,11 +248,3 @@ func isDigits(s string) bool {
 	}
 	return true
 }
-
-func (x *DingTalk) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	items, err := x.Fetch()
-	if err != nil {
-		return nil, err
-	}
-	return plugin.BuildCompareResults(items, previous), nil
-}

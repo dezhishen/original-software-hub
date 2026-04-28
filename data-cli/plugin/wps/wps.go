@@ -342,11 +342,3 @@ func parseSemverParts(v string) []int {
 	}
 	return out
 }
-
-func (x *WPS) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	items, err := x.Fetch()
-	if err != nil {
-		return nil, err
-	}
-	return plugin.BuildCompareResults(items, previous), nil
-}

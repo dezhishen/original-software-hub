@@ -360,11 +360,3 @@ func mustParseURL(raw string) *url.URL {
 	}
 	return u
 }
-
-func (x *NeteaseCloudMusic) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	items, err := x.Fetch()
-	if err != nil {
-		return nil, err
-	}
-	return plugin.BuildCompareResults(items, previous), nil
-}

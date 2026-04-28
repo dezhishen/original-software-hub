@@ -176,11 +176,3 @@ func parsePublishDate(raw string) string {
 	}
 	return t.Format("2006-01-02")
 }
-
-func (x *BaiduNetdisk) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	items, err := x.Fetch()
-	if err != nil {
-		return nil, err
-	}
-	return plugin.BuildCompareResults(items, previous), nil
-}

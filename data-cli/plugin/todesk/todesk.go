@@ -372,11 +372,3 @@ func firstNonEmpty(values ...string) string {
 	}
 	return ""
 }
-
-func (x *ToDesk) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	items, err := x.Fetch()
-	if err != nil {
-		return nil, err
-	}
-	return plugin.BuildCompareResults(items, previous), nil
-}

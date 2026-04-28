@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"reflect"
 	"sort"
 	"strings"
 
@@ -97,30 +96,16 @@ func (p *githubPlugin) Name() string {
 }
 
 func (p *githubPlugin) Fetch() ([]plugin.SoftwareData, error) {
-	results, err := p.fetchReposInternal(plugin.PreviousState{})
+	results, err := p.fetchReposInternal()
 	if err != nil {
 		return nil, err
 	}
-
-	items := make([]plugin.SoftwareData, 0, len(results))
-	for _, r := range results {
-		items = append(items, r.Data)
-	}
-	return items, nil
+	return results, nil
 }
 
-func (p *githubPlugin) CompareWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	return p.fetchReposInternal(previous)
-}
-
-func (p *githubPlugin) fetchReposInternal(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
-	fetchResults := make([]plugin.FetchResult, 0, len(p.repos))
-	unchangedCount := 0
-	mode := "fresh"
-	if previous.Versions != nil && len(previous.Versions) > 0 {
-		mode = "compare"
-	}
-	log.Printf("[github] fetch start repos=%d mode=%s previousVersions=%d", len(p.repos), mode, len(previous.Versions))
+func (p *githubPlugin) fetchReposInternal() ([]plugin.SoftwareData, error) {
+	items := make([]plugin.SoftwareData, 0, len(p.repos))
+	log.Printf("[github] fetch start repos=%d", len(p.repos))
 
 	for _, repo := range p.repos {
 		release, err := util.FetchGitHubLatestReleaseWithToken(repo.Owner, repo.Repo, p.token)
@@ -147,21 +132,12 @@ func (p *githubPlugin) fetchReposInternal(previous plugin.PreviousState) ([]plug
 				},
 			},
 		}
-		unchanged := false
-		if previous.Versions != nil {
-			if oldPayload, ok := previous.Versions[repo.ID]; ok {
-				unchanged = reflect.DeepEqual(oldPayload.Versions, data.Versions)
-			}
-		}
-		if unchanged {
-			unchangedCount++
-		}
-		log.Printf("[github] repo id=%s owner=%s repo=%s version=%s assets=%d variants=%d unchanged=%t", repo.ID, repo.Owner, repo.Repo, data.Versions[0].Version, len(release.Assets), len(data.Versions[0].Variants), unchanged)
-		fetchResults = append(fetchResults, plugin.FetchResult{Data: data, Unchanged: unchanged})
+		log.Printf("[github] repo id=%s owner=%s repo=%s version=%s assets=%d variants=%d", repo.ID, repo.Owner, repo.Repo, data.Versions[0].Version, len(release.Assets), len(data.Versions[0].Variants))
+		items = append(items, data)
 	}
-	log.Printf("[github] fetch done repos=%d unchanged=%d changed=%d", len(p.repos), unchangedCount, len(p.repos)-unchangedCount)
+	log.Printf("[github] fetch done repos=%d", len(p.repos))
 
-	return fetchResults, nil
+	return items, nil
 }
 
 func loadConfig() (*pluginConfig, error) {

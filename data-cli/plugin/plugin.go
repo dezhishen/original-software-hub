@@ -3,8 +3,6 @@
 package plugin
 
 import (
-	"reflect"
-	"strings"
 	"sync"
 )
 
@@ -93,13 +91,6 @@ type PreviousState struct {
 	Items    map[string]SoftwareItem
 }
 
-// FetchResult is one plugin result item with an unchanged hint.
-// Unchanged is meaningful only when the caller enables skip behavior.
-type FetchResult struct {
-	Data      SoftwareData
-	Unchanged bool
-}
-
 // ── Plugin interface ──────────────────────────────────────────────────────────
 
 // Plugin is implemented by each data source plugin package.
@@ -108,30 +99,6 @@ type Plugin interface {
 	Name() string
 	// Fetch returns one or more software data items.
 	Fetch() ([]SoftwareData, error)
-}
-
-// ComparePlugin is an optional extension for plugins that can consume
-// previous outputs and return per-item compare results.
-type ComparePlugin interface {
-	CompareWithPrevious(previous PreviousState) ([]FetchResult, error)
-}
-
-// BuildCompareResults converts plain fetch outputs to compare results.
-// It marks one item as unchanged when previous state contains the same
-// software ID and the versions payload is deeply equal.
-func BuildCompareResults(items []SoftwareData, previous PreviousState) []FetchResult {
-	results := make([]FetchResult, 0, len(items))
-	for _, item := range items {
-		softwareID := strings.TrimSpace(item.Item.ID)
-		unchanged := false
-		if softwareID != "" && previous.Versions != nil {
-			if oldPayload, ok := previous.Versions[softwareID]; ok {
-				unchanged = reflect.DeepEqual(oldPayload.Versions, item.Versions)
-			}
-		}
-		results = append(results, FetchResult{Data: item, Unchanged: unchanged})
-	}
-	return results
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────

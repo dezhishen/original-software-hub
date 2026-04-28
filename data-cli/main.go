@@ -94,7 +94,7 @@ func main() {
 	updatedAt := nowUTC.Format(time.RFC3339)
 
 	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
-	fetchResults := fetchPluginsConcurrently(plugins, *concurrency, *scheduleOrder, previousState)
+	fetchResults := fetchPluginsConcurrently(plugins, *concurrency, *scheduleOrder)
 	unchangedCount := 0
 	writtenCount := 0
 	totalEntries := 0
@@ -110,11 +110,6 @@ func main() {
 			continue
 		}
 
-		entries := make([]plugin.FetchResult, 0, len(result.Items))
-		for _, item := range result.Items {
-			entries = append(entries, plugin.FetchResult{Data: item})
-		}
-
 		pluginItemCount := 0
 		pluginUnchangedCount := 0
 		pluginWrittenCount := 0
@@ -122,7 +117,7 @@ func main() {
 		pluginIconDownloadSuccess := 0
 		pluginIconDownloadErrors := 0
 
-		for _, fetched := range entries {
+		for _, fetched := range result.Items {
 			changed, entry, err := resolveDataByVersion(previousState, fetched, *skipUnchanged)
 			if err != nil {
 				log.Printf("[%s] resolve data by version: %v", p.Name(), err)
@@ -419,7 +414,7 @@ func isRemoteHTTPURL(raw string) bool {
 	return scheme == "http" || scheme == "https"
 }
 
-func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int, order string, previous plugin.PreviousState) []pluginFetchResult {
+func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int, order string) []pluginFetchResult {
 	if len(plugins) == 0 {
 		return nil
 	}
@@ -445,7 +440,7 @@ func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int, order
 		for job := range jobs {
 			start := time.Now()
 			log.Printf("[scheduler] start plugin=%s order=%d worker=%d", job.Plugin.Name(), job.Index, workerID)
-			outcome, attempts, err := fetchWithRetry(job.Plugin, previous, defaultFetchRetries, defaultRetryBaseDelay)
+			outcome, attempts, err := fetchWithRetry(job.Plugin, defaultFetchRetries, defaultRetryBaseDelay)
 			duration := time.Since(start)
 			if err != nil {
 				log.Printf("[scheduler] done plugin=%s status=failed attempts=%d duration=%s err=%v", job.Plugin.Name(), attempts, duration, err)
@@ -492,7 +487,7 @@ type pluginFetchOutcome struct {
 	Items []plugin.SoftwareData
 }
 
-func fetchWithRetry(p plugin.Plugin, previous plugin.PreviousState, maxAttempts int, baseDelay time.Duration) (pluginFetchOutcome, int, error) {
+func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) (pluginFetchOutcome, int, error) {
 	if maxAttempts < 1 {
 		maxAttempts = 1
 	}
@@ -500,7 +495,6 @@ func fetchWithRetry(p plugin.Plugin, previous plugin.PreviousState, maxAttempts 
 		baseDelay = time.Second
 	}
 
-	_ = previous
 	var lastErr error
 	log.Printf("[%s] fetch mode=fetch", p.Name())
 	for attempt := 1; attempt <= maxAttempts; attempt++ {
@@ -691,8 +685,8 @@ func versionsEqual(a, b []plugin.Version) bool {
 
 // resolveDataByVersion centralizes unchanged/changed decision and previous-data reuse.
 // Return values follow: changed, result, err.
-func resolveDataByVersion(previous plugin.PreviousState, fetched plugin.FetchResult, skipUnchanged bool) (bool, plugin.SoftwareData, error) {
-	entry := fetched.Data
+func resolveDataByVersion(previous plugin.PreviousState, fetched plugin.SoftwareData, skipUnchanged bool) (bool, plugin.SoftwareData, error) {
+	entry := fetched
 	softwareID := strings.TrimSpace(entry.Item.ID)
 	if softwareID == "" {
 		return false, plugin.SoftwareData{}, fmt.Errorf("empty software id")
