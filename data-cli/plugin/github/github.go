@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -95,7 +96,24 @@ func (p *githubPlugin) Name() string {
 }
 
 func (p *githubPlugin) Fetch() ([]plugin.SoftwareData, error) {
-	results := make([]plugin.SoftwareData, 0, len(p.repos))
+	results, err := p.fetchReposInternal(plugin.PreviousState{})
+	if err != nil {
+		return nil, err
+	}
+
+	items := make([]plugin.SoftwareData, 0, len(results))
+	for _, r := range results {
+		items = append(items, r.Data)
+	}
+	return items, nil
+}
+
+func (p *githubPlugin) FetchWithPrevious(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+	return p.fetchReposInternal(previous)
+}
+
+func (p *githubPlugin) fetchReposInternal(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
+	fetchResults := make([]plugin.FetchResult, 0, len(p.repos))
 
 	for _, repo := range p.repos {
 		release, err := util.FetchGitHubLatestReleaseWithToken(repo.Owner, repo.Repo, p.token)
@@ -103,7 +121,7 @@ func (p *githubPlugin) Fetch() ([]plugin.SoftwareData, error) {
 			return nil, fmt.Errorf("fetch latest release for %s/%s: %w", repo.Owner, repo.Repo, err)
 		}
 
-		results = append(results, plugin.SoftwareData{
+		data := plugin.SoftwareData{
 			Item: plugin.SoftwareItem{
 				ID:              repo.ID,
 				Name:            repo.Name,
@@ -121,10 +139,17 @@ func (p *githubPlugin) Fetch() ([]plugin.SoftwareData, error) {
 					Variants:    buildVariants(release.Assets, repo.Assets),
 				},
 			},
-		})
+		}
+		unchanged := false
+		if previous.Versions != nil {
+			if oldPayload, ok := previous.Versions[repo.ID]; ok {
+				unchanged = reflect.DeepEqual(oldPayload.Versions, data.Versions)
+			}
+		}
+		fetchResults = append(fetchResults, plugin.FetchResult{Data: data, Unchanged: unchanged})
 	}
 
-	return results, nil
+	return fetchResults, nil
 }
 
 func loadConfig() (*pluginConfig, error) {

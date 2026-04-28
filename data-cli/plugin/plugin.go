@@ -82,6 +82,20 @@ type SoftwareData struct {
 	Versions []Version
 }
 
+// PreviousState carries last run outputs for incremental plugins.
+// Maps are keyed by software ID.
+type PreviousState struct {
+	Versions map[string]VersionPayload
+	Items    map[string]SoftwareItem
+}
+
+// FetchResult is one plugin result item with an unchanged hint.
+// Unchanged is meaningful only when the caller enables skip behavior.
+type FetchResult struct {
+	Data      SoftwareData
+	Unchanged bool
+}
+
 // ── Plugin interface ──────────────────────────────────────────────────────────
 
 // Plugin is implemented by each data source plugin package.
@@ -90,6 +104,12 @@ type Plugin interface {
 	Name() string
 	// Fetch returns one or more software data items.
 	Fetch() ([]SoftwareData, error)
+}
+
+// IncrementalPlugin is an optional extension for plugins that can consume
+// previous outputs and report per-item unchanged status directly.
+type IncrementalPlugin interface {
+	FetchWithPrevious(previous PreviousState) ([]FetchResult, error)
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────
