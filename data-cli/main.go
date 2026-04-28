@@ -46,12 +46,14 @@ import (
 )
 
 func main() {
+	runStartedAt := time.Now()
 	outDir := flag.String("out", "../frontend/data/json", "Output directory for index.json, software-list.json and versions/")
 	pluginsArg := flag.String("plugins", "all", "Plugins to run: all or comma-separated names (e.g. weixin,qq)")
 	concurrency := flag.Int("concurrency", 3, "Maximum number of plugins to run concurrently")
 	scheduleOrder := flag.String("schedule-order", "priority", "Plugin scheduling order: input,alpha,priority")
 	skipUnchanged := flag.Bool("skip-unchanged", true, "Skip write/icon steps when software versions are unchanged from previous output")
 	flag.Parse()
+	log.Printf("[run] start outDir=%s plugins=%s concurrency=%d order=%s skipUnchanged=%t", *outDir, *pluginsArg, *concurrency, *scheduleOrder, *skipUnchanged)
 
 	jsonDir := filepath.Join(*outDir, "versions")
 	frontendRootDir := filepath.Dir(filepath.Dir(*outDir))
@@ -68,6 +70,7 @@ func main() {
 		Versions: prevVersions,
 		Items:    prevItems,
 	}
+	log.Printf("[state] loaded previous versions=%d listItems=%d hasGeneratedAt=%t", len(prevVersions), len(prevItems), strings.TrimSpace(prevIndex.Meta.GeneratedAt) != "")
 
 	if err := ensureDir(jsonDir); err != nil {
 		log.Fatalf("ensure json dir: %v", err)
@@ -94,11 +97,21 @@ func main() {
 	fetchResults := fetchPluginsConcurrently(plugins, *concurrency, *scheduleOrder, previousState)
 	unchangedCount := 0
 	writtenCount := 0
+	totalEntries := 0
+	pluginFetchErrors := 0
+	pluginsUsingCompare := 0
+	versionWriteErrors := 0
+	iconDownloadSuccess := 0
+	iconDownloadErrors := 0
 	for _, result := range fetchResults {
 		p := result.Plugin
 		if result.Err != nil {
+			pluginFetchErrors++
 			log.Printf("[%s] Fetch error: %v", p.Name(), result.Err)
 			continue
+		}
+		if result.UsedCompare {
+			pluginsUsingCompare++
 		}
 
 		entries := make([]plugin.FetchResult, 0, len(result.Items)+len(result.ComparedItems))
@@ -109,6 +122,13 @@ func main() {
 				entries = append(entries, plugin.FetchResult{Data: item})
 			}
 		}
+
+		pluginItemCount := 0
+		pluginUnchangedCount := 0
+		pluginWrittenCount := 0
+		pluginVersionWriteErrors := 0
+		pluginIconDownloadSuccess := 0
+		pluginIconDownloadErrors := 0
 
 		for _, fetched := range entries {
 			entry := fetched.Data
@@ -138,6 +158,7 @@ func main() {
 
 			if unchanged {
 				unchangedCount++
+				pluginUnchangedCount++
 				log.Printf("[%s/%s] unchanged versions, skip write", p.Name(), softwareID)
 			} else {
 				versionPayload := plugin.VersionPayload{
@@ -146,10 +167,13 @@ func main() {
 					Versions:   entry.Versions,
 				}
 				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), versionPayload); err != nil {
+					versionWriteErrors++
+					pluginVersionWriteErrors++
 					log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
 					continue
 				}
 				writtenCount++
+				pluginWrittenCount++
 			}
 
 			item := entry.Item
@@ -159,12 +183,16 @@ func main() {
 				}
 			} else {
 				if localIcon, err := iconDownloader.Download(softwareID, item.Icon); err != nil {
+					iconDownloadErrors++
+					pluginIconDownloadErrors++
 					log.Printf("[%s/%s] download icon: %v", p.Name(), softwareID, err)
 					if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
 						item.Icon = prevItem.Icon
 					}
 				} else {
 					item.Icon = localIcon
+					iconDownloadSuccess++
+					pluginIconDownloadSuccess++
 				}
 			}
 
@@ -175,7 +203,11 @@ func main() {
 				TimeoutMs: 8000,
 			}
 			listItems = append(listItems, item)
+			pluginItemCount++
+			totalEntries++
 		}
+
+		log.Printf("[plugin-summary] name=%s mode=%s items=%d unchanged=%d written=%d writeErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d", p.Name(), map[bool]string{true: "compare", false: "fetch"}[result.UsedCompare], pluginItemCount, pluginUnchangedCount, pluginWrittenCount, pluginVersionWriteErrors, pluginIconDownloadSuccess, pluginIconDownloadErrors)
 	}
 
 	sort.SliceStable(listItems, func(i, j int) bool {
@@ -221,7 +253,8 @@ func main() {
 		log.Fatalf("write index.json: %v", err)
 	}
 
-	log.Printf("[summary] listItems=%d versionsWritten=%d versionsUnchanged=%d listChanged=%t dataChanged=%t", len(listItems), writtenCount, unchangedCount, listChanged, dataChanged)
+	runDuration := time.Since(runStartedAt)
+	log.Printf("[summary] duration=%s selectedPlugins=%d pluginFetchErrors=%d pluginsUsingCompare=%d processedEntries=%d listItems=%d versionsWritten=%d versionsUnchanged=%d versionWriteErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d listChanged=%t dataChanged=%t", runDuration, len(plugins), pluginFetchErrors, pluginsUsingCompare, totalEntries, len(listItems), writtenCount, unchangedCount, versionWriteErrors, iconDownloadSuccess, iconDownloadErrors, listChanged, dataChanged)
 	fmt.Println("Done.")
 }
 
@@ -503,10 +536,17 @@ func fetchWithRetry(p plugin.Plugin, previous plugin.PreviousState, maxAttempts 
 	}
 
 	var lastErr error
+	comparer, hasCompare := p.(plugin.ComparePlugin)
+	if hasCompare {
+		log.Printf("[%s] fetch mode=compare previousVersions=%d previousItems=%d", p.Name(), len(previous.Versions), len(previous.Items))
+	} else {
+		log.Printf("[%s] fetch mode=plain", p.Name())
+	}
 	for attempt := 1; attempt <= maxAttempts; attempt++ {
-		if comparer, ok := p.(plugin.ComparePlugin); ok {
+		if hasCompare {
 			results, err := comparer.CompareWithPrevious(previous)
 			if err == nil {
+				log.Printf("[%s] compare success attempt=%d items=%d", p.Name(), attempt, len(results))
 				return pluginFetchOutcome{ComparedItems: results, UsedCompare: true}, attempt, nil
 			}
 			lastErr = err

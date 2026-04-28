@@ -88,6 +88,7 @@ func init() {
 		return
 	}
 
+	log.Printf("[github] plugin initialized repos=%d tokenConfigured=%t", len(repos), token != "")
 	plugin.Register(&githubPlugin{repos: repos, token: token})
 }
 
@@ -114,6 +115,12 @@ func (p *githubPlugin) CompareWithPrevious(previous plugin.PreviousState) ([]plu
 
 func (p *githubPlugin) fetchReposInternal(previous plugin.PreviousState) ([]plugin.FetchResult, error) {
 	fetchResults := make([]plugin.FetchResult, 0, len(p.repos))
+	unchangedCount := 0
+	mode := "fresh"
+	if previous.Versions != nil && len(previous.Versions) > 0 {
+		mode = "compare"
+	}
+	log.Printf("[github] fetch start repos=%d mode=%s previousVersions=%d", len(p.repos), mode, len(previous.Versions))
 
 	for _, repo := range p.repos {
 		release, err := util.FetchGitHubLatestReleaseWithToken(repo.Owner, repo.Repo, p.token)
@@ -146,8 +153,13 @@ func (p *githubPlugin) fetchReposInternal(previous plugin.PreviousState) ([]plug
 				unchanged = reflect.DeepEqual(oldPayload.Versions, data.Versions)
 			}
 		}
+		if unchanged {
+			unchangedCount++
+		}
+		log.Printf("[github] repo id=%s owner=%s repo=%s version=%s assets=%d variants=%d unchanged=%t", repo.ID, repo.Owner, repo.Repo, data.Versions[0].Version, len(release.Assets), len(data.Versions[0].Variants), unchanged)
 		fetchResults = append(fetchResults, plugin.FetchResult{Data: data, Unchanged: unchanged})
 	}
+	log.Printf("[github] fetch done repos=%d unchanged=%d changed=%d", len(p.repos), unchangedCount, len(p.repos)-unchangedCount)
 
 	return fetchResults, nil
 }
