@@ -131,32 +131,15 @@ func main() {
 		pluginIconDownloadErrors := 0
 
 		for _, fetched := range entries {
-			entry := fetched.Data
-			softwareID := entry.Item.ID
-			if softwareID == "" {
-				log.Printf("[%s] skip item with empty id", p.Name())
+			changed, entry, err := resolveDataByVersion(previousState, fetched, result.UsedCompare, *skipUnchanged)
+			if err != nil {
+				log.Printf("[%s] resolve data by version: %v", p.Name(), err)
 				continue
 			}
 
-			oldPayload, hasOldPayload := prevVersions[softwareID]
+			softwareID := entry.Item.ID
 			prevItem, hasPrevItem := prevItems[softwareID]
-			unchanged := false
-			if *skipUnchanged {
-				if result.UsedCompare {
-					unchanged = fetched.Unchanged
-				} else {
-					unchanged = hasOldPayload && versionsEqual(oldPayload.Versions, entry.Versions)
-				}
-			}
-
-			if unchanged && hasOldPayload && hasPrevItem {
-				entry = plugin.SoftwareData{
-					Item:     prevItem,
-					Versions: oldPayload.Versions,
-				}
-			}
-
-			if unchanged {
+			if !changed {
 				unchangedCount++
 				pluginUnchangedCount++
 				log.Printf("[%s/%s] unchanged versions, skip write", p.Name(), softwareID)
@@ -177,7 +160,7 @@ func main() {
 			}
 
 			item := entry.Item
-			if unchanged {
+			if !changed {
 				if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
 					item.Icon = prevItem.Icon
 				}
@@ -743,6 +726,40 @@ func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPay
 
 func versionsEqual(a, b []plugin.Version) bool {
 	return reflect.DeepEqual(a, b)
+}
+
+// resolveDataByVersion centralizes unchanged/changed decision and previous-data reuse.
+// Return values follow: changed, result, err.
+func resolveDataByVersion(previous plugin.PreviousState, fetched plugin.FetchResult, usedCompare bool, skipUnchanged bool) (bool, plugin.SoftwareData, error) {
+	entry := fetched.Data
+	softwareID := strings.TrimSpace(entry.Item.ID)
+	if softwareID == "" {
+		return false, plugin.SoftwareData{}, fmt.Errorf("empty software id")
+	}
+
+	if !skipUnchanged {
+		return true, entry, nil
+	}
+
+	oldPayload, hasOldPayload := previous.Versions[softwareID]
+	oldItem, hasOldItem := previous.Items[softwareID]
+	changed := true
+	if usedCompare {
+		changed = !fetched.Unchanged
+	} else {
+		changed = !(hasOldPayload && versionsEqual(oldPayload.Versions, entry.Versions))
+	}
+
+	if changed {
+		return true, entry, nil
+	}
+
+	if hasOldPayload && hasOldItem {
+		return false, plugin.SoftwareData{Item: oldItem, Versions: oldPayload.Versions}, nil
+	}
+
+	// Compare says unchanged, but previous data is incomplete. Fall back to current data.
+	return true, entry, nil
 }
 
 func sortKeyForItem(item plugin.SoftwareItem) string {
