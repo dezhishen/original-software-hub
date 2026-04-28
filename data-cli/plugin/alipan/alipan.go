@@ -10,7 +10,7 @@ import (
 const (
 	alipanID            = "alipan"
 	alipanName          = "阿里云盘"
-	alipanDescription   = "Alibaba Aliyun Drive - Fast, reliable cloud storage with desktop synchronization"
+	alipanDescription   = "阿里巴巴推出的高速、可靠的个人网盘，支持文件备份、同步和分享"
 	alipanOfficialURL   = "https://www.alipan.com"
 	alipanIconURL       = "https://img.alicdn.com/imgextra/i2/O1CN01DOYcs71v3B6bOemVM_!!6000000006116-2-tps-512-512.png"
 	alipanOrganization  = "Alibaba"

@@ -10,7 +10,7 @@ import (
 const (
 	doubaoID           = "doubao"
 	doubaoName         = "豆包客户端"
-	doubaoDescription  = "ByteDance Doubao - AI Assistant and Chat Client for Desktop"
+	doubaoDescription  = "字节跳动推出的 AI 助手，提供智能对话、文案创作、代码编程等功能的桌面客户端"
 	doubaoOfficialURL  = "https://www.doubao.com"
 	doubaoIconURL      = "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/doubao/desktop_online_web/static/image/logo-doubao.7d723a57.png"
 	doubaoOrganization = "ByteDance"
