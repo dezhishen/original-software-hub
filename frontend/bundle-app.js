@@ -514,7 +514,7 @@
       const tabButtons = platformTabs.map((platformLabel, index) => {
         const isDefault = platformLabel === defaultPlatform;
         const isCurrent = normalizePlatformId(platformLabel) === currentPlatform.id;
-        return `<button type="button" data-platform-tab="${escapeAttr(platformLabel)}" class="rounded-md border px-2.5 py-1 text-[11px] font-semibold transition ${isDefault ? "border-brand-500/45 bg-brand-50 text-brand-700 dark:border-brand-500/50 dark:bg-slate-700/70 dark:text-brand-300" : "border-slate-300 bg-white/80 text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/70 dark:text-slate-300"}">${escapeHtml(platformLabel)}${isCurrent ? " <span class=\"ml-1 text-[10px]\">当前</span>" : ""}</button>`;
+        return `<button type="button" role="tab" aria-selected="${isDefault ? "true" : "false"}" data-platform-tab="${escapeAttr(platformLabel)}" class="-mb-px border-b-2 px-3 py-2 text-[12px] font-semibold transition ${isDefault ? "border-brand-500 text-brand-700 dark:border-brand-400 dark:text-brand-300" : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:border-slate-600"}">${escapeHtml(platformLabel)}${isCurrent ? " <span class=\"ml-1 text-[10px] opacity-80\">当前</span>" : ""}</button>`;
       }).join("");
 
       const tabPanels = platformTabs.map((platformLabel) => {
@@ -556,7 +556,7 @@
         })
         .join("");
 
-        return `<div data-platform-panel="${escapeAttr(platformLabel)}" class="${platformLabel === defaultPlatform ? "" : "hidden"}">
+        return `<div role="tabpanel" data-platform-panel="${escapeAttr(platformLabel)}" class="${platformLabel === defaultPlatform ? "" : "hidden"}">
           ${
             variantRows
               ? `<div class="overflow-x-auto">
@@ -578,7 +578,7 @@
           <span class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(versionItem.releaseDate || "")}</span>
           ${officialBtn}
         </div>
-        ${platformTabs.length > 1 ? `<div class="flex flex-wrap gap-1.5 border-b border-slate-200/50 px-3 py-2 dark:border-slate-700/50">${tabButtons}</div>` : ""}
+        ${platformTabs.length > 1 ? `<div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-slate-200/80 bg-slate-50/60 px-3 pt-2 dark:border-slate-700/70 dark:bg-slate-900/35">${tabButtons}</div>` : ""}
         <div class="platform-panels">${tabPanels}</div>
       `;
 
@@ -588,7 +588,8 @@
         const activate = (platformLabel) => {
           buttons.forEach((btn) => {
             const active = btn.getAttribute("data-platform-tab") === platformLabel;
-            btn.className = `rounded-md border px-2.5 py-1 text-[11px] font-semibold transition ${active ? "border-brand-500/45 bg-brand-50 text-brand-700 dark:border-brand-500/50 dark:bg-slate-700/70 dark:text-brand-300" : "border-slate-300 bg-white/80 text-slate-700 hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800/70 dark:text-slate-300"}`;
+            btn.className = `-mb-px border-b-2 px-3 py-2 text-[12px] font-semibold transition ${active ? "border-brand-500 text-brand-700 dark:border-brand-400 dark:text-brand-300" : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:border-slate-600"}`;
+            btn.setAttribute("aria-selected", active ? "true" : "false");
           });
           panels.forEach((panel) => {
             const active = panel.getAttribute("data-platform-panel") === platformLabel;
