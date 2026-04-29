@@ -182,9 +182,26 @@
   function renderAppFooter() {
     const footer = document.querySelector("#appFooter");
     if (!footer) return;
-    footer.innerHTML = [
-      `<p>本站数据来源于各软件官方渠道，所有下载链接均指向官方或官方镜像地址，仅供参考。本站不对链接可用性、文件安全性及版本准确性作任何保证，请自行核实后使用，建议优先前往软件官网下载安装。</p>`
-    ].filter(Boolean).join("\n");
+    footer.innerHTML = `
+      <section class="ml-auto w-full rounded-xl border border-slate-200/80 bg-white/70 px-3 py-2.5 text-[11px] text-slate-500 shadow-[0_4px_16px_rgba(15,70,56,0.08)] backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-400 md:max-w-3xl">
+        <p class="leading-5">
+          下载入口来自官方渠道或官方镜像，仅作导航参考。安装前请以官网信息为准。
+        </p>
+        <details class="group mt-1.5">
+          <summary class="cursor-pointer select-none text-[11px] font-medium text-brand-700 marker:hidden dark:text-brand-400">
+            <span class="inline-flex items-center gap-1">
+              合规与隐私说明
+              <span class="transition group-open:rotate-180">▾</span>
+            </span>
+          </summary>
+          <div class="mt-2 space-y-1.5 leading-5 text-slate-500 dark:text-slate-400">
+            <p>本页不托管安装包，不替代官方发布页；链接可用性、文件安全性和版本准确性请自行核验。</p>
+            <p>按数据最小化原则（GDPR 同类实践），站点仅请求软件目录与版本数据，不要求账号登录，不采集身份信息。</p>
+            <p>站点会在浏览器本地保存主题偏好（localStorage）；你可随时清除浏览器站点数据以撤回该本地存储。</p>
+          </div>
+        </details>
+      </section>
+    `;
   }
 
   function initDarkMode() {
