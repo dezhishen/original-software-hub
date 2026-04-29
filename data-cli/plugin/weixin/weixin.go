@@ -138,6 +138,12 @@ func fetchUpdatesInfo() (*updatesInfo, error) {
 			win10:   str(intVal(obj["win10"])),
 			web:     str(intVal(obj["web"])),
 		}
+		conf.ios = str(intVal(obj["ios"]))
+		conf.android = str(intVal(obj["android"]))
+		conf.android32 = str(intVal(obj["android32"]))
+		conf.ipad = str(intVal(obj["ipad"]))
+		conf.harmonyos = str(intVal(obj["harmonyos"]))
+		conf.keyboardIos = str(intVal(obj["keyboardIos"]))
 		confFound = true
 		break
 	}
@@ -208,7 +214,8 @@ func latestWindowsDate(flat []json.RawMessage, str func(int) string) string {
 }
 
 type rawConf struct {
-	windows, mac, winx86, linux, win10, web string
+	windows, mac, winx86, linux, win10, web               string
+	ios, android, android32, ipad, harmonyos, keyboardIos string
 }
 
 func buildVariants(version string, conf rawConf) []plugin.Variant {
@@ -265,6 +272,47 @@ func buildVariants(version string, conf rawConf) []plugin.Variant {
 			Platform:     "Web",
 			Links: []plugin.Link{
 				{Type: "webpage", Label: "网页版微信", URL: conf.web},
+			},
+		})
+	}
+	// Use ios field (stable App Store link)
+	iosURL := conf.ios
+	if conf.keyboardIos != "" {
+		iosURL = conf.keyboardIos
+	}
+	if iosURL != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "universal",
+			Platform:     "iOS / iPadOS",
+			Links: []plugin.Link{
+				{Type: "store", Label: "App Store", URL: iosURL},
+			},
+		})
+	}
+	if conf.android != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "arm64",
+			Platform:     "Android",
+			Links: []plugin.Link{
+				{Type: "direct", Label: fmt.Sprintf("微信 %s Android arm64 安装包", version), URL: conf.android},
+			},
+		})
+	}
+	if conf.android32 != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "x86",
+			Platform:     "Android",
+			Links: []plugin.Link{
+				{Type: "direct", Label: fmt.Sprintf("微信 %s Android x86 安装包", version), URL: conf.android32},
+			},
+		})
+	}
+	if conf.harmonyos != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "universal",
+			Platform:     "HarmonyOS",
+			Links: []plugin.Link{
+				{Type: "store", Label: "华为应用市场", URL: conf.harmonyos},
 			},
 		})
 	}

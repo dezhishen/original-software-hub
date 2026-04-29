@@ -1,27 +1,20 @@
 {
   "softwareId": "<SOFTWARE_ID>",
   "updatedAt": "<YYYY-MM-DD>",
-  "versions": [
+  "platforms": [
     {
-      "version": "<VERSION>",
-      "releaseDate": "<YYYY-MM-DD>",
-      "officialUrl": "https://<OFFICIAL_RELEASE_URL>",
-      "platforms": [
+      "platform": "<PLATFORM>",
+      "version": "<PLATFORM_VERSION>",
+      "releaseDate": "<PLATFORM_RELEASE_DATE>",
+      "officialUrl": "https://<PLATFORM_RELEASE_URL>",
+      "packages": [
         {
-          "platform": "<PLATFORM>",
-          "version": "<PLATFORM_VERSION>",
-          "releaseDate": "<PLATFORM_RELEASE_DATE>",
-          "officialUrl": "https://<PLATFORM_RELEASE_URL>",
-          "packages": [
+          "architecture": "<ARCHITECTURE>",
+          "links": [
             {
-              "architecture": "<ARCHITECTURE>",
-              "links": [
-                {
-                  "type": "direct",
-                  "label": "<DOWNLOAD_LABEL>",
-                  "url": "https://<DIRECT_DOWNLOAD_URL>"
-                }
-              ]
+              "type": "direct",
+              "label": "<DOWNLOAD_LABEL>",
+              "url": "https://<DIRECT_DOWNLOAD_URL>"
             }
           ]
         }

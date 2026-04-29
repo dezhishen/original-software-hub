@@ -20,6 +20,12 @@ const (
 	qqMusicMacPage     = "https://y.qq.com/download/mac.html?part=1&ADTAG=YQQ"
 )
 
+const (
+	qqMusicIOSStoreURL    = "https://itunes.apple.com/cn/app/qq-yin-le/id414603431?mt=8"
+	qqMusicIPadStoreURL   = "https://itunes.apple.com/cn/app/qq-yin-lehd-du-bo-zhong-guo/id429885089?l=en&mt=8"
+	qqMusicAndroidPageURL = "https://y.qq.com/download/download.html"
+)
+
 var (
 	qqMusicVersionPattern = regexp.MustCompile(`最新\s*版\s*:\s*([0-9]+(?:\.[0-9]+)*)`)
 	qqMusicDatePattern    = regexp.MustCompile(`发布时间\s*[：:]\s*(20\d{2}-\d{2}-\d{2})`)
@@ -39,9 +45,33 @@ func (q *QQMusic) Name() string {
 func (q *QQMusic) Fetch() ([]plugin.SoftwareData, error) {
 	versions, err := fetchQQMusicDesktopVersions()
 	if err != nil {
-		return nil, fmt.Errorf("qq music: %w", err)
+		return nil, err
 	}
-
+	// Append mobile version
+	today := time.Now().UTC().Format("2006-01-02")
+	mobileVersion := plugin.Version{
+		Version:     "latest",
+		ReleaseDate: today,
+		OfficialURL: qqMusicDownloadURL,
+		Platforms: plugin.PlatformsFromVariants("latest", today, qqMusicDownloadURL, []plugin.Variant{
+			{
+				Architecture: "universal",
+				Platform:     "iOS / iPadOS",
+				Links: []plugin.Link{
+					{Type: "store", Label: "App Store (iPhone)", URL: qqMusicIOSStoreURL},
+					{Type: "store", Label: "App Store (iPad)", URL: qqMusicIPadStoreURL},
+				},
+			},
+			{
+				Architecture: "arm64",
+				Platform:     "Android",
+				Links: []plugin.Link{
+					{Type: "webpage", Label: "QQ音乐 Android 下载页", URL: qqMusicAndroidPageURL},
+				},
+			},
+		}),
+	}
+	versions = append(versions, mobileVersion)
 	return []plugin.SoftwareData{
 		{
 			Item: plugin.SoftwareItem{

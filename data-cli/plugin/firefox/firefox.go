@@ -68,6 +68,20 @@ func (f *Firefox) Fetch() ([]plugin.SoftwareData, error) {
 								{Type: "direct", Label: "tar.bz2", URL: "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=zh-CN"},
 							},
 						},
+						{
+							Architecture: "arm64",
+							Platform:     "Android",
+							Links: []plugin.Link{
+								{Type: "store", Label: "Google Play", URL: "https://play.google.com/store/apps/details?id=org.mozilla.firefox"},
+							},
+						},
+						{
+							Architecture: "universal",
+							Platform:     "iOS / iPadOS",
+							Links: []plugin.Link{
+								{Type: "store", Label: "App Store", URL: "https://apps.apple.com/app/id989804926"},
+							},
+						},
 					}),
 				},
 			},

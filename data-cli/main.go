@@ -144,12 +144,12 @@ func main() {
 				changedCount++
 				pluginChangedCount++
 				log.Printf("[%s/%s] decision=changed reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
-				versionPayload := plugin.VersionPayload{
+				platformPayload := plugin.PlatformPayload{
 					SoftwareID: softwareID,
 					UpdatedAt:  updatedAt,
-					Versions:   entry.Versions,
+					Platforms:  flattenVersionsToPlatforms(entry.Versions),
 				}
-				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), versionPayload); err != nil {
+				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), platformPayload); err != nil {
 					versionWriteErrors++
 					pluginVersionWriteErrors++
 					log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
@@ -647,8 +647,8 @@ func writeJSON(path string, v any) error {
 	return os.WriteFile(path, data, 0o644)
 }
 
-func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPayload, plugin.SoftwareListPayload, plugin.IndexPayload) {
-	versionMap := map[string]plugin.VersionPayload{}
+func loadPreviousState(outDir, versionsDir string) (map[string]plugin.PlatformPayload, plugin.SoftwareListPayload, plugin.IndexPayload) {
+	versionMap := map[string]plugin.PlatformPayload{}
 	listPayload := plugin.SoftwareListPayload{}
 	indexPayload := plugin.IndexPayload{}
 
@@ -679,14 +679,29 @@ func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPay
 		if err != nil {
 			continue
 		}
-		var payload plugin.VersionPayload
-		if err := json.Unmarshal(data, &payload); err != nil {
+		var payload plugin.PlatformPayload
+		if err := json.Unmarshal(data, &payload); err == nil && strings.TrimSpace(payload.SoftwareID) != "" {
+			versionMap[payload.SoftwareID] = payload
 			continue
 		}
-		if strings.TrimSpace(payload.SoftwareID) == "" {
+
+		// Backward compatibility for legacy payload with versions[]
+		var legacy struct {
+			SoftwareID string           `json:"softwareId"`
+			UpdatedAt  string           `json:"updatedAt"`
+			Versions   []plugin.Version `json:"versions"`
+		}
+		if err := json.Unmarshal(data, &legacy); err != nil {
 			continue
 		}
-		versionMap[payload.SoftwareID] = payload
+		if strings.TrimSpace(legacy.SoftwareID) == "" {
+			continue
+		}
+		versionMap[legacy.SoftwareID] = plugin.PlatformPayload{
+			SoftwareID: legacy.SoftwareID,
+			UpdatedAt:  legacy.UpdatedAt,
+			Platforms:  flattenVersionsToPlatforms(legacy.Versions),
+		}
 	}
 
 	return versionMap, listPayload, indexPayload
@@ -694,6 +709,91 @@ func loadPreviousState(outDir, versionsDir string) (map[string]plugin.VersionPay
 
 func versionsEqual(a, b []plugin.Version) bool {
 	return reflect.DeepEqual(a, b)
+}
+
+func platformsEqual(a, b []plugin.PlatformRelease) bool {
+	return reflect.DeepEqual(a, b)
+}
+
+func flattenVersionsToPlatforms(versions []plugin.Version) []plugin.PlatformRelease {
+	merged := map[string]plugin.PlatformRelease{}
+	order := make([]string, 0, len(versions))
+
+	for _, v := range versions {
+		for _, p := range v.Platforms {
+			platformName := strings.TrimSpace(p.Platform)
+			if platformName == "" {
+				platformName = "其他"
+			}
+
+			entry, exists := merged[platformName]
+			if !exists {
+				entry = plugin.PlatformRelease{Platform: platformName}
+				order = append(order, platformName)
+			}
+
+			if strings.TrimSpace(entry.Version) == "" || strings.TrimSpace(p.ReleaseDate) >= strings.TrimSpace(entry.ReleaseDate) {
+				if strings.TrimSpace(p.Version) != "" {
+					entry.Version = strings.TrimSpace(p.Version)
+				}
+				if strings.TrimSpace(p.ReleaseDate) != "" {
+					entry.ReleaseDate = strings.TrimSpace(p.ReleaseDate)
+				}
+				if strings.TrimSpace(p.OfficialURL) != "" {
+					entry.OfficialURL = strings.TrimSpace(p.OfficialURL)
+				}
+			}
+
+			for _, pkg := range p.Packages {
+				if len(pkg.Links) == 0 {
+					continue
+				}
+				entry.Packages = append(entry.Packages, pkg)
+			}
+
+			merged[platformName] = entry
+		}
+	}
+
+	result := make([]plugin.PlatformRelease, 0, len(order))
+	for _, platformName := range order {
+		entry := merged[platformName]
+		result = append(result, dedupePlatformRelease(entry))
+	}
+	return result
+}
+
+func dedupePlatformRelease(entry plugin.PlatformRelease) plugin.PlatformRelease {
+	type packageKey struct {
+		arch string
+		url  string
+	}
+	seen := map[packageKey]struct{}{}
+	packages := make([]plugin.PlatformPackage, 0, len(entry.Packages))
+
+	for _, pkg := range entry.Packages {
+		arch := strings.TrimSpace(pkg.Architecture)
+		links := make([]plugin.Link, 0, len(pkg.Links))
+		for _, link := range pkg.Links {
+			u := strings.TrimSpace(link.URL)
+			if u == "" {
+				continue
+			}
+			k := packageKey{arch: arch, url: u}
+			if _, ok := seen[k]; ok {
+				continue
+			}
+			seen[k] = struct{}{}
+			links = append(links, link)
+		}
+		if len(links) == 0 {
+			continue
+		}
+		packages = append(packages, plugin.PlatformPackage{Architecture: pkg.Architecture, Links: links})
+	}
+
+	entry.Packages = packages
+	return entry
 }
 
 type versionDecision struct {
@@ -715,19 +815,19 @@ func resolveDataByVersionDecision(previous plugin.PreviousState, fetched plugin.
 	}
 
 	oldPayload, hasOldPayload := previous.Versions[softwareID]
-	oldVersions := oldPayload.Versions
-	entryVersions := entry.Versions
+	oldPlatforms := oldPayload.Platforms
+	entryPlatforms := flattenVersionsToPlatforms(entry.Versions)
 	if !hasOldPayload {
 		return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "no-previous-version"}, nil
 	}
 
-	if !versionsEqual(oldVersions, entryVersions) {
+	if !platformsEqual(oldPlatforms, entryPlatforms) {
 		return versionDecision{Changed: true, Result: entry, SkipSupported: true, Reason: "version-changed"}, nil
 	}
 
 	oldItem, hasOldItem := previous.Items[softwareID]
 	if hasOldItem {
-		return versionDecision{Changed: false, Result: plugin.SoftwareData{Item: oldItem, Versions: oldVersions}, SkipSupported: true, Reason: "version-unchanged"}, nil
+		return versionDecision{Changed: false, Result: plugin.SoftwareData{Item: oldItem, Versions: entry.Versions}, SkipSupported: true, Reason: "version-unchanged"}, nil
 	}
 
 	return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "previous-item-missing"}, nil

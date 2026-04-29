@@ -14,6 +14,7 @@ import (
 )
 
 const pcConfigURL = "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/pcConfig.json"
+const mobileConfigURL = "https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/mobileConfig.json"
 
 // QQ implements plugin.Plugin for Tencent QQ.
 type QQ struct{}
@@ -41,6 +42,17 @@ func (q *QQ) Fetch() ([]plugin.SoftwareData, error) {
 	}
 	if version := buildMacOSVersion(cfg.MacOS); version != nil {
 		versions = append(versions, *version)
+	}
+
+	// Mobile platforms from mobileConfig.json
+	mobileCfg, err := fetchMobileConfig()
+	if err == nil {
+		if v := buildAndroidVersion(mobileCfg.Android); v != nil {
+			versions = append(versions, *v)
+		}
+		if v := buildIOSVersion(mobileCfg.IOS); v != nil {
+			versions = append(versions, *v)
+		}
 	}
 
 	if len(versions) == 0 {
@@ -289,4 +301,88 @@ func fileNameFromURL(raw string) string {
 		return strings.TrimSpace(raw)
 	}
 	return name
+}
+
+type mobileConfig struct {
+	Android mobileAndroidConfig `json:"android"`
+	IOS     mobileIOSConfig     `json:"ios"`
+}
+
+type mobileAndroidConfig struct {
+	Version string `json:"version"`
+	X64Link string `json:"x64Link"`
+	X32Link string `json:"x32Link"`
+}
+
+type mobileIOSConfig struct {
+	Version string `json:"version"`
+	Link    string `json:"link"`
+}
+
+func fetchMobileConfig() (*mobileConfig, error) {
+	client := &http.Client{Timeout: 15 * time.Second}
+	resp, err := client.Get(mobileConfigURL)
+	if err != nil {
+		return nil, fmt.Errorf("http get %s: %w", mobileConfigURL, err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status %d", resp.StatusCode)
+	}
+	var cfg mobileConfig
+	if err := json.NewDecoder(resp.Body).Decode(&cfg); err != nil {
+		return nil, fmt.Errorf("decode mobile config: %w", err)
+	}
+	return &cfg, nil
+}
+
+func buildAndroidVersion(cfg mobileAndroidConfig) *plugin.Version {
+	version := strings.TrimSpace(cfg.Version)
+	if version == "" {
+		return nil
+	}
+	var variants []plugin.Variant
+	if url := strings.TrimSpace(cfg.X64Link); url != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "x64",
+			Platform:     "Android",
+			Links:        []plugin.Link{{Type: "direct", Label: "QQ Android x64 安装包", URL: url}},
+		})
+	}
+	if url := strings.TrimSpace(cfg.X32Link); url != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "x86",
+			Platform:     "Android",
+			Links:        []plugin.Link{{Type: "direct", Label: "QQ Android x86 安装包", URL: url}},
+		})
+	}
+	if len(variants) == 0 {
+		return nil
+	}
+	return &plugin.Version{
+		Version:     version,
+		ReleaseDate: time.Now().UTC().Format("2006-01-02"),
+		OfficialURL: "https://im.qq.com/",
+		Platforms:   plugin.PlatformsFromVariants(version, time.Now().UTC().Format("2006-01-02"), "https://im.qq.com/", variants),
+	}
+}
+
+func buildIOSVersion(cfg mobileIOSConfig) *plugin.Version {
+	version := strings.TrimSpace(cfg.Version)
+	link := strings.TrimSpace(cfg.Link)
+	if version == "" || link == "" {
+		return nil
+	}
+	return &plugin.Version{
+		Version:     version,
+		ReleaseDate: time.Now().UTC().Format("2006-01-02"),
+		OfficialURL: "https://im.qq.com/",
+		Platforms: plugin.PlatformsFromVariants(version, time.Now().UTC().Format("2006-01-02"), "https://im.qq.com/", []plugin.Variant{
+			{
+				Architecture: "universal",
+				Platform:     "iOS / iPadOS",
+				Links:        []plugin.Link{{Type: "store", Label: "App Store", URL: link}},
+			},
+		}),
+	}
 }

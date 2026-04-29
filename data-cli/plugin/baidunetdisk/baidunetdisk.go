@@ -40,6 +40,7 @@ func (b *BaiduNetdisk) Fetch() ([]plugin.SoftwareData, error) {
 	if err != nil {
 		return nil, fmt.Errorf("fetch mac changelog: %w", err)
 	}
+	androidEntry, _ := fetchLatestEntry("android")
 
 	version := extractVersion(winEntry.Version)
 	if version == "" {
@@ -84,6 +85,13 @@ func (b *BaiduNetdisk) Fetch() ([]plugin.SoftwareData, error) {
 			Architecture: "arm64",
 			Platform:     "macOS",
 			Links:        []plugin.Link{{Type: "direct", Label: "百度网盘 macOS ARM64 下载", URL: macEntry.URLLegacy}},
+		})
+	}
+	if androidEntry != nil && androidEntry.URL != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "arm64",
+			Platform:     "Android",
+			Links:        []plugin.Link{{Type: "direct", Label: "百度网盘 Android 下载", URL: androidEntry.URL}},
 		})
 	}
 	if len(variants) == 0 {

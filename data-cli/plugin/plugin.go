@@ -85,11 +85,12 @@ type Version struct {
 	Platforms   []PlatformRelease `json:"platforms,omitempty"`
 }
 
-// VersionPayload is the versions/<id>.json payload.
-type VersionPayload struct {
-	SoftwareID string    `json:"softwareId"`
-	UpdatedAt  string    `json:"updatedAt"`
-	Versions   []Version `json:"versions"`
+// PlatformPayload is the versions/<id>.json payload.
+// The payload is platform-oriented and no longer nests a versions layer.
+type PlatformPayload struct {
+	SoftwareID string            `json:"softwareId"`
+	UpdatedAt  string            `json:"updatedAt"`
+	Platforms  []PlatformRelease `json:"platforms"`
 }
 
 // SoftwareData is the in-memory full data returned by plugins.
@@ -102,7 +103,7 @@ type SoftwareData struct {
 // PreviousState carries last run outputs for incremental plugins.
 // Maps are keyed by software ID.
 type PreviousState struct {
-	Versions map[string]VersionPayload
+	Versions map[string]PlatformPayload
 	Items    map[string]SoftwareItem
 }
 

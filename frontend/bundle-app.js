@@ -378,15 +378,85 @@
     };
   }
 
+  function mergePlatformReleases(entries) {
+    const groups = new Map();
+    const order = [];
+
+    (entries || []).forEach((entry) => {
+      const platform = String(entry?.platform || "").trim() || "其他";
+      if (!groups.has(platform)) {
+        groups.set(platform, {
+          platform,
+          version: "",
+          releaseDate: "",
+          officialUrl: "",
+          packages: []
+        });
+        order.push(platform);
+      }
+
+      const current = groups.get(platform);
+      const nextDate = String(entry?.releaseDate || "").trim();
+      const currentDate = String(current.releaseDate || "").trim();
+      const shouldReplaceMeta = !currentDate || (nextDate && nextDate >= currentDate);
+      if (shouldReplaceMeta) {
+        current.version = String(entry?.version || current.version || "").trim();
+        current.releaseDate = nextDate || currentDate;
+        current.officialUrl = String(entry?.officialUrl || current.officialUrl || "").trim();
+      }
+
+      const seen = new Set((current.packages || []).flatMap((pkg) =>
+        (pkg.links || []).map((link) => `${String(pkg.architecture || "").trim()}::${String(link.url || "").trim()}`)
+      ));
+
+      (entry?.packages || []).forEach((pkg) => {
+        const arch = String(pkg?.architecture || "").trim();
+        const links = [];
+        (pkg?.links || []).forEach((link) => {
+          const url = String(link?.url || "").trim();
+          if (!url) return;
+          const key = `${arch}::${url}`;
+          if (seen.has(key)) return;
+          seen.add(key);
+          links.push(link);
+        });
+        if (links.length) {
+          current.packages.push({ architecture: pkg?.architecture || "", links });
+        }
+      });
+    });
+
+    return order.map((platform) => groups.get(platform)).filter(Boolean);
+  }
+
+  function flattenVersionEntriesToPlatforms(versionEntries) {
+    const platformEntries = [];
+    (versionEntries || []).forEach((versionItem) => {
+      (versionItem?.platforms || []).forEach((platformEntry) => {
+        platformEntries.push(platformEntry);
+      });
+    });
+    return mergePlatformReleases(platformEntries);
+  }
+
   function normalizeSoftwareVersionPayload(payload) {
-    const raw = Array.isArray(payload?.versions)
+    const directPlatforms = Array.isArray(payload?.platforms)
+      ? payload.platforms.map((entry) => normalizePlatformRelease(entry, {})).filter(Boolean)
+      : [];
+
+    const rawVersions = Array.isArray(payload?.versions)
       ? payload.versions
       : Array.isArray(payload)
         ? payload
         : [];
+
+    const normalizedVersions = rawVersions.map(normalizeVersion).filter(Boolean);
+
     return {
       updatedAt: String(payload?.updatedAt || "").trim(),
-      versions: raw.map(normalizeVersion).filter(Boolean)
+      platforms: directPlatforms.length
+        ? mergePlatformReleases(directPlatforms)
+        : flattenVersionEntriesToPlatforms(normalizedVersions)
     };
   }
 
@@ -471,7 +541,7 @@
     return groups;
   }
 
-  function renderSoftwareDetail({ container, software, versions, onBack, onNavigateHome }) {
+  function renderSoftwareDetail({ container, software, platforms, onBack, onNavigateHome }) {
     if (!container) return;
     if (!software) {
       renderDetailEmpty(container, "请选择一个软件", "");
@@ -538,17 +608,16 @@
     const versionsContainer = container.querySelector("#versionsContainer");
     if (!versionsContainer) return;
 
-    if (!Array.isArray(versions) || versions.length === 0) {
+    if (!Array.isArray(platforms) || platforms.length === 0) {
       versionsContainer.innerHTML =
         '<p class="rounded-lg border border-slate-200 bg-slate-50/90 px-3 py-4 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-400">暂无版本信息，请访问官网获取最新版本。</p>';
       return;
     }
 
-    versions.forEach((versionItem) => {
-      const card = document.createElement("div");
-      card.className = "overflow-hidden rounded-lg border border-slate-200/90 bg-white/20 dark:border-slate-700/80 dark:bg-slate-800/20";
+    const card = document.createElement("div");
+    card.className = "overflow-hidden rounded-lg border border-slate-200/90 bg-white/20 dark:border-slate-700/80 dark:bg-slate-800/20";
 
-      const platformGroups = groupPlatformPackages(versionItem.platforms || []);
+    const platformGroups = groupPlatformPackages(platforms || []);
       const sortedPlatformTabs = [...platformGroups.keys()].sort((a, b) => {
         const aCurrent = normalizePlatformId(a) === currentPlatform.id ? 1 : 0;
         const bCurrent = normalizePlatformId(b) === currentPlatform.id ? 1 : 0;
@@ -613,8 +682,8 @@
         const platformMeta = `<div class="mb-2 border-b border-slate-200/70 bg-gradient-to-r from-sky-50/80 to-teal-50/70 px-3 py-2 dark:border-slate-700/70 dark:from-slate-800/50 dark:to-slate-800/20">
           <div class="flex flex-wrap items-center gap-2">
             <span class="inline-flex items-center rounded-md border border-sky-300/70 bg-sky-100/80 px-2 py-1 text-[11px] font-semibold text-sky-700 dark:border-sky-700/60 dark:bg-sky-900/30 dark:text-sky-300">平台：${escapeHtml(platformLabel)}</span>
-            <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(platformEntry.version || versionItem.version || "-")}</span>
-            <span class="text-[11px] text-slate-600 dark:text-slate-300">${escapeHtml(platformEntry.releaseDate || versionItem.releaseDate || "")}</span>
+            <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(platformEntry.version || "-")}</span>
+            <span class="text-[11px] text-slate-600 dark:text-slate-300">${escapeHtml(platformEntry.releaseDate || "")}</span>
             ${platformEntry.officialUrl
             ? `<a class="inline-flex items-center rounded-md border border-amber-300/50 bg-amber-100/20 px-2 py-1 text-[11px] font-semibold text-amber-700 hover:bg-amber-100/30 dark:border-amber-700/40 dark:bg-amber-900/15 dark:text-amber-300 dark:hover:bg-amber-900/25" target="_blank" rel="noopener noreferrer" href="${escapeAttr(platformEntry.officialUrl)}">前往官网发布页</a>`
             : ""}
@@ -663,8 +732,7 @@
         });
       }
 
-      versionsContainer.appendChild(card);
-    });
+    versionsContainer.appendChild(card);
   }
 
   // ── app/bootstrap ──────────────────────────────────────────────────────────
@@ -852,13 +920,13 @@
         const rawVersions = await dataRepository.loadSoftwareVersions(software);
         if (renderToken !== state.latestRenderToken) return;
 
-        const { versions, updatedAt } = normalizeSoftwareVersionPayload(rawVersions);
+        const { platforms, updatedAt } = normalizeSoftwareVersionPayload(rawVersions);
         state.detailUpdatedAt = updatedAt;
         renderDetailLayout(dom, software, state.detailUpdatedAt);
         renderSoftwareDetail({
           container: dom.detailContainer,
           software,
-          versions,
+          platforms,
           onBack() {
             const referrer = document.referrer || "";
             const hasHistory = window.history.length > 1;
