@@ -179,13 +179,11 @@
     return () => window.clearInterval(timer);
   }
 
-  function renderAppFooter() {
-    const footer = document.querySelector("#appFooter");
-    if (!footer) return;
-    footer.innerHTML = `
-      <section class="ml-auto w-full rounded-xl border border-slate-200/80 bg-white/70 px-3 py-2.5 text-[11px] text-slate-500 shadow-[0_4px_16px_rgba(15,70,56,0.08)] backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-400 md:max-w-3xl">
+  function complianceNoticeHtml() {
+    return `
+      <section class="w-full rounded-xl border border-slate-200/80 bg-white/70 px-3 py-2.5 text-[11px] text-slate-500 shadow-[0_4px_14px_rgba(15,70,56,0.08)] backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-400 md:ml-auto md:max-w-[340px]">
         <p class="leading-5">
-          下载入口来自官方渠道或官方镜像，仅作导航参考。安装前请以官网信息为准。
+          下载入口来自官方渠道或官方镜像，仅作导航参考。
         </p>
         <details class="group mt-1.5">
           <summary class="cursor-pointer select-none text-[11px] font-medium text-brand-700 marker:hidden dark:text-brand-400">
@@ -195,13 +193,41 @@
             </span>
           </summary>
           <div class="mt-2 space-y-1.5 leading-5 text-slate-500 dark:text-slate-400">
-            <p>本页不托管安装包，不替代官方发布页；链接可用性、文件安全性和版本准确性请自行核验。</p>
-            <p>按数据最小化原则（GDPR 同类实践），站点仅请求软件目录与版本数据，不要求账号登录，不采集身份信息。</p>
-            <p>站点会在浏览器本地保存主题偏好（localStorage）；你可随时清除浏览器站点数据以撤回该本地存储。</p>
+            <p>本站不托管安装包，不替代官方发布页；链接可用性、文件安全性和版本准确性请自行核验。</p>
+            <p>遵循数据最小化实践（参考 GDPR 原则），仅请求软件目录与版本数据，不要求登录，不采集身份信息。</p>
+            <p>仅在浏览器本地保存主题偏好（localStorage）；可随时清除站点数据。</p>
           </div>
         </details>
       </section>
     `;
+  }
+
+  function renderComplianceNotice(layout) {
+    const homeNotice = document.querySelector("#homeComplianceNotice");
+    const detailNotice = document.querySelector("#detailComplianceNotice");
+    const noticeHtml = complianceNoticeHtml();
+
+    if (layout === "home") {
+      if (homeNotice) homeNotice.innerHTML = noticeHtml;
+      if (detailNotice) detailNotice.innerHTML = "";
+      return;
+    }
+    if (layout === "detail") {
+      if (detailNotice) detailNotice.innerHTML = noticeHtml;
+      if (homeNotice) homeNotice.innerHTML = "";
+      return;
+    }
+
+    if (homeNotice) homeNotice.innerHTML = "";
+    if (detailNotice) detailNotice.innerHTML = "";
+  }
+
+  function renderAppFooter() {
+    const footer = document.querySelector("#appFooter");
+
+    if (footer) {
+      footer.innerHTML = "";
+    }
   }
 
   function initDarkMode() {
@@ -786,6 +812,7 @@
     dom.detailHero?.classList.add("hidden");
     dom.homeSection?.classList.remove("hidden");
     dom.detailSection?.classList.add("hidden");
+    renderComplianceNotice("home");
     document.title = "Original Software Hub";
   }
 
@@ -795,6 +822,7 @@
     dom.detailHero?.classList.remove("hidden");
     dom.homeSection?.classList.add("hidden");
     dom.detailSection?.classList.remove("hidden");
+    renderComplianceNotice("detail");
     const softwareName = String(software?.name || "").trim();
     const softwareDescription = String(software?.description || "").trim();
     if (dom.detailHeroTitle) {
