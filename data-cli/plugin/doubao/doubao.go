@@ -79,15 +79,26 @@ func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
 		})
 	}
 
-	// If no download variants found, provide download page link
+	// If no direct links are found, keep platform granularity instead of collapsing to Desktop.
 	if len(variants) == 0 {
 		variants = append(variants, plugin.Variant{
-			Architecture: "Universal",
-			Platform:     "Desktop",
+			Architecture: "x64",
+			Platform:     "Windows",
 			Links: []plugin.Link{
 				{
-					Type:  "direct",
-					Label: "豆包官方下载页",
+					Type:  "webpage",
+					Label: "豆包 Windows 下载页",
+					URL:   info.DownloadPageURL,
+				},
+			},
+		})
+		variants = append(variants, plugin.Variant{
+			Architecture: "universal",
+			Platform:     "macOS",
+			Links: []plugin.Link{
+				{
+					Type:  "webpage",
+					Label: "豆包 macOS 下载页",
 					URL:   info.DownloadPageURL,
 				},
 			},

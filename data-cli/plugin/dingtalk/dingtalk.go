@@ -50,7 +50,7 @@ func (d *DingTalk) Fetch() ([]plugin.SoftwareData, error) {
 		releaseDate = time.Now().UTC().Format("2006-01-02")
 	}
 
-	macStoreLink, windowsStoreLink := extractAppMarketLinks(meta)
+	appStoreLink, windowsStoreLink, androidStoreLink := extractAppMarketLinks(meta)
 	variants := []plugin.Variant{}
 	if meta.WinAccessibilityDownloadLink != "" {
 		variants = append(variants, plugin.Variant{
@@ -66,11 +66,24 @@ func (d *DingTalk) Fetch() ([]plugin.SoftwareData, error) {
 			Links:        []plugin.Link{{Type: "store", Label: "Microsoft Store", URL: windowsStoreLink}},
 		})
 	}
-	if macStoreLink != "" {
+	// 钉钉官网当前公开入口以应用市场和下载页为主；桌面端 macOS 先保留下载页入口。
+	variants = append(variants, plugin.Variant{
+		Architecture: "universal",
+		Platform:     "macOS",
+		Links:        []plugin.Link{{Type: "webpage", Label: "钉钉 macOS 下载页", URL: dingtalkDownloadPage}},
+	})
+	if appStoreLink != "" {
 		variants = append(variants, plugin.Variant{
 			Architecture: "universal",
-			Platform:     "macOS",
-			Links:        []plugin.Link{{Type: "store", Label: "Mac App Store", URL: macStoreLink}},
+			Platform:     "iOS / iPadOS",
+			Links:        []plugin.Link{{Type: "store", Label: "App Store", URL: appStoreLink}},
+		})
+	}
+	if androidStoreLink != "" {
+		variants = append(variants, plugin.Variant{
+			Architecture: "arm64",
+			Platform:     "Android",
+			Links:        []plugin.Link{{Type: "store", Label: "应用市场", URL: androidStoreLink}},
 		})
 	}
 	variants = append(variants, plugin.Variant{
@@ -220,7 +233,7 @@ func parseDingTalkReleaseDate(winURL string, ts int64) string {
 	return ""
 }
 
-func extractAppMarketLinks(meta *dingtalkPayload) (macStoreLink, windowsStoreLink string) {
+func extractAppMarketLinks(meta *dingtalkPayload) (appStoreLink, windowsStoreLink, androidStoreLink string) {
 	for _, item := range meta.AppMarketData.List {
 		key := strings.TrimSpace(item.Key)
 		link := strings.TrimSpace(item.JumpLink)
@@ -229,9 +242,11 @@ func extractAppMarketLinks(meta *dingtalkPayload) (macStoreLink, windowsStoreLin
 		}
 		switch key {
 		case "MacApplicationMarket":
-			macStoreLink = link
+			appStoreLink = link
 		case "MicrosoftApplicationMarket":
 			windowsStoreLink = link
+		case "HuaweiApplicationMarket":
+			androidStoreLink = link
 		}
 	}
 	return

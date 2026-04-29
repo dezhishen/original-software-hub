@@ -118,7 +118,7 @@
 
     filtered.forEach((software) => {
       const card = document.createElement("article");
-      card.className = "software-card relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
+      card.className = "software-card relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-3.5 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]";
       const iconMarkup = renderSoftwareIcon(software);
       const cardIconBackground = renderCardIconBackground(software);
       const tagsMarkup = (software.tags || [])
@@ -126,12 +126,12 @@
         .join("");
       card.innerHTML = `
         ${cardIconBackground}
-        <div class="relative mb-3 flex items-center gap-3">
+        <div class="relative mb-2.5 flex items-center gap-3">
           ${iconMarkup}
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h3>
+          <h3 class="text-[17px] font-semibold leading-6 text-slate-900 dark:text-slate-100" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(software.name)}</h3>
         </div>
-        <p class="relative mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">${escapeHtml(software.description)}</p>
-        ${tagsMarkup ? `<div class="relative mt-3 flex flex-wrap gap-1.5">${tagsMarkup}</div>` : ""}
+        <p class="software-card-description relative mt-1.5 text-[13px] leading-5 text-slate-600 dark:text-slate-400">${escapeHtml(software.description)}</p>
+        ${tagsMarkup ? `<div class="relative mt-2.5 flex flex-wrap gap-1.5">${tagsMarkup}</div>` : ""}
         <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-500">机构：${escapeHtml(software.organization)}</p>
       `;
       card.addEventListener("click", () => onSelect(software.id));
@@ -488,9 +488,9 @@
 
     container.className = "text-left";
     container.innerHTML = `
-      <article class="relative overflow-hidden rounded-xl border border-slate-200/90 bg-white/20 backdrop-blur-sm p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] dark:border-slate-700/80 dark:bg-slate-800/40 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]">
+      <article class="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/20 backdrop-blur-sm p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] md:p-5 xl:p-6 dark:border-slate-700/80 dark:bg-slate-800/40 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]">
         ${detailIconBackground}
-        <div class="relative flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div class="relative flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-4">
           <div class="min-w-0 flex-1">
             <div class="mb-2 flex flex-wrap items-center gap-2">
               <button type="button" data-detail-back class="inline-flex items-center rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-700 focus:outline-none focus:ring-4 focus:ring-brand-500/20">
@@ -500,7 +500,7 @@
                 回到软件目录
               </button>
             </div>
-            <div class="mb-3 flex items-center gap-3">
+            <div class="mb-2.5 flex items-center gap-3">
               <div class="shrink-0">
                 <span class="block [&>img]:h-12 [&>img]:w-12 [&>img]:rounded-lg [&>img]:border [&>img]:border-slate-200 [&>img]:bg-white [&>img]:p-1 [&>span]:inline-flex [&>span]:h-12 [&>span]:w-12 [&>span]:items-center [&>span]:justify-center [&>span]:rounded-lg [&>span]:border [&>span]:border-slate-200 [&>span]:bg-slate-50 dark:[&>img]:border-slate-700 dark:[&>img]:bg-slate-800 dark:[&>span]:border-slate-700 dark:[&>span]:bg-slate-800/90">${detailIconMarkup}</span>
               </div>
@@ -509,21 +509,21 @@
                 <span class="rounded-full bg-brand-50 px-2.5 py-1 font-medium text-brand-700 dark:bg-slate-700/60 dark:text-brand-300">当前检测环境：${escapeHtml(currentPlatform.label)} / ${escapeHtml(currentArchitecture.label)}</span>
               </div>
             </div>
-            ${tagsMarkup ? `<div class="mt-3 flex flex-wrap gap-1.5">${tagsMarkup}</div>` : ""}
+            ${tagsMarkup ? `<div class="mt-2 flex flex-wrap gap-1.5">${tagsMarkup}</div>` : ""}
           </div>
-          <div class="relative flex shrink-0 items-center">
+          <div class="relative flex shrink-0 items-start lg:pt-0.5">
             <a class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700" target="_blank" rel="noopener noreferrer"
               href="${escapeAttr(software.officialWebsite)}">访问官网</a>
           </div>
         </div>
-        <section class="relative mt-4 border-t border-slate-200/90 pt-3 dark:border-slate-700/80">
+        <section class="relative mt-3 border-t border-slate-200/90 pt-2.5 dark:border-slate-700/80">
           <div class="mb-2 flex items-center justify-between gap-3">
             <div>
               <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200" style="font-family: 'Space Grotesk', sans-serif;">版本信息</h3>
               <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">以下版本与下载入口均归属于 ${escapeHtml(software.name)}</p>
             </div>
           </div>
-          <div id="versionsContainer" class="grid gap-2.5"></div>
+          <div id="versionsContainer" class="grid gap-2"></div>
         </section>
       </article>
     `;
@@ -610,7 +610,7 @@
         })
         .join("");
 
-        const platformMeta = `<div class="mb-2.5 border-b border-slate-200/70 bg-gradient-to-r from-sky-50/80 to-teal-50/70 px-3 py-2 dark:border-slate-700/70 dark:from-slate-800/50 dark:to-slate-800/20">
+        const platformMeta = `<div class="mb-2 border-b border-slate-200/70 bg-gradient-to-r from-sky-50/80 to-teal-50/70 px-3 py-2 dark:border-slate-700/70 dark:from-slate-800/50 dark:to-slate-800/20">
           <div class="flex flex-wrap items-center gap-2">
             <span class="inline-flex items-center rounded-md border border-sky-300/70 bg-sky-100/80 px-2 py-1 text-[11px] font-semibold text-sky-700 dark:border-sky-700/60 dark:bg-sky-900/30 dark:text-sky-300">平台：${escapeHtml(platformLabel)}</span>
             <span class="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-300" style="font-family: 'Space Grotesk', sans-serif;">${escapeHtml(platformEntry.version || versionItem.version || "-")}</span>
@@ -640,7 +640,7 @@
       }).join("");
 
       card.innerHTML = `
-        ${platformTabs.length > 1 ? `<div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-slate-200/80 bg-slate-50/60 px-3 pt-2 dark:border-slate-700/70 dark:bg-slate-900/35">${tabButtons}</div>` : ""}
+        ${platformTabs.length > 1 ? `<div role="tablist" class="flex flex-wrap items-end gap-1 border-b border-slate-200/80 bg-slate-50/60 px-3 pt-1.5 dark:border-slate-700/70 dark:bg-slate-900/35">${tabButtons}</div>` : ""}
         <div class="platform-panels">${tabPanels}</div>
       `;
 

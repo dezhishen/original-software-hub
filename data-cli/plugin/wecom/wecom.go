@@ -10,6 +10,11 @@ const (
 	wecomOfficialWebsite = "https://work.weixin.qq.com/"
 	wecomDownloadPage    = "https://work.weixin.qq.com/#indexDownload"
 	wecomIconURL         = "https://work.weixin.qq.com/favicon.ico"
+	wecomWinURL          = "https://work.weixin.qq.com/wework_admin/commdownload?platform=win&from=wwindex"
+	wecomMacIntelURL     = "https://work.weixin.qq.com/wework_admin/commdownload?platform=mac&from=wwindex"
+	wecomMacARM64URL     = "https://work.weixin.qq.com/wework_admin/commdownload?platform=mac_arm64&from=wwindex"
+	wecomIOSURL          = "https://work.weixin.qq.com/wework_admin/commdownload?platform=ios&from=wwindex"
+	wecomAndroidURL      = "https://work.weixin.qq.com/wework_admin/commdownload?platform=android&from=wwindex"
 )
 
 // WeCom implements plugin.Plugin for Tencent enterprise messenger.
@@ -47,17 +52,32 @@ func (w *WeCom) Fetch() ([]plugin.SoftwareData, error) {
 						{
 							Architecture: "x64",
 							Platform:     "Windows",
-							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 Windows 下载", URL: wecomDownloadPage}},
+							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 Windows 下载", URL: wecomWinURL}},
 						},
 						{
-							Architecture: "universal",
+							Architecture: "Intel",
 							Platform:     "macOS",
-							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 macOS 下载", URL: wecomDownloadPage}},
+							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 macOS Intel 下载", URL: wecomMacIntelURL}},
+						},
+						{
+							Architecture: "Apple Silicon",
+							Platform:     "macOS",
+							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 macOS Apple 芯片下载", URL: wecomMacARM64URL}},
 						},
 						{
 							Architecture: "x64",
 							Platform:     "Linux",
 							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 Linux 下载", URL: wecomDownloadPage}},
+						},
+						{
+							Architecture: "universal",
+							Platform:     "iOS / iPadOS",
+							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 iOS 下载", URL: wecomIOSURL}},
+						},
+						{
+							Architecture: "arm64",
+							Platform:     "Android",
+							Links:        []plugin.Link{{Type: "direct", Label: "企业微信 Android 下载", URL: wecomAndroidURL}},
 						},
 					}),
 				},

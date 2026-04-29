@@ -62,6 +62,20 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 								{Type: "direct", Label: "dmg 安装包", URL: "https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg"},
 							},
 						},
+						{
+							Architecture: "x64 (deb)",
+							Platform:     "Linux",
+							Links: []plugin.Link{
+								{Type: "direct", Label: "deb 安装包", URL: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"},
+							},
+						},
+						{
+							Architecture: "x64 (rpm)",
+							Platform:     "Linux",
+							Links: []plugin.Link{
+								{Type: "direct", Label: "rpm 安装包", URL: "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm"},
+							},
+						},
 					}),
 				},
 			},
