@@ -100,7 +100,7 @@ function normalizeSoftwareItem(item) {
     organization,
     officialWebsite,
     tags: Array.isArray(item.tags)
-      ? item.tags.map((t) => String(t || '').trim()).filter(Boolean)
+      ? item.tags.map((t) => String(t || '').trim()).filter(Boolean).slice(0, 3)
       : [],
     source
   }

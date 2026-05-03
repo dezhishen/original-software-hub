@@ -15,6 +15,8 @@ const (
 	alipanOrganization = "Alibaba"
 )
 
+var alipanTags = []string{"云存储", "文件同步", "网盘"}
+
 // Alipan implements plugin.Plugin for Alibaba Aliyun Drive desktop client.
 type Alipan struct{}
 
@@ -118,6 +120,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     alipanDescription,
 				Organization:    alipanOrganization,
 				OfficialWebsite: alipanOfficialURL,
+				Tags:            alipanTags,
 			},
 			Versions: []plugin.Version{
 				{

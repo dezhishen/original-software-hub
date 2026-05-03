@@ -1,6 +1,6 @@
 <template>
   <article
-    class="software-card relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-3.5 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_8px_20px_rgba(2,6,23,0.46)] dark:hover:shadow-[0_10px_22px_rgba(15,157,132,0.2)]"
+    class="software-card relative cursor-pointer overflow-hidden rounded-xl border border-slate-200/90 bg-white/92 p-3.5 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_8px_20px_rgba(2,6,23,0.46)] dark:hover:shadow-[0_10px_22px_rgba(15,157,132,0.2)]"
     @click="$emit('select', software.id)"
   >
     <!-- 图标背景虚化层（仅对图片图标显示） -->
@@ -23,25 +23,25 @@
       >{{ software.name }}</h3>
     </div>
 
-    <!-- 描述 -->
-    <p class="software-card-description relative mt-1.5 text-[13px] leading-5 text-slate-600 dark:text-slate-300">
-      {{ software.description }}
+    <!-- 机构 -->
+    <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-400">
+      机构：{{ software.organization }}
     </p>
 
     <!-- 标签 -->
     <div v-if="software.tags?.length" class="relative mt-2.5 flex flex-wrap gap-1.5">
       <button
-        v-for="tag in software.tags"
+        v-for="tag in software.tags.slice(0, 3)"
         :key="tag"
         type="button"
         class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 transition hover:bg-brand-100 dark:bg-slate-700/50 dark:text-brand-400 dark:hover:bg-slate-700"
         @click.stop="$emit('tag-select', tag)"
-      >#{{ tag }}</button>
+      ><span aria-hidden="true">🏷</span> #{{ tag }}</button>
     </div>
 
-    <!-- 机构 -->
-    <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-400">
-      机构：{{ software.organization }}
+    <!-- 描述 -->
+    <p class="software-card-description relative mt-2 text-[13px] leading-5 text-slate-600 dark:text-slate-300">
+      {{ software.description }}
     </p>
   </article>
 </template>

@@ -15,6 +15,8 @@ const (
 	doubaoOrganization = "ByteDance"
 )
 
+var doubaoTags = []string{"AI 助手", "智能对话", "效率工具"}
+
 // Doubao implements plugin.Plugin for ByteDance Doubao desktop client.
 type Doubao struct{}
 
@@ -114,6 +116,7 @@ func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     doubaoDescription,
 				Organization:    doubaoOrganization,
 				OfficialWebsite: doubaoOfficialURL,
+				Tags:            doubaoTags,
 			},
 			Versions: []plugin.Version{
 				{
