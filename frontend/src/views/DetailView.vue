@@ -20,14 +20,13 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import SoftwareDetail from '@/components/detail/SoftwareDetail.vue'
 import LoadingOverlay from '@/components/LoadingOverlay.vue'
 import ErrorDisplay from '@/components/ErrorDisplay.vue'
 import { dataRepository } from '@/services/dataRepository'
 import { normalizeSoftwareVersionPayload } from '@/utils/normalize'
-import { useDetailBackground } from '@/composables/useDetailBackground'
 import { pageState } from '@/stores/pageState'
 
 const props = defineProps({ id: { type: String, required: true } })
@@ -38,8 +37,6 @@ const platforms = ref([])
 const loading = ref(true)
 const errorKind = ref('')      // '' | 'not-found' | 'error'
 const errorMessage = ref('')
-
-const { applyBackground, clearBackground } = useDetailBackground()
 
 async function loadDetail(id) {
   loading.value = true
@@ -54,13 +51,11 @@ async function loadDetail(id) {
     const sw = await dataRepository.getSoftwareById(id)
     if (!sw) {
       errorKind.value = 'not-found'
-      clearBackground()
       return
     }
 
     software.value = sw
     pageState.detailSoftware = sw
-    applyBackground(sw)
 
     const rawVersions = await dataRepository.loadSoftwareVersions(sw)
     const { platforms: pf, updatedAt } = normalizeSoftwareVersionPayload(rawVersions)
@@ -69,14 +64,12 @@ async function loadDetail(id) {
   } catch (e) {
     errorKind.value = 'error'
     errorMessage.value = e instanceof Error ? e.message : '未知错误'
-    clearBackground()
   } finally {
     loading.value = false
   }
 }
 
-watch(() => props.id, loadDetail)
-onMounted(() => loadDetail(props.id))
+watch(() => props.id, loadDetail, { immediate: true })
 
 function goBack() {
   const sameOrigin = document.referrer.startsWith(window.location.origin)

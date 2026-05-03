@@ -28,7 +28,7 @@ const softwares = ref([])
 const loading = ref(true)
 const error = ref('')
 
-onMounted(async () => {
+async function loadHomeCatalog() {
   pageState.mode = 'home'
   pageState.detailSoftware = null
   pageState.detailUpdatedAt = ''
@@ -41,14 +41,19 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
-})
+}
+
+onMounted(loadHomeCatalog)
 
 function navigateToDetail(softwareId) {
   const to = `/software/${softwareId}`
-  const startTransition = document.startViewTransition
-  if (typeof startTransition === 'function') {
-    startTransition(() => router.push(to))
-    return
+  if (typeof document.startViewTransition === 'function') {
+    try {
+      document.startViewTransition(() => router.push(to))
+      return
+    } catch {
+      // Fallback for browsers/environments where the API exists but cannot run now.
+    }
   }
   router.push(to)
 }
