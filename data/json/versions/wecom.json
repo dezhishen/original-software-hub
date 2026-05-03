@@ -1,0 +1,106 @@
+{
+  "softwareId": "wecom",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "Latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://work.weixin.qq.com/#indexDownload",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "企业微信 Android 下载",
+              "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=android\u0026from=wwindex"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "Latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://work.weixin.qq.com/#indexDownload",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "企业微信 Linux 下载",
+              "url": "https://work.weixin.qq.com/#indexDownload"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "Latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://work.weixin.qq.com/#indexDownload",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "企业微信 Windows 下载",
+              "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=win\u0026from=wwindex"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "Latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://work.weixin.qq.com/#indexDownload",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "企业微信 iOS 下载",
+              "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=ios\u0026from=wwindex"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "Latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://work.weixin.qq.com/#indexDownload",
+      "packages": [
+        {
+          "architecture": "Apple Silicon",
+          "links": [
+            {
+              "type": "direct",
+              "label": "企业微信 macOS Apple 芯片下载",
+              "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=mac_arm64\u0026from=wwindex"
+            }
+          ]
+        },
+        {
+          "architecture": "Intel",
+          "links": [
+            {
+              "type": "direct",
+              "label": "企业微信 macOS Intel 下载",
+              "url": "https://work.weixin.qq.com/wework_admin/commdownload?platform=mac\u0026from=wwindex"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

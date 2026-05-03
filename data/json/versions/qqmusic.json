@@ -1,0 +1,101 @@
+{
+  "softwareId": "qqmusic",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "22.2.2",
+      "releaseDate": "2026-04-24",
+      "officialUrl": "https://y.qq.com/download/download.html",
+      "packages": [
+        {
+          "architecture": "x64/x86",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "QQ音乐 Windows 下载页",
+              "url": "https://y.qq.com/download/welcome_pc_v15/index.html?ADTAG=YQQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "11.4.0",
+      "releaseDate": "2026-04-23",
+      "officialUrl": "https://y.qq.com/download/download.html",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "QQ音乐 macOS 下载页",
+              "url": "https://y.qq.com/download/mac.html?part=1\u0026ADTAG=YQQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "1.1.8",
+      "releaseDate": "2025-09-18",
+      "officialUrl": "https://y.qq.com/download/download.html",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "QQ音乐 Linux 下载页",
+              "url": "https://y.qq.com/download/download.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Android",
+      "version": "latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://y.qq.com/download/download.html",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "QQ音乐 Android 下载页",
+              "url": "https://y.qq.com/download/download.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "latest",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://y.qq.com/download/download.html",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store (iPhone)",
+              "url": "https://itunes.apple.com/cn/app/qq-yin-le/id414603431?mt=8"
+            },
+            {
+              "type": "store",
+              "label": "App Store (iPad)",
+              "url": "https://itunes.apple.com/cn/app/qq-yin-lehd-du-bo-zhong-guo/id429885089?l=en\u0026mt=8"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

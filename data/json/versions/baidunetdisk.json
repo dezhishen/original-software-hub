@@ -1,0 +1,80 @@
+{
+  "softwareId": "baidunetdisk",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "8.3.9.103",
+      "releaseDate": "2026-04-16",
+      "officialUrl": "https://yun.baidu.com/disk/version",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "百度网盘 Android 下载",
+              "url": "https://downpack.baidu.com/Baidunetdisk_AndroidPhone_1026962m.apk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "8.3.9.103",
+      "releaseDate": "2026-04-16",
+      "officialUrl": "https://yun.baidu.com/disk/version",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "百度网盘 Windows 下载",
+              "url": "https://issuepcdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_8.3.9.103.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "百度网盘 Windows 经典版",
+              "url": "https://issuepcdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.12.3.5.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "8.3.9.103",
+      "releaseDate": "2026-04-16",
+      "officialUrl": "https://yun.baidu.com/disk/version",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "百度网盘 macOS ARM64 下载",
+              "url": "https://pkg-ant.baidu.com/issue/netdisk/MACguanjia/8.3.9/BaiduNetdisk_mac_8.3.9_arm64.dmg"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "百度网盘 macOS 下载",
+              "url": "https://pkg-ant.baidu.com/issue/netdisk/MACguanjia/8.3.9/BaiduNetdisk_mac_8.3.9.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

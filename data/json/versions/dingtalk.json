@@ -1,0 +1,114 @@
+{
+  "softwareId": "dingtalk",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "8.2.0.260129003",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.dingtalk.com/download",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "应用市场",
+              "url": "https://appgallery.huawei.com/app/C100137037"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Web",
+      "version": "8.2.0.260129003",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.dingtalk.com/download",
+      "packages": [
+        {
+          "architecture": "通用",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "钉钉下载页",
+              "url": "https://www.dingtalk.com/download"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "8.2.0.260129003",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.dingtalk.com/download",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "钉钉 Windows 安装包",
+              "url": "https://dtapp-cast.dingtalk.com/202605031533/b84d0289e74f7d4132f10b22538008dd/dingtalk-desktop/win_installer/Release/DingTalk_v8.2.0.260129003.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows (Store)",
+      "version": "8.2.0.260129003",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.dingtalk.com/download",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "store",
+              "label": "Microsoft Store",
+              "url": "https://apps.microsoft.com/store/detail/%E9%92%89%E9%92%89/XPDDXZKH816B14?hl=zh-cn\u0026gl=cn"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "8.2.0.260129003",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.dingtalk.com/download",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/cn/app/ding-ding/id930368978?l=zh"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "8.2.0.260129003",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.dingtalk.com/download",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "钉钉 macOS 下载页",
+              "url": "https://www.dingtalk.com/download"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

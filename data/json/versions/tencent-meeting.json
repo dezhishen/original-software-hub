@@ -1,0 +1,136 @@
+{
+  "softwareId": "tencent-meeting",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "3.42.3.424",
+      "releaseDate": "2026-04-02",
+      "officialUrl": "https://meeting.tencent.com/download/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 Android (apk)",
+              "url": "https://updatecdn.meeting.qq.com/cos/17bea47f41089a33fb63069fa8912eb7/TencentMeeting_0300000000_3.42.2.405.publish.officialwebsite.apk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "3.42.3.424",
+      "releaseDate": "2026-04-02",
+      "officialUrl": "https://meeting.tencent.com/download/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 Linux arm64 (deb)",
+              "url": "https://updatecdn.meeting.qq.com/cos/c06d6bc4a3370dbfb2f43bbc6ff8969e/TencentMeeting_0300000000_3.26.10.401_arm64_default.publish.officialwebsite.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "loongarch64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 Linux loongarch64 (deb)",
+              "url": "https://updatecdn.meeting.qq.com/cos/399aded330e344aa1327064170be86e8/TencentMeeting_0300000000_3.26.10.401_loongarch64_default.publish.officialwebsite.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 Linux x64 (deb)",
+              "url": "https://updatecdn.meeting.qq.com/cos/72e0e0023e1d1e6d4123fba28821aea1/TencentMeeting_0300000000_3.26.10.401_x86_64_default.publish.officialwebsite.deb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "3.42.3.424",
+      "releaseDate": "2026-04-02",
+      "officialUrl": "https://meeting.tencent.com/download/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 x64 安装包 (exe)",
+              "url": "https://updatecdn.meeting.qq.com/cos/f7a5f035cc430fa9cd9daea0776ba864/TencentMeeting_0300000000_3.42.3.424_x86_64.publish.officialwebsite.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 安装包 (exe)",
+              "url": "https://updatecdn.meeting.qq.com/cos/1934af04bd7761cf3710f6e0a223e785/TencentMeeting_0300000000_3.42.3.424.publish.officialwebsite.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "3.42.3.424",
+      "releaseDate": "2026-04-02",
+      "officialUrl": "https://meeting.tencent.com/download/",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://itunes.apple.com/cn/app/id1484048379"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "3.42.3.424",
+      "releaseDate": "2026-04-02",
+      "officialUrl": "https://meeting.tencent.com/download/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 macOS Apple 芯片 (dmg)",
+              "url": "https://updatecdn.meeting.qq.com/cos/8d4c62261dd559d009c837895d5870e4/TencentMeeting_0300000000_3.42.3.403.publish.arm64.officialwebsite.dmg"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "腾讯会议 macOS Intel (dmg)",
+              "url": "https://updatecdn.meeting.qq.com/cos/d63db1fd9ffd04367a61aa781f7ee73d/TencentMeeting_0300000000_3.42.3.403.publish.x86_64.officialwebsite.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

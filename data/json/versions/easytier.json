@@ -1,0 +1,100 @@
+{
+  "softwareId": "easytier",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "v2.4.5",
+      "releaseDate": "2025-09-26",
+      "officialUrl": "https://github.com/EasyTier/EasyTier/releases/tag/v2.4.5",
+      "packages": [
+        {
+          "architecture": "arm64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_arm64.deb",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (appimage)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_amd64.AppImage",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_amd64.AppImage"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_amd64.deb",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_amd64.deb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "v2.4.5",
+      "releaseDate": "2025-09-26",
+      "officialUrl": "https://github.com/EasyTier/EasyTier/releases/tag/v2.4.5",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_arm64-setup.exe",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_arm64-setup.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_x64-setup.exe",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_x64-setup.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "v2.4.5",
+      "releaseDate": "2025-09-26",
+      "officialUrl": "https://github.com/EasyTier/EasyTier/releases/tag/v2.4.5",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_aarch64.dmg",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_aarch64.dmg"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.4.5_x64.dmg",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.4.5/easytier-gui_2.4.5_x64.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

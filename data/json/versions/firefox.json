@@ -1,0 +1,116 @@
+{
+  "softwareId": "firefox",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "150.0.1",
+      "releaseDate": "2026-04-21",
+      "officialUrl": "https://www.mozilla.org/en-US/firefox/150.0.1/releasenotes/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "Google Play",
+              "url": "https://play.google.com/store/apps/details?id=org.mozilla.firefox"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "150.0.1",
+      "releaseDate": "2026-04-21",
+      "officialUrl": "https://www.mozilla.org/en-US/firefox/150.0.1/releasenotes/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "tar.bz2",
+              "url": "https://download.mozilla.org/?product=firefox-latest-ssl\u0026os=linux64\u0026lang=zh-CN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "150.0.1",
+      "releaseDate": "2026-04-21",
+      "officialUrl": "https://www.mozilla.org/en-US/firefox/150.0.1/releasenotes/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "安装包 (exe)",
+              "url": "https://download.mozilla.org/?product=firefox-latest-ssl\u0026os=win64\u0026lang=zh-CN"
+            },
+            {
+              "type": "direct",
+              "label": "安装包 (msi)",
+              "url": "https://download.mozilla.org/?product=firefox-msi-latest-ssl\u0026os=win64\u0026lang=zh-CN"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "安装包 (exe)",
+              "url": "https://download.mozilla.org/?product=firefox-latest-ssl\u0026os=win\u0026lang=zh-CN"
+            },
+            {
+              "type": "direct",
+              "label": "安装包 (msi)",
+              "url": "https://download.mozilla.org/?product=firefox-msi-latest-ssl\u0026os=win\u0026lang=zh-CN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "150.0.1",
+      "releaseDate": "2026-04-21",
+      "officialUrl": "https://www.mozilla.org/en-US/firefox/150.0.1/releasenotes/",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/id989804926"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "150.0.1",
+      "releaseDate": "2026-04-21",
+      "officialUrl": "https://www.mozilla.org/en-US/firefox/150.0.1/releasenotes/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "dmg 安装包",
+              "url": "https://download.mozilla.org/?product=firefox-latest-ssl\u0026os=osx\u0026lang=zh-CN"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

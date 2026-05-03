@@ -1,0 +1,85 @@
+{
+  "softwareId": "chrome",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "148.0.7778.97",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://chromereleases.googleblog.com/",
+      "packages": [
+        {
+          "architecture": "x64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "deb 安装包",
+              "url": "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (rpm)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "rpm 安装包",
+              "url": "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "148.0.7778.97",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://chromereleases.googleblog.com/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "在线安装包 (exe)",
+              "url": "https://dl.google.com/chrome/install/ChromeStandaloneSetup64.exe"
+            },
+            {
+              "type": "direct",
+              "label": "企业 MSI (x64)",
+              "url": "https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise64.msi"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "在线安装包 (exe)",
+              "url": "https://dl.google.com/chrome/install/ChromeStandaloneSetup.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "148.0.7778.97",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://chromereleases.googleblog.com/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "dmg 安装包",
+              "url": "https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

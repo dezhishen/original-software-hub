@@ -1,0 +1,60 @@
+{
+  "softwareId": "wps",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "17133",
+      "releaseDate": "2024-06-17",
+      "officialUrl": "https://www.wps.cn/",
+      "packages": [
+        {
+          "architecture": "x64/x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "WPS Setup 17133 (exe)",
+              "url": "https://official-package.wpscdn.cn/wps/download/WPS_Setup_17133.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "3.4.1",
+      "releaseDate": "2022-02-22",
+      "officialUrl": "https://www.wps.cn/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "WPS Office 3.4.1 (dmg)",
+              "url": "https://package.mac.wpscdn.cn/mac_wps_pkg/3.4.1/WPS_Office_3.4.1_x86(5291).dmg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "12.1.2.25882",
+      "releaseDate": "2026-04-13",
+      "officialUrl": "https://www.wps.cn/product/wpslinux",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "WPS Linux 详情页",
+              "url": "https://www.wps.cn/product/wpslinux"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

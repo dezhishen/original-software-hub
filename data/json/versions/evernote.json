@@ -1,0 +1,78 @@
+{
+  "softwareId": "evernote",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "2026-04-29",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://evernote.com/download",
+      "packages": [
+        {
+          "architecture": "all",
+          "links": [
+            {
+              "type": "store",
+              "label": "Google Play",
+              "url": "https://play.google.com/store/apps/details?id=com.evernote"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "2026-04-29",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://evernote.com/download",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Evernote Windows 安装包",
+              "url": "https://win.desktop.evernote.com/builds/Evernote-latest.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "2026-04-29",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://evernote.com/download",
+      "packages": [
+        {
+          "architecture": "all",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/evernote-notes-organizer/id281796108"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "2026-04-29",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://evernote.com/download",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Evernote macOS 安装包",
+              "url": "https://mac.desktop.evernote.com/builds/Evernote-latest.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

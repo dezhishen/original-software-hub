@@ -1,0 +1,78 @@
+{
+  "softwareId": "alipan",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "V2.1.7",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.alipan.com/download",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "阿里云盘 Android",
+              "url": "https://appdownload.alicdn.com/publish/alicloud_shujubao_android/latest/alicloud_shujubao_android_36176427979800.apk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "V2.1.7",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.alipan.com/download",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "阿里云盘 Windows (x64)",
+              "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/aDrive-6.9.1.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS",
+      "version": "V2.1.7",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.alipan.com/download",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "阿里云盘 App Store",
+              "url": "https://apps.apple.com/cn/app/阿里云盘/id1494661473"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "V2.1.7",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.alipan.com/download",
+      "packages": [
+        {
+          "architecture": "Intel",
+          "links": [
+            {
+              "type": "direct",
+              "label": "阿里云盘 macOS (Intel)",
+              "url": "https://cdn.aliyundrive.net/downloads/apps/desktop/aDrive-6.9.1.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "softwareId": "todesk",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "4.8.8.3",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.todesk.com/download.html",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Windows 安装包",
+              "url": "https://dl.todesk.com/irrigation/ToDesk_4.8.8.3.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "4.8.8.9",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.todesk.com/download.html",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk macOS 安装包",
+              "url": "https://dl.todesk.com/macos/ToDesk_4.8.8.9.pkg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "4.8.6.2",
+      "releaseDate": "2026-03-09",
+      "officialUrl": "https://www.todesk.com/linux.html",
+      "packages": [
+        {
+          "architecture": "all",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "ToDesk Linux 发行版下载页",
+              "url": "https://www.todesk.com/linux.html"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux DEB 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.7.2.0-arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux RPM 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.7.2.0-arm64.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux DEB 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.5.1-arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux RPM 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.5.1-arm64.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux 麒麟包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.5.1-kylin-arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux 方德包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.5.1-nfschina-arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux UOS 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.5.1-uos-arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux DEB 包",
+              "url": "https://dl.todesk.com/linux/todesk_4.1.0_armv7l.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux RPM 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.7.2.0-c7-x86_64.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux DEB 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.1.0-amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux DEB 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.6.2-amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux 麒麟包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.6.2-kylin-amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux 方德包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.6.2-nfschina-amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux UOS 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.6.2-uos-amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux RPM 包",
+              "url": "https://dl.todesk.com/linux/todesk-v4.8.6.2-x86_64.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Linux Arch 包",
+              "url": "https://dl.todesk.com/linux/todesk_4.1.0_x86_64.pkg.tar.zst"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Android",
+      "version": "4.8.8.0",
+      "releaseDate": "2026-04-13",
+      "officialUrl": "https://www.todesk.com/download.html",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk Android 安装包",
+              "url": "https://dl.todesk.com/android/ToDesk_4.8.8.0.apk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Android TV",
+      "version": "4.7.205",
+      "releaseDate": "2026-05-03",
+      "officialUrl": "https://www.todesk.com/download.html",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "ToDesk TV 安装包",
+              "url": "https://dl.todesk.com/android/ToDesk_TV_4.7.205.apk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "4.8.81",
+      "releaseDate": "2026-04-29",
+      "officialUrl": "https://www.todesk.com/download.html",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/cn/app/todesk/id1519407428"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

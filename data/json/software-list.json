@@ -1,0 +1,393 @@
+{
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "items": [
+    {
+      "id": "7zip",
+      "name": "7-Zip",
+      "icon": "./assets/software-icons/7zip.png",
+      "description": "高压缩率的开源压缩与解压工具。",
+      "organization": "Igor Pavlov",
+      "officialWebsite": "https://www.7-zip.org/",
+      "tags": [
+        "压缩"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/7zip.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "alipan",
+      "name": "阿里云盘",
+      "pinyin": "aliyunpan alyp",
+      "icon": "./assets/software-icons/alipan.png",
+      "description": "阿里巴巴推出的高速、可靠的个人网盘，支持文件备份、同步和分享",
+      "organization": "Alibaba",
+      "officialWebsite": "https://www.alipan.com",
+      "tags": [
+        "云存储",
+        "文件同步",
+        "网盘"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/alipan.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "anydesk",
+      "name": "AnyDesk",
+      "icon": "./assets/software-icons/anydesk.ico",
+      "description": "轻量高速的远程控制软件，支持跨平台访问与控制。",
+      "organization": "AnyDesk Software GmbH",
+      "officialWebsite": "https://anydesk.com.cn",
+      "tags": [
+        "远程控制"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/anydesk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "baidunetdisk",
+      "name": "百度网盘",
+      "pinyin": "baiduwangpan bdwp",
+      "icon": "./assets/software-icons/baidunetdisk.ico",
+      "description": "百度网盘客户端，提供文件同步、分享与云存储服务。",
+      "organization": "Baidu",
+      "officialWebsite": "https://pan.baidu.com/",
+      "tags": [
+        "云存储",
+        "文件同步"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/baidunetdisk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "dingtalk",
+      "name": "钉钉",
+      "pinyin": "dingding dd",
+      "icon": "./assets/software-icons/dingtalk.ico",
+      "description": "阿里巴巴旗下企业协作与即时通讯应用。",
+      "organization": "Alibaba",
+      "officialWebsite": "https://www.dingtalk.com/",
+      "tags": [
+        "办公协作",
+        "即时通讯"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/dingtalk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "doubao",
+      "name": "豆包客户端",
+      "pinyin": "doubaokehuduan dbkhd",
+      "icon": "./assets/software-icons/doubao.png",
+      "description": "字节跳动推出的 AI 助手，提供智能对话、文案创作、代码编程等功能的桌面客户端",
+      "organization": "ByteDance",
+      "officialWebsite": "https://www.doubao.com",
+      "tags": [
+        "AI 助手",
+        "智能对话",
+        "效率工具"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/doubao.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "easytier",
+      "name": "EasyTier",
+      "icon": "./assets/software-icons/easytier.png",
+      "description": "EasyTier 是一个去中心化的 Mesh VPN，支持 WireGuard。",
+      "organization": "EasyTier",
+      "officialWebsite": "https://easytier.cn",
+      "tags": [
+        "网络工具",
+        "VPN"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/easytier.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "evernote",
+      "name": "Evernote",
+      "icon": "./assets/software-icons/evernote.ico",
+      "description": "跨平台云端笔记软件，支持记录、整理与同步。",
+      "organization": "Evernote Corporation",
+      "officialWebsite": "https://evernote.com",
+      "tags": [
+        "笔记",
+        "效率工具"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/evernote.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "foxmail",
+      "name": "Foxmail",
+      "icon": "./assets/software-icons/foxmail.ico",
+      "description": "腾讯推出的桌面邮件客户端。",
+      "organization": "Tencent",
+      "officialWebsite": "https://www.foxmail.com/",
+      "tags": [
+        "邮件"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/foxmail.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "chrome",
+      "name": "Google Chrome",
+      "icon": "./assets/software-icons/chrome.svg",
+      "description": "Google 出品的高速、安全浏览器。",
+      "organization": "Google LLC",
+      "officialWebsite": "https://www.google.com/chrome/",
+      "tags": [
+        "浏览器",
+        "网络"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/chrome.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "huorong",
+      "name": "火绒",
+      "pinyin": "huorong hr",
+      "icon": "./assets/software-icons/huorong.svg",
+      "description": "火绒安全软件，专业的个人电脑防护工具。",
+      "organization": "Huorong",
+      "officialWebsite": "https://www.huorong.cn/person",
+      "tags": [
+        "安全防护",
+        "杀毒软件"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/huorong.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "firefox",
+      "name": "Mozilla Firefox",
+      "icon": "./assets/software-icons/firefox.png",
+      "description": "Mozilla 出品的快速、安全、开源浏览器。",
+      "organization": "Mozilla Foundation",
+      "officialWebsite": "https://www.mozilla.org/firefox/",
+      "tags": [
+        "浏览器",
+        "网络",
+        "开源"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/firefox.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "wecom",
+      "name": "企业微信",
+      "pinyin": "qiyeweixin qywx",
+      "icon": "./assets/software-icons/wecom.ico",
+      "description": "腾讯企业微信，面向企业的办公沟通与协作平台。",
+      "organization": "Tencent",
+      "officialWebsite": "https://work.weixin.qq.com/",
+      "tags": [
+        "办公协作",
+        "企业通讯"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/wecom.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "qq",
+      "name": "QQ",
+      "icon": "./assets/software-icons/qq.png",
+      "description": "腾讯即时通信软件。",
+      "organization": "Tencent",
+      "officialWebsite": "https://im.qq.com/",
+      "tags": [
+        "即时通讯",
+        "社交"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/qq.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "steam",
+      "name": "Steam",
+      "icon": "./assets/software-icons/steam.png",
+      "description": "Valve 旗下数字游戏平台客户端。",
+      "organization": "Valve Corporation",
+      "officialWebsite": "https://store.steampowered.com/about/",
+      "tags": [
+        "游戏平台",
+        "娱乐"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/steam.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "tencent-meeting",
+      "name": "腾讯会议",
+      "pinyin": "tengxunhuiyi txhy",
+      "icon": "./assets/software-icons/tencent-meeting.ico",
+      "description": "腾讯会议，支持多端高清视频会议与在线协作。",
+      "organization": "Tencent",
+      "officialWebsite": "https://meeting.tencent.com/",
+      "tags": [
+        "视频会议",
+        "办公协作",
+        "腾讯"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/tencent-meeting.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "todesk",
+      "name": "ToDesk",
+      "icon": "./assets/software-icons/todesk.ico",
+      "description": "ToDesk 远程控制客户端，支持多端远程协作与设备管理。",
+      "organization": "ToDesk",
+      "officialWebsite": "https://www.todesk.com/",
+      "tags": [
+        "远程控制",
+        "远程办公",
+        "协作"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/todesk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "netease-music",
+      "name": "网易云音乐",
+      "pinyin": "wangyiyunyinle wyyyl",
+      "icon": "./assets/software-icons/netease-music.ico",
+      "description": "网易云音乐官方客户端，支持多端音乐播放。",
+      "organization": "网易公司",
+      "officialWebsite": "https://music.163.com/",
+      "tags": [
+        "音乐",
+        "流媒体"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/netease-music.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "weixin",
+      "name": "微信",
+      "pinyin": "weixin wx",
+      "icon": "./assets/software-icons/weixin.svg",
+      "description": "腾讯微信，提供消息、通话、朋友圈等功能的通讯软件。",
+      "organization": "Tencent",
+      "officialWebsite": "https://weixin.qq.com/",
+      "tags": [
+        "即时通讯",
+        "社交"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/weixin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "wps",
+      "name": "WPS Office",
+      "icon": "./assets/software-icons/wps.svg",
+      "description": "金山办公旗下 WPS Office 办公软件。",
+      "organization": "Kingsoft Office",
+      "officialWebsite": "https://www.wps.cn/",
+      "tags": [
+        "办公软件",
+        "文档处理"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/wps.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "qqmusic",
+      "name": "QQ音乐",
+      "pinyin": "yinle yl",
+      "icon": "./assets/software-icons/qqmusic.ico",
+      "description": "腾讯旗下在线音乐平台客户端。",
+      "organization": "Tencent Music",
+      "officialWebsite": "https://y.qq.com/",
+      "tags": [
+        "音乐",
+        "流媒体"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/qqmusic.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "uu-remote",
+      "name": "UU远程",
+      "pinyin": "yuancheng yc",
+      "icon": "./assets/software-icons/uu-remote.png",
+      "description": "网易 UU 远程控制客户端，支持低延迟远控与多端协作。",
+      "organization": "NetEase",
+      "officialWebsite": "https://uuyc.163.com/",
+      "tags": [
+        "远程控制",
+        "远程办公",
+        "网易"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/uu-remote.json",
+        "timeoutMs": 8000
+      }
+    }
+  ]
+}

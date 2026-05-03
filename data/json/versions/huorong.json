@@ -1,0 +1,44 @@
+{
+  "softwareId": "huorong",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "6.0.9.5",
+      "releaseDate": "2026-05-02",
+      "officialUrl": "https://www.huorong.cn/person",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "火绒安装包 (ARM64 exe)",
+              "url": "https://down-tencent.huorong.cn/sysdiag-all-arm64-6.0.9.5-2026.05.02.1.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "火绒安装包 (x64 exe)",
+              "url": "https://down-tencent.huorong.cn/sysdiag-all-x64-6.0.9.5-2026.05.02.1.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "火绒安装包 (x86 exe)",
+              "url": "https://down-tencent.huorong.cn/sysdiag-all-x86-6.0.9.5-2026.05.02.1.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

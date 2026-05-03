@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Original Software Hub</title>
+    <meta name="description" content="快速找到常见软件的官方下载入口、适合自己设备的版本" />
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#0f9d84" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="软件导航" />
+    <!-- 初始化暗色模式（避免闪烁） -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("osh-dark-mode");
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", saved !== null ? saved === "1" : prefersDark);
+        } catch (_) {}
+      })();
+    </script>
+    <!-- 运行时数据源配置（可在部署时覆盖） -->
+    <!-- 数据源配置（可在部署时修改 public/config.js 覆盖默认值） -->
+    <script src="./config.js" type="text/javascript" onerror="void 0"></script>
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon-9PNB4InU.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32-DrTFC0Jz.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16-CgZyVuNr.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon-DTrMFQ5j.png" />
+    <link rel="icon" type="image/x-icon" href="./assets/favicon-CEw3_7b0.ico" />
+    <script type="module" crossorigin src="./assets/index-Dl-_LZDf.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Dnl6Y57h.css">
+  <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

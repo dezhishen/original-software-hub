@@ -1,0 +1,44 @@
+{
+  "softwareId": "7zip",
+  "updatedAt": "2026-05-03T12:12:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "26.01",
+      "releaseDate": "2026-04-27",
+      "officialUrl": "https://www.7-zip.org/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "7z2601-arm64.exe",
+              "url": "https://github.com/ip7z/7zip/releases/download/26.01/7z2601-arm64.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "7z2601-x64.exe",
+              "url": "https://github.com/ip7z/7zip/releases/download/26.01/7z2601-x64.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "7z2601.exe",
+              "url": "https://github.com/ip7z/7zip/releases/download/26.01/7z2601.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
