@@ -29,19 +29,8 @@ body {
 
 /* ── Home list panel heights ─────────────────────────────────────────── */
 .home-list-panel {
-  height: calc(100vh - 7.5rem);
-}
-
-@media (min-width: 768px) {
-  .home-list-panel {
-    height: calc(100vh - 10rem);
-  }
-}
-
-@media (min-width: 1280px) {
-  .home-list-panel {
-    height: calc(100vh - 9.5rem);
-  }
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 /* ── Software card ──────────────────────────────────────────────────── */

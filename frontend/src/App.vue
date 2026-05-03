@@ -8,9 +8,9 @@
       ></div>
     </Transition>
 
-    <div class="relative z-10">
+    <div class="relative z-10 flex min-h-screen flex-col">
       <AppHeader />
-      <main class="app-shell mx-auto pb-8 md:pb-9">
+      <main class="app-shell mx-auto flex-1 min-h-0 pb-5 md:pb-6">
         <RouterView v-slot="{ Component, route }">
           <Transition name="route-fade-slide" mode="out-in">
             <component :is="Component" :key="route.fullPath" />

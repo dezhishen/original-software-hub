@@ -1,32 +1,35 @@
 <template>
   <header class="app-shell mx-auto pt-3 pb-2 text-left md:pt-4 md:pb-2">
-    <div class="rounded-2xl border border-slate-200/80 bg-white/78 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm md:grid md:grid-cols-[minmax(0,1fr)_340px] md:items-start md:gap-4 md:px-4 md:py-3 dark:border-slate-700/85 dark:bg-slate-900/88 dark:shadow-[0_10px_24px_rgba(2,6,23,0.45)]">
-      <div class="min-w-0 flex-1">
-        <div class="flex min-w-0 items-center gap-2">
-          <span class="inline-block h-2 w-2 rounded-full bg-brand-500/80 shadow-[0_0_0_5px_rgba(15,157,132,0.12)]"></span>
-        <h1
-          class="min-w-0 flex-1 truncate text-lg font-semibold tracking-[0.01em] text-slate-900 md:text-xl dark:text-slate-100"
-          style="font-family: 'Space Grotesk', sans-serif;"
-        >{{ title }}</h1>
-        <span
-          class="inline-flex shrink-0 rounded-full border border-brand-500/22 bg-brand-50/80 px-2.5 py-0.5 text-[10px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/80 dark:text-brand-400"
-          style="font-family: 'Space Grotesk', sans-serif;"
-        >{{ badge }}</span>
+    <div class="grid gap-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1240px)_320px_minmax(0,1fr)] xl:gap-4 xl:items-start">
+      <div class="rounded-2xl border border-slate-200/80 bg-white/78 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm xl:col-start-2 md:px-4 md:py-3 dark:border-slate-700/85 dark:bg-slate-900/88 dark:shadow-[0_10px_24px_rgba(2,6,23,0.45)]">
+        <div class="min-w-0 flex-1">
+          <div class="flex min-w-0 items-center gap-2">
+            <span class="inline-block h-2 w-2 rounded-full bg-brand-500/80 shadow-[0_0_0_5px_rgba(15,157,132,0.12)]"></span>
+            <h1
+              class="min-w-0 flex-1 truncate text-lg font-semibold tracking-[0.01em] text-slate-900 md:text-xl dark:text-slate-100"
+              style="font-family: 'Space Grotesk', sans-serif;"
+            >{{ title }}</h1>
+            <span
+              class="inline-flex shrink-0 rounded-full border border-brand-500/22 bg-brand-50/80 px-2.5 py-0.5 text-[10px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/80 dark:text-brand-400"
+              style="font-family: 'Space Grotesk', sans-serif;"
+            >{{ badge }}</span>
+          </div>
+          <p
+            v-if="description"
+            class="mt-1 hidden truncate pr-2 text-[13px] leading-5 text-slate-600 md:block dark:text-slate-400"
+          >{{ description }}</p>
+          <div class="mt-1 flex flex-wrap items-center gap-2">
+            <p v-if="updatedAt" class="text-xs text-slate-500 dark:text-slate-400">
+              数据更新于 <RelativeTime :dateStr="updatedAt" />
+            </p>
+            <span class="inline-flex rounded-md border border-slate-200/85 bg-white/80 px-2 py-0.5 text-[11px] text-slate-500 dark:border-slate-700/90 dark:bg-slate-800/90 dark:text-slate-300">
+              官方直链优先
+            </span>
+          </div>
+        </div>
       </div>
-      <p
-        v-if="description"
-        class="mt-1 hidden truncate pr-2 text-[13px] leading-5 text-slate-600 md:block dark:text-slate-400"
-      >{{ description }}</p>
-      <div class="mt-1 flex flex-wrap items-center gap-2">
-        <p v-if="updatedAt" class="text-xs text-slate-500 dark:text-slate-400">
-          数据更新于 <RelativeTime :dateStr="updatedAt" />
-        </p>
-        <span class="inline-flex rounded-md border border-slate-200/85 bg-white/80 px-2 py-0.5 text-[11px] text-slate-500 dark:border-slate-700/90 dark:bg-slate-800/90 dark:text-slate-300">
-          官方直链优先
-        </span>
-      </div>
-    </div>
-      <ComplianceNotice class="mt-2 md:mt-0 md:w-full md:justify-self-end" />
+
+      <ComplianceNotice class="xl:col-start-3" />
     </div>
   </header>
 </template>

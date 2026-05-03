@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex min-h-0 flex-1 flex-col">
     <!-- Search bar -->
     <div class="mb-2 border-b border-slate-200 pb-2 dark:border-slate-700">
       <input
@@ -12,7 +12,7 @@
 
     <!-- Software grid -->
     <div
-      class="home-list-panel grid auto-rows-max content-start grid-cols-1 gap-3.5 overflow-y-auto overscroll-contain pt-1 pr-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+      class="home-list-panel grid auto-rows-max content-start grid-cols-1 gap-3.5 overflow-y-auto overscroll-contain pt-1 pr-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       aria-live="polite"
     >
       <p

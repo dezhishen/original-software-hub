@@ -7,24 +7,38 @@
       @action="router.push('/')"
     />
 
-    <SoftwareDetail
+    <div
       v-else-if="software && !loading"
-      :software="software"
-      :platforms="platforms"
-      @back="goBack"
-      @home="router.push('/')"
-    />
+      class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1240px)_320px_minmax(0,1fr)] xl:items-start"
+    >
+      <SoftwareDetail
+        class="xl:col-start-2"
+        :software="software"
+        :platforms="platforms"
+        @back="goBack"
+        @home="router.push('/')"
+      />
+
+      <AdSlot
+        class="xl:col-start-3"
+        aria-label="详情页广告位"
+        :embeds="detailAdEmbeds"
+        :rotate-ms="3600"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import AdSlot from '@/components/AdSlot.vue'
 import SoftwareDetail from '@/components/detail/SoftwareDetail.vue'
 import ErrorDisplay from '@/components/ErrorDisplay.vue'
 import { dataRepository } from '@/services/dataRepository'
 import { normalizeSoftwareVersionPayload } from '@/utils/normalize'
 import { pageState } from '@/stores/pageState'
+import { detailAdEmbeds } from '@/utils/adEmbeds'
 
 const props = defineProps({ id: { type: String, required: true } })
 const router = useRouter()
