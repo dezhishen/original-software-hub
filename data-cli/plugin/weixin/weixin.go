@@ -319,3 +319,5 @@ func buildVariants(version string, conf rawConf) []plugin.Variant {
 
 	return variants
 }
+
+func (p *WeChat) Disabled() bool { return false }

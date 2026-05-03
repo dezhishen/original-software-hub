@@ -316,3 +316,7 @@ func defaultString(value, fallback string) string {
 	}
 	return strings.TrimSpace(value)
 }
+
+func (p *pluginConfig) Disabled() bool { return false }
+
+func (p *githubPlugin) Disabled() bool { return false }

@@ -13,14 +13,16 @@
 ## 项目结构
 
 ```
-├── data-cli/          # Go 数据抓取 CLI
-│   ├── main.go        # 入口，插件调度与输出
-│   └── plugin/        # 各软件抓取插件
-├── frontend/          # 静态前端
-│   ├── data/json/     # 生成的版本数据（JSON）
-│   └── assets/        # 图标等静态资源
-├── templates/         # 数据模板
-└── .github/workflows/ # CI/CD 自动化流程
+├── data-cli/            # Go 数据抓取 CLI
+│   ├── main.go          # 入口，插件调度与输出
+│   └── plugin/          # 各软件抓取插件
+├── frontend/            # Vue 3 + Vite 前端
+│   ├── src/             # 源码（组件、视图、composables）
+│   ├── public/          # 静态资源（图标、PWA manifest）
+│   ├── data/json/       # 生成的版本数据（JSON）
+│   └── assets/          # 软件图标等静态资源
+├── templates/           # 数据模板
+└── .github/workflows/   # CI/CD 自动化流程
 ```
 
 ## 本地运行
@@ -46,9 +48,18 @@ go run . -concurrency 5 -schedule-order priority -skip-unchanged
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
+
+**一键构建（数据 + 前端）**
+
+```bash
+cd frontend
+pnpm build:all   # 等价于：go run ../data-cli && pnpm build
+```
+
+> 需要安装 [pnpm](https://pnpm.io)。推荐通过 `corepack enable` 启用。
 
 ## 插件位置说明
 
@@ -68,8 +79,9 @@ npm run dev
 
 1. 从 `page` 分支恢复历史版本数据（用于 skip-unchanged 比对）
 2. 运行 `data-cli` 抓取最新版本
-3. 构建前端静态文件
-4. 部署至 `page` 分支（GitHub Pages）
+3. `pnpm install --frozen-lockfile` 安装前端依赖
+4. `pnpm build` 构建前端静态文件（含 PWA service worker）
+5. 部署至 `page` 分支（GitHub Pages）
 
 ## License
 

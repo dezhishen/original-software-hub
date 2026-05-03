@@ -189,3 +189,5 @@ func normalizeIOSURL(u string) string {
 	}
 	return u
 }
+
+func (p *TencentMeeting) Disabled() bool { return false }

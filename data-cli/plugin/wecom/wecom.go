@@ -85,3 +85,5 @@ func (w *WeCom) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
+
+func (p *WeCom) Disabled() bool { return false }

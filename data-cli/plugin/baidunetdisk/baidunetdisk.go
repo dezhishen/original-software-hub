@@ -184,3 +184,5 @@ func parsePublishDate(raw string) string {
 	}
 	return t.Format("2006-01-02")
 }
+
+func (p *BaiduNetdisk) Disabled() bool { return false }

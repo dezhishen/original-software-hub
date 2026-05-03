@@ -130,3 +130,5 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
+
+func (p *Alipan) Disabled() bool { return false }

@@ -82,3 +82,5 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
+
+func (p *Chrome) Disabled() bool { return false }

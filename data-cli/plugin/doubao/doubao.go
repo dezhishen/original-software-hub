@@ -126,3 +126,5 @@ func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
+
+func (p *Doubao) Disabled() bool { return false }

@@ -22,24 +22,76 @@ import (
 
 	// Blank-import each plugin to trigger its init() registration.
 	// Uncomment or add plugins here to include them in the build.
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/360-antivirus"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/360-browser"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/360-safe-guard"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/360-zip"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/7zip"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/adobe-acrobat-reader"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/adobe-after-effects"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/adobe-illustrator"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/adobe-photoshop"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/adobe-premiere-pro"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/alipan"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/anydesk"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/autocad"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/baidu-pinyin"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/baidunetdisk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/chrome"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/coreldraw"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/dingtalk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/doubao"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/eclipse"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/edge"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/evernote"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/firefox"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/foxit-reader"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/git"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/huorong"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/iflytek-pinyin"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/intellij-idea"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/iqiyi"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/jianying"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/kingsoft-antivirus"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/kingsoft-pdf"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/kugou-music"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/microsoft-office"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/microsoft-pinyin"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/neteasecloudmusic"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/notepad-plus-plus"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/onedrive"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/onenote"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/outlook"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/potplayer"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/powerword"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/pycharm"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qq-browser"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/qqmusic"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/snipaste"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/sogou-browser"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/sogou-pinyin"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/steam"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/sunlogin"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/teamviewer"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencent-pc-manager"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencent-video"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencentmeeting"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/todesk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/uuremote"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/virtualbox"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/visual-studio"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/vlc"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/vmware-workstation"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/vscode"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wecom"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weixin"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/weiyun"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/winrar"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/wps"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/youdao-dict"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/youku"
 
 	"github.com/dezhishen/original-software-hub/data-cli/plugin"
 	"github.com/mozillazg/go-pinyin"
@@ -47,39 +99,39 @@ import (
 
 func main() {
 	runStartedAt := time.Now()
+
+	// ── CLI flags ──────────────────────────────────────────────────────────────
 	outDir := flag.String("out", "../frontend/data/json", "Output directory for index.json, software-list.json and versions/")
 	pluginsArg := flag.String("plugins", "all", "Plugins to run: all or comma-separated names (e.g. weixin,qq)")
 	concurrency := flag.Int("concurrency", 3, "Maximum number of plugins to run concurrently")
 	scheduleOrder := flag.String("schedule-order", "priority", "Plugin scheduling order: input,alpha,priority")
 	skipUnchanged := flag.Bool("skip-unchanged", true, "Skip write/icon steps when software versions are unchanged from previous output")
 	flag.Parse()
-	log.Printf("[run] start outDir=%s plugins=%s concurrency=%d order=%s skipUnchanged=%t", *outDir, *pluginsArg, *concurrency, *scheduleOrder, *skipUnchanged)
+	log.Printf("[run] start outDir=%s plugins=%s concurrency=%d order=%s skipUnchanged=%t",
+		*outDir, *pluginsArg, *concurrency, *scheduleOrder, *skipUnchanged)
 
+	// ── Directories ────────────────────────────────────────────────────────────
 	jsonDir := filepath.Join(*outDir, "versions")
-	frontendRootDir := filepath.Dir(filepath.Dir(*outDir))
-	iconsDir := filepath.Join(frontendRootDir, "assets", "software-icons")
+	iconsDir := filepath.Join(filepath.Dir(filepath.Dir(*outDir)), "assets", "software-icons")
+	for _, dir := range []string{jsonDir, iconsDir} {
+		if err := ensureDir(dir); err != nil {
+			log.Fatalf("ensure dir %s: %v", dir, err)
+		}
+	}
+
+	// ── Previous state ─────────────────────────────────────────────────────────
 	prevVersions, prevList, prevIndex := loadPreviousState(*outDir, jsonDir)
 	prevItems := make(map[string]plugin.SoftwareItem, len(prevList.Items))
 	for _, item := range prevList.Items {
-		if strings.TrimSpace(item.ID) == "" {
-			continue
+		if strings.TrimSpace(item.ID) != "" {
+			prevItems[item.ID] = item
 		}
-		prevItems[item.ID] = item
 	}
-	previousState := plugin.PreviousState{
-		Versions: prevVersions,
-		Items:    prevItems,
-	}
-	log.Printf("[state] loaded previous versions=%d listItems=%d hasGeneratedAt=%t", len(prevVersions), len(prevItems), strings.TrimSpace(prevIndex.Meta.GeneratedAt) != "")
+	previousState := plugin.PreviousState{Versions: prevVersions, Items: prevItems}
+	log.Printf("[state] loaded previous versions=%d listItems=%d hasGeneratedAt=%t",
+		len(prevVersions), len(prevItems), strings.TrimSpace(prevIndex.Meta.GeneratedAt) != "")
 
-	if err := ensureDir(jsonDir); err != nil {
-		log.Fatalf("ensure json dir: %v", err)
-	}
-	if err := ensureDir(iconsDir); err != nil {
-		log.Fatalf("ensure icons dir: %v", err)
-	}
-	iconDownloader := newIconDownloader(iconsDir, "./assets/software-icons")
-
+	// ── Plugin selection ───────────────────────────────────────────────────────
 	plugins, err := selectPlugins(plugin.All(), *pluginsArg)
 	if err != nil {
 		log.Fatalf("select plugins: %v", err)
@@ -88,122 +140,27 @@ func main() {
 		log.Println("no plugins registered, nothing to do")
 		return
 	}
-	log.Printf("[scheduler] plugins=%d concurrency=%d order=%s skipUnchanged=%t", len(plugins), *concurrency, strings.ToLower(strings.TrimSpace(*scheduleOrder)), *skipUnchanged)
+	log.Printf("[scheduler] plugins=%d concurrency=%d order=%s skipUnchanged=%t",
+		len(plugins), *concurrency, strings.ToLower(strings.TrimSpace(*scheduleOrder)), *skipUnchanged)
 
-	nowUTC := time.Now().UTC()
-	updatedAt := nowUTC.Format(time.RFC3339)
-
-	listItems := make([]plugin.SoftwareItem, 0, len(plugins))
+	// ── Fetch & process ────────────────────────────────────────────────────────
+	updatedAt := time.Now().UTC().Format(time.RFC3339)
+	iconDL := newIconDownloader(iconsDir, "./assets/software-icons")
 	fetchResults := fetchPluginsConcurrently(plugins, *concurrency, *scheduleOrder)
-	changedCount := 0
-	unchangedCount := 0
-	skipUnsupportedCount := 0
-	writtenCount := 0
-	totalEntries := 0
-	pluginFetchErrors := 0
-	versionWriteErrors := 0
-	iconDownloadSuccess := 0
-	iconDownloadErrors := 0
-	for _, result := range fetchResults {
-		p := result.Plugin
-		if result.Err != nil {
-			pluginFetchErrors++
-			log.Printf("[%s] Fetch error: %v", p.Name(), result.Err)
-			continue
-		}
+	listItems, stats := processFetchResults(fetchResults, previousState, *skipUnchanged, jsonDir, updatedAt, iconDL)
 
-		pluginItemCount := 0
-		pluginChangedCount := 0
-		pluginUnchangedCount := 0
-		pluginSkipUnsupportedCount := 0
-		pluginWrittenCount := 0
-		pluginVersionWriteErrors := 0
-		pluginIconDownloadSuccess := 0
-		pluginIconDownloadErrors := 0
-
-		for _, fetched := range result.Items {
-			decision, err := resolveDataByVersionDecision(previousState, fetched, *skipUnchanged)
-			if err != nil {
-				log.Printf("[%s] resolve data by version: %v", p.Name(), err)
-				continue
-			}
-			changed := decision.Changed
-			entry := decision.Result
-
-			softwareID := entry.Item.ID
-			prevItem, hasPrevItem := prevItems[softwareID]
-			if !decision.SkipSupported {
-				skipUnsupportedCount++
-				pluginSkipUnsupportedCount++
-			}
-			if !changed {
-				unchangedCount++
-				pluginUnchangedCount++
-				log.Printf("[%s/%s] decision=skipped reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
-			} else {
-				changedCount++
-				pluginChangedCount++
-				log.Printf("[%s/%s] decision=changed reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
-				platformPayload := plugin.PlatformPayload{
-					SoftwareID: softwareID,
-					UpdatedAt:  updatedAt,
-					Platforms:  flattenVersionsToPlatforms(entry.Versions),
-				}
-				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), platformPayload); err != nil {
-					versionWriteErrors++
-					pluginVersionWriteErrors++
-					log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
-					continue
-				}
-				writtenCount++
-				pluginWrittenCount++
-			}
-
-			item := entry.Item
-			if !changed {
-				if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
-					item.Icon = prevItem.Icon
-				}
-			} else {
-				if localIcon, err := iconDownloader.Download(softwareID, item.Icon); err != nil {
-					iconDownloadErrors++
-					pluginIconDownloadErrors++
-					log.Printf("[%s/%s] download icon: %v", p.Name(), softwareID, err)
-					if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
-						item.Icon = prevItem.Icon
-					}
-				} else {
-					item.Icon = localIcon
-					iconDownloadSuccess++
-					pluginIconDownloadSuccess++
-				}
-			}
-
-			item.Pinyin = buildSearchPinyin(item.Name)
-			item.Source = plugin.Source{
-				Mode:      "json",
-				Path:      "versions/" + softwareID + ".json",
-				TimeoutMs: 8000,
-			}
-			listItems = append(listItems, item)
-			pluginItemCount++
-			totalEntries++
-		}
-
-		log.Printf("[plugin-summary] name=%s mode=fetch items=%d changed=%d skipped=%d skipUnsupported=%d written=%d writeErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d", p.Name(), pluginItemCount, pluginChangedCount, pluginUnchangedCount, pluginSkipUnsupportedCount, pluginWrittenCount, pluginVersionWriteErrors, pluginIconDownloadSuccess, pluginIconDownloadErrors)
-	}
-
+	// ── Sort list items ────────────────────────────────────────────────────────
 	sort.SliceStable(listItems, func(i, j int) bool {
-		li := sortKeyForItem(listItems[i])
-		lj := sortKeyForItem(listItems[j])
+		li, lj := sortKeyForItem(listItems[i]), sortKeyForItem(listItems[j])
 		if li == lj {
 			return listItems[i].ID < listItems[j].ID
 		}
 		return li < lj
 	})
 
+	// ── Timestamps: preserve previous values when nothing changed ──────────────
 	listChanged := !reflect.DeepEqual(prevList.Items, listItems)
-	dataChanged := writtenCount > 0 || listChanged
+	dataChanged := stats.writtenCount > 0 || listChanged
 	if !dataChanged && strings.TrimSpace(prevList.UpdatedAt) != "" {
 		updatedAt = strings.TrimSpace(prevList.UpdatedAt)
 	}
@@ -212,33 +169,134 @@ func main() {
 		generatedAt = strings.TrimSpace(prevIndex.Meta.GeneratedAt)
 	}
 
-	softwareList := plugin.SoftwareListPayload{
+	// ── Write output files ─────────────────────────────────────────────────────
+	if err := writeJSON(filepath.Join(*outDir, "software-list.json"), plugin.SoftwareListPayload{
 		UpdatedAt: updatedAt,
 		Items:     listItems,
-	}
-	if err := writeJSON(filepath.Join(*outDir, "software-list.json"), softwareList); err != nil {
+	}); err != nil {
 		log.Fatalf("write software-list.json: %v", err)
 	}
-
-	indexJSON := plugin.IndexPayload{
-		Meta: plugin.Meta{
-			Version:     "1.0.0",
-			GeneratedAt: generatedAt,
-			Generator:   "data-cli",
-		},
-		SoftwareList: plugin.Source{
-			Mode:      "json",
-			Path:      "software-list.json",
-			TimeoutMs: 8000,
-		},
-	}
-	if err := writeJSON(filepath.Join(*outDir, "index.json"), indexJSON); err != nil {
+	if err := writeJSON(filepath.Join(*outDir, "index.json"), plugin.IndexPayload{
+		Meta:         plugin.Meta{Version: "1.0.0", GeneratedAt: generatedAt, Generator: "data-cli"},
+		SoftwareList: plugin.Source{Mode: "json", Path: "software-list.json", TimeoutMs: 8000},
+	}); err != nil {
 		log.Fatalf("write index.json: %v", err)
 	}
 
-	runDuration := time.Since(runStartedAt)
-	log.Printf("[summary] duration=%s selectedPlugins=%d pluginFetchErrors=%d processedEntries=%d listItems=%d versionsChanged=%d versionsSkipped=%d skipUnsupported=%d versionsWritten=%d versionWriteErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d listChanged=%t dataChanged=%t", runDuration, len(plugins), pluginFetchErrors, totalEntries, len(listItems), changedCount, unchangedCount, skipUnsupportedCount, writtenCount, versionWriteErrors, iconDownloadSuccess, iconDownloadErrors, listChanged, dataChanged)
+	// ── Summary ────────────────────────────────────────────────────────────────
+	log.Printf("[summary] duration=%s selectedPlugins=%d pluginFetchErrors=%d processedEntries=%d listItems=%d versionsChanged=%d versionsSkipped=%d skipUnsupported=%d versionsWritten=%d versionWriteErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d listChanged=%t dataChanged=%t",
+		time.Since(runStartedAt), len(plugins),
+		stats.pluginFetchErrors, stats.totalEntries, len(listItems),
+		stats.changedCount, stats.unchangedCount, stats.skipUnsupportedCount,
+		stats.writtenCount, stats.versionWriteErrors,
+		stats.iconDownloadSuccess, stats.iconDownloadErrors,
+		listChanged, dataChanged)
 	fmt.Println("Done.")
+}
+
+// runStats aggregates counters from all plugin fetch results.
+type runStats struct {
+	pluginFetchErrors    int
+	changedCount         int
+	unchangedCount       int
+	skipUnsupportedCount int
+	writtenCount         int
+	versionWriteErrors   int
+	iconDownloadSuccess  int
+	iconDownloadErrors   int
+	totalEntries         int
+}
+
+// processFetchResults processes each plugin's fetch outcome: persists changed version JSON,
+// resolves icons, and builds the flat SoftwareItem list for software-list.json.
+func processFetchResults(
+	results []pluginFetchResult,
+	previousState plugin.PreviousState,
+	skipUnchanged bool,
+	jsonDir, updatedAt string,
+	iconDL *iconDownloader,
+) ([]plugin.SoftwareItem, runStats) {
+	var stats runStats
+	listItems := make([]plugin.SoftwareItem, 0, len(results))
+
+	for _, result := range results {
+		p := result.Plugin
+		if result.Err != nil {
+			stats.pluginFetchErrors++
+			log.Printf("[%s] Fetch error: %v", p.Name(), result.Err)
+			continue
+		}
+
+		var pItems, pChanged, pUnchanged, pSkipUnsupported, pWritten, pWriteErrors, pIconOK, pIconErr int
+
+		for _, fetched := range result.Items {
+			decision, err := resolveDataByVersionDecision(previousState, fetched, skipUnchanged)
+			if err != nil {
+				log.Printf("[%s] resolve: %v", p.Name(), err)
+				continue
+			}
+			entry := decision.Result
+			softwareID := entry.Item.ID
+			prevItem, hasPrevItem := previousState.Items[softwareID]
+
+			if !decision.SkipSupported {
+				stats.skipUnsupportedCount++
+				pSkipUnsupported++
+			}
+
+			if decision.Changed {
+				stats.changedCount++
+				pChanged++
+				log.Printf("[%s/%s] decision=changed reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
+				payload := plugin.PlatformPayload{
+					SoftwareID: softwareID,
+					UpdatedAt:  updatedAt,
+					Platforms:  flattenVersionsToPlatforms(entry.Versions),
+				}
+				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), payload); err != nil {
+					stats.versionWriteErrors++
+					pWriteErrors++
+					log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
+					continue
+				}
+				stats.writtenCount++
+				pWritten++
+			} else {
+				stats.unchangedCount++
+				pUnchanged++
+				log.Printf("[%s/%s] decision=skipped reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
+			}
+
+			item := entry.Item
+			if decision.Changed {
+				if localIcon, err := iconDL.Download(softwareID, item.Icon); err != nil {
+					stats.iconDownloadErrors++
+					pIconErr++
+					log.Printf("[%s/%s] download icon: %v", p.Name(), softwareID, err)
+					if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
+						item.Icon = prevItem.Icon
+					}
+				} else {
+					item.Icon = localIcon
+					stats.iconDownloadSuccess++
+					pIconOK++
+				}
+			} else if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
+				item.Icon = prevItem.Icon
+			}
+
+			item.Pinyin = buildSearchPinyin(item.Name)
+			item.Source = plugin.Source{Mode: "json", Path: "versions/" + softwareID + ".json", TimeoutMs: 8000}
+			listItems = append(listItems, item)
+			pItems++
+			stats.totalEntries++
+		}
+
+		log.Printf("[plugin-summary] name=%s mode=fetch items=%d changed=%d skipped=%d skipUnsupported=%d written=%d writeErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d",
+			p.Name(), pItems, pChanged, pUnchanged, pSkipUnsupported, pWritten, pWriteErrors, pIconOK, pIconErr)
+	}
+
+	return listItems, stats
 }
 
 type pluginJob struct {
@@ -590,7 +648,15 @@ func retryDelay(base time.Duration, attempt int) time.Duration {
 func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, error) {
 	raw := strings.TrimSpace(strings.ToLower(pluginsArg))
 	if raw == "" || raw == "all" {
-		return all, nil
+		enabled := make([]plugin.Plugin, 0, len(all))
+		for _, p := range all {
+			if p.Disabled() {
+				log.Printf("[scheduler] skip disabled plugin: %s", p.Name())
+				continue
+			}
+			enabled = append(enabled, p)
+		}
+		return enabled, nil
 	}
 
 	selectedNames := map[string]struct{}{}
@@ -831,16 +897,6 @@ func resolveDataByVersionDecision(previous plugin.PreviousState, fetched plugin.
 	}
 
 	return versionDecision{Changed: true, Result: entry, SkipSupported: false, Reason: "previous-item-missing"}, nil
-}
-
-// resolveDataByVersion centralizes unchanged/changed decision and previous-data reuse.
-// Return values follow: changed, result, err.
-func resolveDataByVersion(previous plugin.PreviousState, fetched plugin.SoftwareData, skipUnchanged bool) (bool, plugin.SoftwareData, error) {
-	decision, err := resolveDataByVersionDecision(previous, fetched, skipUnchanged)
-	if err != nil {
-		return false, plugin.SoftwareData{}, err
-	}
-	return decision.Changed, decision.Result, nil
 }
 
 func sortKeyForItem(item plugin.SoftwareItem) string {

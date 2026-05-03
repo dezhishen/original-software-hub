@@ -386,3 +386,5 @@ func buildIOSVersion(cfg mobileIOSConfig) *plugin.Version {
 		}),
 	}
 }
+
+func (p *QQ) Disabled() bool { return false }

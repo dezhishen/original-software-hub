@@ -2,14 +2,25 @@
   "name": "original-software-hub-frontend",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.26.0",
   "scripts": {
-    "build:css": "mkdir -p ./assets/css && tailwindcss -c ./tailwind.config.cjs -i ./tailwind.input.css -o ./assets/css/tailwind.css --minify",
-    "build": "npm run build:css && node ./scripts/build.mjs",
-    "dev": "npm run build && node ./scripts/dev-server.mjs"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5173",
+    "build:data": "cd ../data-cli && go run . -skip-unchanged",
+    "build:all": "pnpm build:data && pnpm build"
+  },
+  "dependencies": {
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "html-minifier-terser": "^7.2.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "terser": "^5.39.2"
+    "vite": "^6.3.3",
+    "vite-plugin-pwa": "^0.21.1",
+    "workbox-precaching": "^7.3.0"
   }
 }

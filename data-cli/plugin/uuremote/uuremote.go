@@ -279,3 +279,5 @@ func parseReleaseDate(s string) string {
 	}
 	return fmt.Sprintf("%s-%s-%s", m[1], m[2], m[3])
 }
+
+func (p *UURemote) Disabled() bool { return false }

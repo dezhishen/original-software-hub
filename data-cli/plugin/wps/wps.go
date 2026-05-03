@@ -371,3 +371,5 @@ func parseSemverParts(v string) []int {
 	}
 	return out
 }
+
+func (p *WPS) Disabled() bool { return false }

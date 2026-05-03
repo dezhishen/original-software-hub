@@ -263,3 +263,5 @@ func isDigits(s string) bool {
 	}
 	return true
 }
+
+func (p *DingTalk) Disabled() bool { return false }

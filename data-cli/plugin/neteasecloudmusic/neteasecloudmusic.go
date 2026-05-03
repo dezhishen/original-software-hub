@@ -360,3 +360,5 @@ func mustParseURL(raw string) *url.URL {
 	}
 	return u
 }
+
+func (p *NeteaseCloudMusic) Disabled() bool { return false }

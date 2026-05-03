@@ -88,3 +88,5 @@ func (f *Firefox) Fetch() ([]plugin.SoftwareData, error) {
 		},
 	}, nil
 }
+
+func (p *Firefox) Disabled() bool { return false }

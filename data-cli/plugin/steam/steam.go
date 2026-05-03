@@ -132,3 +132,5 @@ func fileNameFromURL(raw string) string {
 	}
 	return name
 }
+
+func (p *Steam) Disabled() bool { return false }

@@ -408,3 +408,5 @@ func firstNonEmpty(values ...string) string {
 	}
 	return ""
 }
+
+func (p *ToDesk) Disabled() bool { return false }

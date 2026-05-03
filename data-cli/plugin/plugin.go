@@ -115,6 +115,8 @@ type Plugin interface {
 	Name() string
 	// Fetch returns one or more software data items.
 	Fetch() ([]SoftwareData, error)
+	// Disabled returns true when the plugin should be skipped by the scheduler.
+	Disabled() bool
 }
 
 // ── Registry ──────────────────────────────────────────────────────────────────

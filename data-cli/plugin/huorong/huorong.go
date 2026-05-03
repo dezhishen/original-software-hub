@@ -293,3 +293,5 @@ func absoluteHuorongURL(raw string) string {
 	}
 	return base.ResolveReference(parsed).String()
 }
+
+func (p *Huorong) Disabled() bool { return false }

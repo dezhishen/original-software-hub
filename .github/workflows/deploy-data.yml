@@ -44,12 +44,17 @@ jobs:
           go-version-file: data-cli/go.mod
           cache-dependency-path: data-cli/go.sum
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: frontend/package-lock.json
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Generate latest data
         working-directory: data-cli
@@ -60,11 +65,11 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: frontend
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Build minified frontend
         working-directory: frontend
-        run: npm run build
+        run: pnpm build
 
       - name: Publish frontend (with data) to page branch
         uses: JamesIves/github-pages-deploy-action@v4.8.0
