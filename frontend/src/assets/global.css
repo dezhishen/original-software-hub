@@ -133,11 +133,11 @@ body {
 }
 
 .detail-bg-fade-enter-active::after {
-  animation: detail-vignette-pulse 780ms cubic-bezier(0.18, 0.8, 0.24, 1);
+  animation: none;
 }
 
 .detail-bg-fade-leave-active::after {
-  animation: detail-vignette-fade 340ms ease-out;
+  animation: none;
 }
 
 .software-card-bg-icon {
@@ -180,7 +180,7 @@ body {
   background:
     radial-gradient(120% 90% at 50% 50%, rgba(2, 6, 23, 0) 55%, rgba(2, 6, 23, 0.2) 100%),
     radial-gradient(80% 65% at 100% 50%, rgba(2, 6, 23, 0) 42%, rgba(2, 6, 23, 0.16) 100%);
-  opacity: 0.2;
+  opacity: 0.08;
 }
 
 @keyframes detail-vignette-pulse {
@@ -219,7 +219,7 @@ body {
   background:
     radial-gradient(120% 90% at 50% 50%, rgba(2, 6, 23, 0) 50%, rgba(2, 6, 23, 0.28) 100%),
     radial-gradient(80% 65% at 100% 50%, rgba(2, 6, 23, 0) 38%, rgba(2, 6, 23, 0.22) 100%);
-  opacity: 0.24;
+  opacity: 0.12;
 }
 
 @media (max-width: 768px) {
@@ -257,7 +257,7 @@ body {
   }
 
   .global-detail-backdrop::after {
-    opacity: 0.16;
+    opacity: 0.06;
   }
 
   .dark .global-detail-backdrop {
@@ -265,6 +265,6 @@ body {
   }
 
   .dark .global-detail-backdrop::after {
-    opacity: 0.2;
+    opacity: 0.1;
   }
 }

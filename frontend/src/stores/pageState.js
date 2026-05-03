@@ -7,5 +7,7 @@ export const pageState = reactive({
   homeUpdatedAt: '',
   /** @type {import('../services/dataRepository').SoftwareItem | null} */
   detailSoftware: null,
-  detailUpdatedAt: ''
+  detailUpdatedAt: '',
+  transitionLoading: false,
+  transitionMessage: '正在加载...'
 })

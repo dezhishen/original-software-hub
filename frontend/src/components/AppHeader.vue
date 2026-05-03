@@ -1,15 +1,15 @@
 <template>
   <header class="app-shell mx-auto pt-3 pb-2 text-left md:pt-4 md:pb-2">
-    <div class="rounded-2xl border border-slate-200/80 bg-white/72 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm md:flex md:items-center md:justify-between md:px-4 md:py-3 dark:border-slate-700/75 dark:bg-slate-800/58 dark:shadow-[0_6px_16px_rgba(2,6,23,0.28)]">
+    <div class="rounded-2xl border border-slate-200/80 bg-white/72 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm md:grid md:grid-cols-[minmax(0,1fr)_340px] md:items-start md:gap-4 md:px-4 md:py-3 dark:border-slate-700/75 dark:bg-slate-800/58 dark:shadow-[0_6px_16px_rgba(2,6,23,0.28)]">
       <div class="min-w-0 flex-1">
-        <div class="flex flex-wrap items-center gap-2">
+        <div class="flex min-w-0 items-center gap-2">
           <span class="inline-block h-2 w-2 rounded-full bg-brand-500/80 shadow-[0_0_0_5px_rgba(15,157,132,0.12)]"></span>
         <h1
-          class="text-lg font-semibold tracking-[0.01em] text-slate-900 md:text-xl dark:text-slate-100"
+          class="min-w-0 flex-1 truncate text-lg font-semibold tracking-[0.01em] text-slate-900 md:text-xl dark:text-slate-100"
           style="font-family: 'Space Grotesk', sans-serif;"
         >{{ title }}</h1>
         <span
-          class="inline-flex rounded-full border border-brand-500/22 bg-brand-50/80 px-2.5 py-0.5 text-[10px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/80 dark:text-brand-400"
+          class="inline-flex shrink-0 rounded-full border border-brand-500/22 bg-brand-50/80 px-2.5 py-0.5 text-[10px] font-medium tracking-[0.08em] text-brand-700 dark:border-brand-500/35 dark:bg-slate-800/80 dark:text-brand-400"
           style="font-family: 'Space Grotesk', sans-serif;"
         >{{ badge }}</span>
       </div>
@@ -26,7 +26,7 @@
         </span>
       </div>
     </div>
-      <ComplianceNotice class="mt-2 md:mt-0 md:ml-4 md:shrink-0" />
+      <ComplianceNotice class="mt-2 md:mt-0 md:w-full md:justify-self-end" />
     </div>
   </header>
 </template>

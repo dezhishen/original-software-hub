@@ -1,14 +1,7 @@
 <template>
   <article
-    class="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/20 backdrop-blur-sm p-4 shadow-[0_6px_16px_rgba(15,70,56,0.08)] md:p-5 xl:p-6 dark:border-slate-700/80 dark:bg-slate-800/40 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)]"
+    class="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-4 dark:border-slate-700 dark:bg-slate-800/88 dark:shadow-[0_8px_20px_rgba(2,6,23,0.35)]"
   >
-    <!-- Detail hero background -->
-    <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-xl">
-      <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-brand-500/8 blur-3xl dark:bg-brand-500/12"></div>
-      <div class="absolute -left-12 -bottom-8 h-40 w-40 rounded-full bg-amber-200/25 blur-3xl dark:bg-slate-600/15"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-white/20 to-white/10 dark:from-slate-800/40 dark:via-slate-800/30 dark:to-slate-800/20"></div>
-    </div>
-
     <div class="relative flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-4">
       <div class="min-w-0 flex-1">
         <!-- Back / Home buttons -->
@@ -23,6 +16,12 @@
             class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:border-brand-500/40 hover:text-brand-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300"
             @click="$emit('home')"
           >回到软件目录</button>
+          <a
+            :href="software.officialWebsite"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700"
+          >访问官网</a>
         </div>
 
         <!-- 图标 + 环境 meta -->
@@ -48,16 +47,6 @@
             class="inline-block rounded-full bg-brand-50/80 px-2 py-0.5 text-xs font-medium text-brand-700 dark:bg-slate-700/50 dark:text-brand-400"
           >#{{ tag }}</span>
         </div>
-      </div>
-
-      <!-- Official website link -->
-      <div class="relative flex shrink-0 items-start lg:pt-0.5">
-        <a
-          :href="software.officialWebsite"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex w-fit items-center rounded-lg border border-brand-500/35 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-500/40 dark:bg-slate-700/50 dark:text-brand-300 dark:hover:bg-slate-700"
-        >访问官网</a>
       </div>
     </div>
 

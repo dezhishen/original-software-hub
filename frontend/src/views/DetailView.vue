@@ -1,7 +1,5 @@
 <template>
   <div class="pt-1">
-    <LoadingOverlay :visible="loading" message="正在加载详情..." />
-
     <ErrorDisplay
       v-if="errorKind"
       :title="errorKind === 'not-found' ? '未找到软件' : '加载失败'"
@@ -23,7 +21,6 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import SoftwareDetail from '@/components/detail/SoftwareDetail.vue'
-import LoadingOverlay from '@/components/LoadingOverlay.vue'
 import ErrorDisplay from '@/components/ErrorDisplay.vue'
 import { dataRepository } from '@/services/dataRepository'
 import { normalizeSoftwareVersionPayload } from '@/utils/normalize'
@@ -46,6 +43,8 @@ async function loadDetail(id) {
   pageState.mode = 'detail'
   pageState.detailSoftware = null
   pageState.detailUpdatedAt = ''
+  pageState.transitionMessage = '正在加载详情...'
+  pageState.transitionLoading = true
 
   try {
     const sw = await dataRepository.getSoftwareById(id)
@@ -66,6 +65,7 @@ async function loadDetail(id) {
     errorMessage.value = e instanceof Error ? e.message : '未知错误'
   } finally {
     loading.value = false
+    pageState.transitionLoading = false
   }
 }
 

@@ -32,6 +32,8 @@ async function loadHomeCatalog() {
   pageState.mode = 'home'
   pageState.detailSoftware = null
   pageState.detailUpdatedAt = ''
+  pageState.transitionLoading = false
+  pageState.transitionMessage = '正在加载...'
   try {
     const catalog = await dataRepository.loadSoftwareCatalog()
     softwares.value = catalog.softwares
@@ -47,6 +49,9 @@ onMounted(loadHomeCatalog)
 
 function navigateToDetail(softwareId) {
   const to = `/software/${softwareId}`
+  pageState.transitionMessage = '正在加载详情...'
+  pageState.transitionLoading = true
+
   if (typeof document.startViewTransition === 'function') {
     try {
       document.startViewTransition(() => router.push(to))

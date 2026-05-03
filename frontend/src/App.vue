@@ -19,6 +19,8 @@
       </main>
       <DarkModeToggle />
     </div>
+
+    <LoadingOverlay :visible="pageState.transitionLoading" :message="pageState.transitionMessage" />
   </div>
 </template>
 
@@ -26,6 +28,7 @@
 import { useRoute } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import DarkModeToggle from '@/components/DarkModeToggle.vue'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
 import { pageState } from '@/stores/pageState'
 import { useDetailBackdrop } from '@/composables/useDetailBackdrop'
 
