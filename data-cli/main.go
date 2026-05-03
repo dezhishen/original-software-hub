@@ -46,6 +46,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/evernote"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/firefox"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/foxit-reader"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/foxmail"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/git"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/github"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/huorong"

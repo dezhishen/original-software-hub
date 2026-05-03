@@ -3,9 +3,9 @@
 用途：用于补充和生成软件列表（software-list.json）所需的关键信息，并持续跟踪每个插件是否完成。
 
 状态统计（当前）：
-- 已完成：20
+- 已完成：22
 - 待补充：8
-- 待确认：44
+- 待确认：42
 - 合计：72
 
 字段约定：
@@ -35,6 +35,8 @@
 | wecom | 企业微信 | 已在插件中配置 | 已实现 | 已实现 | 已实现 | 已完成 |
 | weixin | 微信 | 已在插件中配置 | 已实现 | 已实现 | 已实现 | 已完成 |
 | wps | WPS Office | 已在插件中配置 | 已实现 | 已实现 | 已实现 | 已完成 |
+| 7zip | 7-Zip | https://www.7-zip.org | https://www.7-zip.org/（首页 Download 区块） | Windows x64/x86/arm64 直链（GitHub Releases） | XPath 定位下载表格 + 正则提取版本/日期（例如 `Download 7-Zip 26.01 (2026-04-27)`）；按架构关键词归类 | 已完成 |
+| foxmail | Foxmail | https://www.foxmail.com | https://www.foxmail.com/win/ 与 https://www.foxmail.com/mac/ | Windows x64/x86 直链（/win/download 302）；macOS universal 直链（/mac/download 302） | Windows 页面正则提取 `最新版本：x.x.x (yyyy-mm-dd)`；Mac 从 dmg 文件名提取版本并优先使用 Last-Modified 作为发布日期 | 已完成 |
 | anydesk | AnyDesk | https://anydesk.com.cn | https://anydesk.com.cn/zhs/downloads/windows（内嵌 JS `var downloads={...}`） | Windows x64 直链、macOS universal 直链、Linux deb/rpm/tar.gz、Android Google Play、iOS App Store | 正则提取 `var downloads=` JSON 块后 `encoding/json` 解析；各平台 version 字段直接可用 | 已完成 |
 | evernote | Evernote | https://evernote.com | https://evernote.com/download（页面含 `Evernote-latest.exe` / `.dmg` 直链） | Windows x64 直链、macOS universal 直链、Android Google Play、iOS App Store | 下载页提取 `latest` 直链；HEAD 请求 `Last-Modified` 响应头作为发布日期和版本标识（无版本号字段） | 已完成 |
 
@@ -47,7 +49,6 @@
 | 360-antivirus | 360 杀毒 | https://sd.360.cn/ | https://sd.360.cn/（版本候选: 7.0; 日期候选: 2020-12-11） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | 360-browser | 360 浏览器 | https://browser.360.cn | https://browser.360.cn（版本候选: 1.360; 日期候选: 未识别） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | 360-zip | 360 压缩 | https://yasuo.360.cn | https://yasuo.360.cn（版本候选: v8.0.1; 日期候选: 未识别） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
-| 7zip | 7-Zip | https://www.7-zip.org | https://www.7-zip.org（版本候选: 4.0; 日期候选: 2026-04-27） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | adobe-after-effects | After Effects | https://www.adobe.com/products/aftereffects | https://www.adobe.com/products/aftereffects（版本候选: 未识别; 日期候选: 2026-01-12） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | adobe-illustrator | Adobe Illustrator | https://www.adobe.com/products/illustrator | https://www.adobe.com/products/illustrator（版本候选: 未识别; 日期候选: 2026-01-12） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | adobe-photoshop | Adobe Photoshop | https://www.adobe.com/products/photoshop | https://www.adobe.com/products/photoshop（版本候选: 未识别; 日期候选: 2026-01-12） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
@@ -56,7 +57,6 @@
 | eclipse | Eclipse | https://www.eclipse.org | https://www.eclipse.org（版本候选: 0.144.2; 日期候选: 未识别） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | edge | Microsoft Edge | https://www.microsoft.com/edge | https://www.microsoft.com/edge（版本候选: 7.25; 日期候选: 未识别） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | foxit-reader | 福昕阅读器（Foxit Reader） | https://www.foxitsoftware.com/pdf-reader | https://www.foxitsoftware.com/pdf-reader（版本候选: 1.0; 日期候选: 未识别） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
-| foxmail | Foxmail | https://www.foxmail.com | https://www.foxmail.com（版本候选: 1.0; 日期候选: 2026-03-31） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | git | Git | https://git-scm.com | https://git-scm.com（版本候选: 0.155.3; 日期候选: 2026-04-20） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | intellij-idea | IntelliJ IDEA | https://www.jetbrains.com/idea | https://www.jetbrains.com/idea（版本候选: 2.47; 日期候选: 2021-06-01） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
 | iqiyi | 爱奇艺 | https://www.iqiyi.com | https://www.iqiyi.com（版本候选: 17.051.25240; 日期候选: 未识别） | 未直接抓到安装包链接（需二次页面跟进） | HTML 正则首轮提取；下一步补充接口探测与 DOM 定位 | 待确认 |
