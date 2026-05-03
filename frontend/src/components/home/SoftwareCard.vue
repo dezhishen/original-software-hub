@@ -1,6 +1,6 @@
 <template>
   <article
-    class="software-card relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-3.5 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/80 dark:bg-slate-800/88 dark:shadow-[0_6px_16px_rgba(2,6,23,0.35)] dark:hover:shadow-[0_10px_20px_rgba(15,157,132,0.18)]"
+    class="software-card relative overflow-hidden cursor-pointer rounded-xl border border-slate-200/90 bg-white/92 p-3.5 shadow-[0_6px_16px_rgba(15,70,56,0.08)] transition hover:-translate-y-0.5 hover:border-brand-500/45 hover:shadow-[0_10px_20px_rgba(15,157,132,0.14)] dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_8px_20px_rgba(2,6,23,0.46)] dark:hover:shadow-[0_10px_22px_rgba(15,157,132,0.2)]"
     @click="$emit('select', software.id)"
   >
     <!-- 图标背景虚化层（仅对图片图标显示） -->
@@ -24,7 +24,7 @@
     </div>
 
     <!-- 描述 -->
-    <p class="software-card-description relative mt-1.5 text-[13px] leading-5 text-slate-600 dark:text-slate-400">
+    <p class="software-card-description relative mt-1.5 text-[13px] leading-5 text-slate-600 dark:text-slate-300">
       {{ software.description }}
     </p>
 
@@ -40,7 +40,7 @@
     </div>
 
     <!-- 机构 -->
-    <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-500">
+    <p class="relative mt-2 text-xs text-slate-500 dark:text-slate-400">
       机构：{{ software.organization }}
     </p>
   </article>

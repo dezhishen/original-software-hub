@@ -1,6 +1,6 @@
 <template>
   <header class="app-shell mx-auto pt-3 pb-2 text-left md:pt-4 md:pb-2">
-    <div class="rounded-2xl border border-slate-200/80 bg-white/72 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm md:grid md:grid-cols-[minmax(0,1fr)_340px] md:items-start md:gap-4 md:px-4 md:py-3 dark:border-slate-700/75 dark:bg-slate-800/58 dark:shadow-[0_6px_16px_rgba(2,6,23,0.28)]">
+    <div class="rounded-2xl border border-slate-200/80 bg-white/78 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm md:grid md:grid-cols-[minmax(0,1fr)_340px] md:items-start md:gap-4 md:px-4 md:py-3 dark:border-slate-700/85 dark:bg-slate-900/88 dark:shadow-[0_10px_24px_rgba(2,6,23,0.45)]">
       <div class="min-w-0 flex-1">
         <div class="flex min-w-0 items-center gap-2">
           <span class="inline-block h-2 w-2 rounded-full bg-brand-500/80 shadow-[0_0_0_5px_rgba(15,157,132,0.12)]"></span>
@@ -21,7 +21,7 @@
         <p v-if="updatedAt" class="text-xs text-slate-500 dark:text-slate-400">
           数据更新于 <RelativeTime :dateStr="updatedAt" />
         </p>
-        <span class="inline-flex rounded-md border border-slate-200/85 bg-white/75 px-2 py-0.5 text-[11px] text-slate-500 dark:border-slate-700/80 dark:bg-slate-800/70 dark:text-slate-400">
+        <span class="inline-flex rounded-md border border-slate-200/85 bg-white/80 px-2 py-0.5 text-[11px] text-slate-500 dark:border-slate-700/90 dark:bg-slate-800/90 dark:text-slate-300">
           官方直链优先
         </span>
       </div>

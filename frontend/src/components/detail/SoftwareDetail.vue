@@ -1,6 +1,6 @@
 <template>
   <article
-    class="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-4 dark:border-slate-700 dark:bg-slate-800/88 dark:shadow-[0_8px_20px_rgba(2,6,23,0.35)]"
+    class="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-4 dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_10px_24px_rgba(2,6,23,0.46)]"
   >
     <div class="relative flex flex-col gap-3 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-4">
       <div class="min-w-0 flex-1">

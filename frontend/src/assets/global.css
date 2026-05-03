@@ -6,6 +6,15 @@
 body {
   position: relative;
   overflow-x: hidden;
+  background: linear-gradient(180deg, #f7faf9 0%, #f3f5f7 100%);
+  color: #0f172a;
+}
+
+.dark body {
+  background:
+    radial-gradient(120% 80% at 10% -10%, rgba(15, 157, 132, 0.08), transparent 55%),
+    linear-gradient(180deg, #0b1220 0%, #0a101c 100%);
+  color: #e2e8f0;
 }
 
 .app-shell {

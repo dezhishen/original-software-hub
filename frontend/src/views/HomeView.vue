@@ -1,6 +1,6 @@
 <template>
   <section
-    class="rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-4 dark:border-slate-700 dark:bg-slate-800/88 dark:shadow-[0_8px_20px_rgba(2,6,23,0.35)]"
+    class="rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] md:p-4 dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_10px_24px_rgba(2,6,23,0.46)]"
   >
     <LoadingOverlay :visible="loading" message="正在加载软件列表..." />
     <div

@@ -6,7 +6,7 @@
         v-model="keyword"
         type="search"
         placeholder="搜索软件名称 / 机构 / 标签（#社交）/ 拼音（weixin）"
-        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm outline-none ring-brand-500/20 transition focus:border-brand-500 focus:ring-4 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500"
+        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm outline-none ring-brand-500/20 transition focus:border-brand-500 focus:ring-4 dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-100 dark:placeholder-slate-500"
       />
     </div>
 

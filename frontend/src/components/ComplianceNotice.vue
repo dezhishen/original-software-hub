@@ -1,5 +1,5 @@
 <template>
-  <section class="relative w-full rounded-xl border border-slate-200/80 bg-white/70 px-3 py-2.5 text-[11px] text-slate-500 shadow-[0_4px_14px_rgba(15,70,56,0.08)] backdrop-blur-sm dark:border-slate-700/70 dark:bg-slate-900/55 dark:text-slate-400 md:ml-auto md:max-w-[340px]">
+  <section class="relative w-full rounded-xl border border-slate-200/80 bg-white/78 px-3 py-2.5 text-[11px] text-slate-500 shadow-[0_4px_14px_rgba(15,70,56,0.08)] backdrop-blur-sm dark:border-slate-700/85 dark:bg-slate-900/88 dark:text-slate-300 md:ml-auto md:max-w-[340px]">
     <p class="leading-5">下载入口来自官方渠道或官方镜像，仅作导航参考。</p>
 
     <button
