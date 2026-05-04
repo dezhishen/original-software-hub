@@ -67,6 +67,10 @@ jobs:
         working-directory: frontend
         run: pnpm install --frozen-lockfile
 
+      - name: Sync public-service ads
+        working-directory: frontend
+        run: pnpm ads:sync
+
       - name: Build minified frontend
         working-directory: frontend
         run: pnpm build

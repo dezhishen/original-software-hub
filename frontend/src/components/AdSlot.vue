@@ -42,32 +42,11 @@
       </div>
 
       <div class="flex min-h-[220px] flex-1 items-center justify-center rounded-2xl border border-white/80 bg-white/60 px-4 dark:border-slate-700/70 dark:bg-slate-950/24">
-        <iframe
-          v-if="activeEmbed?.src"
-          :key="activeEmbed.id || activeIndex"
-          :src="activeEmbed.src"
-          :title="activeEmbed.title || ariaLabel"
-          class="h-full min-h-[320px] w-full rounded-[1.1rem] border-0 bg-white dark:bg-slate-950"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
-        <div
-          v-else-if="activeEmbed?.html"
-          :key="activeEmbed.id || activeIndex"
-          class="ad-slot-html h-full min-h-[320px] w-full overflow-hidden rounded-[1.1rem]"
-          v-html="activeEmbed.html"
-        ></div>
-        <div
-          v-else-if="activeEmbed"
-          class="flex h-full min-h-[320px] w-full items-center justify-center rounded-[1.1rem] border border-dashed border-brand-500/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.3),rgba(255,255,255,0.12))] px-4 text-center text-sm text-slate-400 dark:border-brand-400/14 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.16),rgba(15,23,42,0.04))] dark:text-slate-500"
-        >
-          {{ activeEmbed.title || '广告内容待接入' }}
-        </div>
-        <div
-          v-else
-          class="flex h-full min-h-[320px] w-full items-center justify-center rounded-[1.1rem] border border-dashed border-brand-500/18 bg-[linear-gradient(180deg,rgba(255,255,255,0.3),rgba(255,255,255,0.12))] dark:border-brand-400/14 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.16),rgba(15,23,42,0.04))]"
-        ></div>
+        <AdEmbedRenderer
+          :key="activeEmbed?.id || activeIndex"
+          :embed="activeEmbed"
+          :aria-label="ariaLabel"
+        />
       </div>
     </div>
   </aside>
@@ -75,6 +54,7 @@
 
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import AdEmbedRenderer from './AdEmbedRenderer.vue'
 
 const props = defineProps({
   sticky: { type: Boolean, default: true },
@@ -90,7 +70,14 @@ const wrapperClass = computed(() => (
   props.sticky ? 'xl:sticky xl:top-24' : ''
 ))
 
-const normalizedEmbeds = computed(() => props.embeds.filter((item) => item && (item.src || item.html || item.title)))
+const normalizedEmbeds = computed(() => props.embeds.filter((item) => {
+  if (!item || typeof item !== 'object') return false
+  const type = String(item.type || '').toLowerCase()
+  if (type === 'script') return Boolean(item.slotHtml || item.scripts || item.title)
+  if (type === 'iframe') return Boolean(item.src || item.srcdoc)
+  if (type === 'html') return Boolean(item.html || item.title)
+  return Boolean(item.src || item.srcdoc || item.html || item.slotHtml || item.scripts || item.title)
+}))
 const activeEmbed = computed(() => normalizedEmbeds.value[activeIndex.value] ?? null)
 const hasMultipleEmbeds = computed(() => normalizedEmbeds.value.length > 1)
 

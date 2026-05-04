@@ -5,10 +5,11 @@
   "packageManager": "pnpm@10.26.0",
   "scripts": {
     "dev": "vite",
+    "ads:sync": "node ./scripts/sync-public-service-ads.mjs",
     "build": "vite build",
     "preview": "vite preview --port 5173",
     "build:data": "cd ../data-cli && go run . -skip-unchanged",
-    "build:all": "pnpm build:data && pnpm build"
+    "build:all": "pnpm build:data && pnpm ads:sync && pnpm build"
   },
   "dependencies": {
     "vue": "^3.5.13",

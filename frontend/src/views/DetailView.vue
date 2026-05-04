@@ -9,7 +9,7 @@
 
     <div
       v-else-if="software && !loading"
-      class="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1240px)_320px_minmax(0,1fr)] xl:items-start"
+      class="grid gap-4 xl:grid-cols-[clamp(12px,2vw,32px)_minmax(0,1fr)_minmax(260px,320px)] xl:items-start"
     >
       <SoftwareDetail
         class="xl:col-start-2"
@@ -22,8 +22,8 @@
       <AdSlot
         class="xl:col-start-3"
         aria-label="详情页广告位"
-        :embeds="detailAdEmbeds"
-        :rotate-ms="3600"
+        :embeds="detailAdConfig.embeds"
+        :rotate-ms="detailAdConfig.rotateMs"
       />
     </div>
   </div>
@@ -35,10 +35,10 @@ import { useRouter } from 'vue-router'
 import AdSlot from '@/components/AdSlot.vue'
 import SoftwareDetail from '@/components/detail/SoftwareDetail.vue'
 import ErrorDisplay from '@/components/ErrorDisplay.vue'
+import { getAdSlotConfig } from '@/services/adConfig'
 import { dataRepository } from '@/services/dataRepository'
 import { normalizeSoftwareVersionPayload } from '@/utils/normalize'
 import { pageState } from '@/stores/pageState'
-import { detailAdEmbeds } from '@/utils/adEmbeds'
 
 const props = defineProps({ id: { type: String, required: true } })
 const router = useRouter()
@@ -48,6 +48,7 @@ const platforms = ref([])
 const loading = ref(true)
 const errorKind = ref('')      // '' | 'not-found' | 'error'
 const errorMessage = ref('')
+const detailAdConfig = getAdSlotConfig('detail')
 
 async function loadDetail(id) {
   loading.value = true

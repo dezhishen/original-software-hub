@@ -1,5 +1,5 @@
 <template>
-  <div class="grid h-full min-h-0 overflow-hidden gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1240px)_320px_minmax(0,1fr)] xl:items-start">
+  <div class="grid h-full min-h-0 overflow-hidden gap-4 xl:grid-cols-[clamp(12px,2vw,32px)_minmax(0,1fr)_minmax(260px,320px)] xl:items-start">
     <section
       class="flex h-full min-h-0 flex-col rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] xl:col-start-2 md:p-4 dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_10px_24px_rgba(2,6,23,0.46)]"
     >
@@ -18,8 +18,8 @@
     <AdSlot
       class="hidden xl:col-start-3 xl:block"
       aria-label="首页广告位"
-      :embeds="homeAdEmbeds"
-      :rotate-ms="3200"
+      :embeds="homeAdConfig.embeds"
+      :rotate-ms="homeAdConfig.rotateMs"
       :sticky="false"
     />
   </div>
@@ -31,14 +31,15 @@ import { useRouter } from 'vue-router'
 import AdSlot from '@/components/AdSlot.vue'
 import SoftwareList from '@/components/home/SoftwareList.vue'
 import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import { getAdSlotConfig } from '@/services/adConfig'
 import { dataRepository } from '@/services/dataRepository'
 import { pageState } from '@/stores/pageState'
-import { homeAdEmbeds } from '@/utils/adEmbeds'
 
 const router = useRouter()
 const softwares = ref([])
 const loading = ref(true)
 const error = ref('')
+const homeAdConfig = getAdSlotConfig('home')
 
 async function loadHomeCatalog() {
   pageState.mode = 'home'

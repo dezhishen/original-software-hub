@@ -1,6 +1,6 @@
 <template>
   <header class="app-shell mx-auto pt-3 pb-2 text-left md:pt-4 md:pb-2">
-    <div class="grid gap-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1240px)_320px_minmax(0,1fr)] xl:gap-4 xl:items-start">
+    <div class="grid gap-2 xl:grid-cols-[clamp(12px,2vw,32px)_minmax(0,1fr)_minmax(260px,320px)] xl:gap-4 xl:items-start">
       <div class="rounded-2xl border border-slate-200/80 bg-white/78 px-3 py-2.5 shadow-[0_6px_18px_rgba(15,70,56,0.07)] backdrop-blur-sm xl:col-start-2 md:px-4 md:py-3 dark:border-slate-700/85 dark:bg-slate-900/88 dark:shadow-[0_10px_24px_rgba(2,6,23,0.45)]">
         <div class="min-w-0 flex-1">
           <div class="flex min-w-0 items-center gap-2">

@@ -18,12 +18,12 @@ body {
 }
 
 .app-shell {
-  width: min(1760px, calc(100% - 0.875rem));
+  width: min(1920px, calc(100% - 0.5rem));
 }
 
 @media (min-width: 768px) {
   .app-shell {
-    width: min(1760px, calc(100% - 2rem));
+    width: min(1920px, calc(100% - 1.25rem));
   }
 }
 

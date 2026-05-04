@@ -12,7 +12,7 @@
 
     <!-- Software grid -->
     <div
-      class="home-list-panel grid auto-rows-max content-start grid-cols-1 gap-3.5 overflow-y-auto overscroll-contain pt-1 pr-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+      class="home-list-panel grid auto-rows-max content-start gap-3.5 overflow-y-auto overscroll-contain pt-1 pr-1 [grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))]"
       aria-live="polite"
     >
       <p
