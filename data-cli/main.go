@@ -79,6 +79,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencent-pc-manager"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencent-video"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/tencentmeeting"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/thunderbird"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/todesk"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/uuremote"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/virtualbox"
