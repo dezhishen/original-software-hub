@@ -1,7 +1,7 @@
 <template>
   <div class="category-bar category-bar-wrapper relative mb-2 border-b border-slate-200 dark:border-slate-700">
-    <div class="overflow-x-auto overscroll-x-contain pb-2">
-      <div class="inline-flex gap-1.5">
+    <div class="overflow-x-auto overscroll-x-contain pb-2 whitespace-nowrap">
+      <span class="inline-flex gap-1.5">
         <button
           type="button"
           :class="activeClass('')"
@@ -21,7 +21,7 @@
           {{ cat.label }}
           <span class="ml-1 text-[11px] opacity-60">{{ cat.count }}</span>
         </button>
-      </div>
+      </span>
     </div>
     <!-- Right edge fade hint for scrollable content -->
     <div class="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white via-white/80 to-transparent dark:from-slate-900 dark:via-slate-900/80"></div>
