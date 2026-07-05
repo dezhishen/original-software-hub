@@ -20,7 +20,7 @@
 
     <!-- Software grid -->
     <div
-      class="home-list-panel grid auto-rows-max content-start gap-3 overflow-y-auto overscroll-contain pt-1 pr-1 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]"
+      class="home-list-panel grid auto-rows-max content-start gap-3 overflow-y-auto overscroll-contain pt-1 px-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-[repeat(auto-fill,minmax(240px,1fr))]"
       aria-live="polite"
     >
       <p
