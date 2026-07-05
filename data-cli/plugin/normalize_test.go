@@ -1,5 +1,4 @@
 package plugin
-package plugin
 
 import (
 	"testing"
