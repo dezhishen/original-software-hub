@@ -71,7 +71,7 @@ function activeClass(key) {
   return [
     'shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition',
     isActive
-      ? 'bg-brand-600 text-white shadow-sm dark:bg-brand-500'
+      ? 'bg-brand-500 text-white shadow-sm dark:bg-brand-700'
       : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700',
   ].join(' ')
 }
