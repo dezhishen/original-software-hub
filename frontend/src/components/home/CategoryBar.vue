@@ -1,7 +1,7 @@
 <template>
   <div class="category-bar-wrapper relative mb-2 border-b border-slate-200 dark:border-slate-700">
     <div
-      class="category-bar -mx-3 flex overflow-x-auto overscroll-x-contain px-3 pb-2 md:-mx-4 md:px-4"
+      class="flex overflow-x-auto overscroll-x-contain pb-2"
     >
       <div class="flex gap-1.5">
         <button

@@ -11,7 +11,7 @@ import (
 const (
 	p360zipOfficialWebsite = "https://yasuo.360.cn"
 
-	p360zipDownloadURL     = "https://yasuo.360.cn/360zip_setup.exe"
+	p360zipDownloadURL = "https://yasuo.360.cn/360zip_setup.exe"
 )
 
 type P360zip struct{}

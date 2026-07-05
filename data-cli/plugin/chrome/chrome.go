@@ -34,7 +34,7 @@ func (c *Chrome) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "Google 出品的高速、安全浏览器。",
 				Organization:    "Google LLC",
 				OfficialWebsite: "https://www.google.com/chrome/", Tags: []string{"浏览器", "网络"},
-				Categories:      []string{"browser"}},
+				Categories: []string{"browser"}},
 			Versions: []plugin.Version{
 				{
 					Version:     version,
