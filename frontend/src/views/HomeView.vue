@@ -1,5 +1,5 @@
 <template>
-  <div class="grid h-full min-h-0 overflow-hidden gap-4 xl:grid-cols-[clamp(12px,2vw,32px)_minmax(0,1fr)_minmax(260px,320px)] xl:items-start">
+  <div class="grid h-full min-h-0 gap-4 xl:grid-cols-[clamp(12px,2vw,32px)_minmax(0,1fr)_minmax(260px,320px)] xl:items-start">
     <section
       class="flex h-full min-h-0 flex-col rounded-2xl border border-slate-200/90 bg-white/92 p-3 shadow-[0_8px_20px_rgba(15,70,56,0.07)] xl:col-start-2 md:p-4 dark:border-slate-700/85 dark:bg-slate-900/86 dark:shadow-[0_10px_24px_rgba(2,6,23,0.46)]"
     >

@@ -1,28 +1,32 @@
 <template>
-  <div
-    class="category-bar -mx-3 mb-2 overflow-x-auto overscroll-x-contain border-b border-slate-200 px-3 pb-2 scrollbar-none md:-mx-4 md:px-4 dark:border-slate-700"
-  >
-    <div class="flex gap-1.5">
-      <button
-        type="button"
-        :class="activeClass('')"
-        @click="$emit('update:active', '')"
-      >
-        全部分类
-        <span class="ml-1 text-[11px] opacity-60">{{ totalCount }}</span>
-      </button>
+  <div class="category-bar-wrapper relative mb-2 border-b border-slate-200 dark:border-slate-700">
+    <div
+      class="category-bar -mx-3 flex overflow-x-auto overscroll-x-contain px-3 pb-2 md:-mx-4 md:px-4"
+    >
+      <div class="flex gap-1.5">
+        <button
+          type="button"
+          :class="activeClass('')"
+          @click="$emit('update:active', '')"
+        >
+          全部分类
+          <span class="ml-1 text-[11px] opacity-60">{{ totalCount }}</span>
+        </button>
 
-      <button
-        v-for="cat in visibleCategories"
-        :key="cat.key"
-        type="button"
-        :class="activeClass(cat.key)"
-        @click="$emit('update:active', cat.key)"
-      >
-        {{ cat.label }}
-        <span class="ml-1 text-[11px] opacity-60">{{ cat.count }}</span>
-      </button>
+        <button
+          v-for="cat in visibleCategories"
+          :key="cat.key"
+          type="button"
+          :class="activeClass(cat.key)"
+          @click="$emit('update:active', cat.key)"
+        >
+          {{ cat.label }}
+          <span class="ml-1 text-[11px] opacity-60">{{ cat.count }}</span>
+        </button>
+      </div>
     </div>
+    <!-- Right edge fade hint for scrollable content -->
+    <div class="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white via-white/80 to-transparent dark:from-slate-900 dark:via-slate-900/80"></div>
   </div>
 </template>
 
