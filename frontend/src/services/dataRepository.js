@@ -99,6 +99,9 @@ function normalizeSoftwareItem(item) {
     description: String(item.description || '').trim(),
     organization,
     officialWebsite,
+    categories: Array.isArray(item.categories)
+      ? item.categories.map((c) => String(c || '').trim()).filter(Boolean)
+      : [],
     tags: Array.isArray(item.tags)
       ? item.tags.map((t) => String(t || '').trim()).filter(Boolean).slice(0, 3)
       : [],

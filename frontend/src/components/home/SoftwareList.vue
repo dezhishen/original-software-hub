@@ -10,6 +10,14 @@
       />
     </div>
 
+    <!-- Category bar -->
+    <CategoryBar
+      :categories="categoryStats"
+      :active="activeCategory"
+      :total-count="softwares.length"
+      @update:active="activeCategory = $event; keyword = ''"
+    />
+
     <!-- Software grid -->
     <div
       class="home-list-panel grid auto-rows-max content-start gap-3.5 overflow-y-auto overscroll-contain pt-1 pr-1 [grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))]"
@@ -32,8 +40,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import SoftwareCard from './SoftwareCard.vue'
+import CategoryBar from './CategoryBar.vue'
 
 const props = defineProps({
   softwares: { type: Array, default: () => [] },
@@ -43,14 +52,35 @@ const props = defineProps({
 const emit = defineEmits(['select'])
 
 const keyword = ref(props.initialKeyword)
+const activeCategory = ref('')
 
-watch(() => props.initialKeyword, (v) => { keyword.value = v })
+/** 统计每个分类的软件数量 */
+const categoryStats = computed(() => {
+  const map = {}
+  for (const s of props.softwares) {
+    const cats = Array.isArray(s.categories) ? s.categories : []
+    for (const c of cats) {
+      map[c] = (map[c] || 0) + 1
+    }
+  }
+  return Object.entries(map).map(([key, count]) => ({ key, count }))
+})
+
+/** 按分类过滤 */
+const byCategory = computed(() => {
+  if (!activeCategory.value) return props.softwares
+  return props.softwares.filter((s) => {
+    const cats = Array.isArray(s.categories) ? s.categories : []
+    return cats.includes(activeCategory.value)
+  })
+})
 
 const filtered = computed(() => {
   const kw = keyword.value.trim().toLowerCase()
-  if (!kw) return props.softwares
+  const source = byCategory.value
+  if (!kw) return source
   const tagKw = kw.startsWith('#') ? kw.slice(1).trim() : ''
-  return props.softwares.filter((s) => {
+  return source.filter((s) => {
     const tags = Array.isArray(s.tags) ? s.tags : []
     if (tagKw) return tags.some((t) => String(t || '').toLowerCase().includes(tagKw))
     return `${s.name} ${s.organization} ${tags.join(' ')} ${s.pinyin || ''}`.toLowerCase().includes(kw)
