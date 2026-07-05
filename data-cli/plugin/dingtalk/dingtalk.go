@@ -102,6 +102,7 @@ func (d *DingTalk) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Alibaba",
 				OfficialWebsite: dingtalkOfficialWebsite,
 				Tags:            []string{"办公协作", "即时通讯"},
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

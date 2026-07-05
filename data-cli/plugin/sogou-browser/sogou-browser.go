@@ -34,6 +34,7 @@ func (p *Sogoubrouser) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: sogoubrowserOfficialWebsite,
 				Icon:            sogoubrowserIconURL,
 				Tags:            []string{"浏览器"},
+				Categories:      []string{"browser"},
 			},
 			Versions: []plugin.Version{
 				{

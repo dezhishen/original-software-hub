@@ -34,6 +34,7 @@ func (p *Adobeaftereffects) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: adobeaftereffectsOfficialWebsite,
 				Icon:            adobeaftereffectsIconURL,
 				Tags:            []string{"视频后期", "特效"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

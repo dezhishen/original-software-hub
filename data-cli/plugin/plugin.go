@@ -38,6 +38,7 @@ type SoftwareItem struct {
 	Description     string   `json:"description"`
 	Organization    string   `json:"organization"`
 	OfficialWebsite string   `json:"officialWebsite"`
+	Categories      []string `json:"categories,omitempty"`
 	Tags            []string `json:"tags,omitempty"`
 	Source          Source   `json:"source"`
 }

@@ -34,6 +34,7 @@ func (p *Edge) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: edgeOfficialWebsite,
 				Icon:            edgeIconURL,
 				Tags:            []string{"浏览器"},
+				Categories:      []string{"browser"},
 			},
 			Versions: []plugin.Version{
 				{

@@ -34,6 +34,7 @@ func (p *Autocad) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: autocadOfficialWebsite,
 				Icon:            autocadIconURL,
 				Tags:            []string{"设计", "CAD"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

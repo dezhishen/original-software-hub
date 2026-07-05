@@ -53,6 +53,7 @@ func (p *Vscode) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: vscodeOfficialWebsite,
 				Icon:            vscodeIconURL,
 				Tags:            []string{"开发工具", "代码编辑器"},
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

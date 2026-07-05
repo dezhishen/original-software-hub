@@ -80,6 +80,7 @@ func (p *Evernote) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: evernoteOfficialWebsite,
 				Icon:            evernoteIconURL,
 				Tags:            []string{"笔记", "效率工具"},
+				Categories:      []string{"note-taking"},
 			},
 			Versions: []plugin.Version{
 				{

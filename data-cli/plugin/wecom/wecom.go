@@ -42,6 +42,7 @@ func (w *WeCom) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Tencent",
 				OfficialWebsite: wecomOfficialWebsite,
 				Tags:            []string{"办公协作", "企业通讯"},
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

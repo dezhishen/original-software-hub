@@ -40,6 +40,7 @@ func (p *P360zip) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: p360zipOfficialWebsite,
 				Icon:            "",
 				Tags:            []string{"压缩"},
+				Categories:      []string{"compression"},
 			},
 			Versions: []plugin.Version{
 				{

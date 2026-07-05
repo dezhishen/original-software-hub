@@ -70,6 +70,7 @@ func (q *QQ) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Tencent",
 				OfficialWebsite: "https://im.qq.com/",
 				Tags:            []string{"即时通讯", "社交"},
+				Categories:      []string{"communication"},
 			},
 			Versions: versions,
 		},

@@ -34,6 +34,7 @@ func (p *Outlook) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: outlookOfficialWebsite,
 				Icon:            outlookIconURL,
 				Tags:            []string{"邮件", "日历"},
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

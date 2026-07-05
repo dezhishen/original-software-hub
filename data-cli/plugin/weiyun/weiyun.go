@@ -34,6 +34,7 @@ func (p *Weiyun) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: weiyunOfficialWebsite,
 				Icon:            weiyunIconURL,
 				Tags:            []string{"云存储"},
+				Categories:      []string{"cloud-storage"},
 			},
 			Versions: []plugin.Version{
 				{

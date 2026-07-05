@@ -165,6 +165,7 @@ func (u *UURemote) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "NetEase",
 				OfficialWebsite: uuremoteOfficialWebsite,
 				Tags:            []string{"远程控制", "远程办公", "网易"},
+				Categories:      []string{"remote"},
 			},
 			Versions: versions,
 		},

@@ -117,6 +117,7 @@ func (d *Doubao) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    doubaoOrganization,
 				OfficialWebsite: doubaoOfficialURL,
 				Tags:            doubaoTags,
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

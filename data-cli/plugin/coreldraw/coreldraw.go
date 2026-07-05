@@ -34,6 +34,7 @@ func (p *Coreldraw) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: coreldrawOfficialWebsite,
 				Icon:            coreldrawIconURL,
 				Tags:            []string{"设计"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

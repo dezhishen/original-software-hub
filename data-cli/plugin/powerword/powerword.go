@@ -34,6 +34,7 @@ func (p *Powerword) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: powerwordOfficialWebsite,
 				Icon:            powerwordIconURL,
 				Tags:            []string{"翻译", "词典"},
+				Categories:      []string{"translation"},
 			},
 			Versions: []plugin.Version{
 				{

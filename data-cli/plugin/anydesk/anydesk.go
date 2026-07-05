@@ -130,6 +130,7 @@ func (p *Anydesk) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: anydeskOfficialWebsite,
 				Icon:            anydeskIconURL,
 				Tags:            []string{"远程控制"},
+				Categories:      []string{"remote"},
 			},
 			Versions: versions,
 		},

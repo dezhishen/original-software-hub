@@ -40,6 +40,7 @@ func (p *P360safeguard) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: p360safeguardOfficialWebsite,
 				Icon:            p360safeguardIconURL,
 				Tags:            []string{"安全防护"},
+				Categories:      []string{"security"},
 			},
 			Versions: []plugin.Version{
 				{

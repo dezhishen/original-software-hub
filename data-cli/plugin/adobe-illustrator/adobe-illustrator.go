@@ -34,6 +34,7 @@ func (p *Adobeillustrator) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: adobeillustratorOfficialWebsite,
 				Icon:            adobeillustratorIconURL,
 				Tags:            []string{"设计", "矢量图形"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

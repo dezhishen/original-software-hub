@@ -34,6 +34,7 @@ func (p *Microsoftpinyin) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: microsoftpinyinOfficialWebsite,
 				Icon:            microsoftpinyinIconURL,
 				Tags:            []string{"输入法"},
+				Categories:      []string{"input-method"},
 			},
 			Versions: []plugin.Version{
 				{

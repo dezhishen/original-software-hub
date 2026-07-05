@@ -34,6 +34,7 @@ func (p *Kingsoftpdf) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: kingsoftpdfOfficialWebsite,
 				Icon:            kingsoftpdfIconURL,
 				Tags:            []string{"PDF", "文档阅读"},
+				Categories:      []string{"office"},
 			},
 			Versions: []plugin.Version{
 				{

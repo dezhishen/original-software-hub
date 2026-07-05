@@ -34,6 +34,7 @@ func (p *Windowsdefender) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: windowsdefenderOfficialWebsite,
 				Icon:            windowsdefenderIconURL,
 				Tags:            []string{"安全防护"},
+				Categories:      []string{"security"},
 			},
 			Versions: []plugin.Version{
 				{

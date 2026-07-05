@@ -33,6 +33,7 @@ func (p *Vmwareworkstation) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: vmwareworkstationOfficialWebsite,
 				Icon:            "",
 				Tags:            []string{"虚拟机"},
+				Categories:      []string{"virtualization"},
 			},
 			Versions: []plugin.Version{
 				{

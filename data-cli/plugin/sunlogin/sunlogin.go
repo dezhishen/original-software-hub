@@ -34,6 +34,7 @@ func (p *Sunlogin) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: sunloginOfficialWebsite,
 				Icon:            sunloginIconURL,
 				Tags:            []string{"远程控制"},
+				Categories:      []string{"remote"},
 			},
 			Versions: []plugin.Version{
 				{

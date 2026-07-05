@@ -112,6 +112,7 @@ func (b *BaiduNetdisk) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Baidu",
 				OfficialWebsite: baiduNetdiskOfficialWebsite,
 				Tags:            []string{"云存储", "文件同步"},
+				Categories:      []string{"cloud-storage"},
 			},
 			Versions: []plugin.Version{
 				{

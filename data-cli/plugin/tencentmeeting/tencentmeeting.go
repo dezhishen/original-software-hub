@@ -157,6 +157,7 @@ func (t *TencentMeeting) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Tencent",
 				OfficialWebsite: tencentMeetingOfficialWebsite,
 				Tags:            []string{"视频会议", "办公协作", "腾讯"},
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

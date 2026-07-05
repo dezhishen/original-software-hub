@@ -40,6 +40,7 @@ func (p *P360antivirus) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: p360antivirusOfficialWebsite,
 				Icon:            p360antivirusIconURL,
 				Tags:            []string{"安全防护", "杀毒软件"},
+				Categories:      []string{"security"},
 			},
 			Versions: []plugin.Version{
 				{

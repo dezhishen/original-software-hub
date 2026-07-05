@@ -34,6 +34,7 @@ func (p *Winrar) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: winrarOfficialWebsite,
 				Icon:            winrarIconURL,
 				Tags:            []string{"压缩"},
+				Categories:      []string{"compression"},
 			},
 			Versions: []plugin.Version{
 				{

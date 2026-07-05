@@ -47,6 +47,7 @@ func (p *Thunderbird) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "MZLA Technologies Corporation (Mozilla Foundation)",
 				OfficialWebsite: "https://www.thunderbird.net/zh-CN/",
 				Tags:            []string{"邮件", "日历", "开源"},
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

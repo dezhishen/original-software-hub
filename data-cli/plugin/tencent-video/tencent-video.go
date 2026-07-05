@@ -34,6 +34,7 @@ func (p *Tencentvideo) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: tencentvideoOfficialWebsite,
 				Icon:            tencentvideoIconURL,
 				Tags:            []string{"视频"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

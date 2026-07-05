@@ -34,6 +34,7 @@ func (p *Git) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: gitOfficialWebsite,
 				Icon:            gitIconURL,
 				Tags:            []string{"开发工具", "版本控制"},
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

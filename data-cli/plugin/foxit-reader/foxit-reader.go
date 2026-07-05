@@ -34,6 +34,7 @@ func (p *Foxitreader) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: foxitreaderOfficialWebsite,
 				Icon:            foxitreaderIconURL,
 				Tags:            []string{"PDF", "文档阅读"},
+				Categories:      []string{"office"},
 			},
 			Versions: []plugin.Version{
 				{

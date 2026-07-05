@@ -35,6 +35,7 @@ func (p *Teamviewer) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: teamviewerOfficialWebsite,
 				Icon:            teamviewerIconURL,
 				Tags:            []string{"远程控制"},
+				Categories:      []string{"remote"},
 			},
 			Versions: []plugin.Version{
 				{

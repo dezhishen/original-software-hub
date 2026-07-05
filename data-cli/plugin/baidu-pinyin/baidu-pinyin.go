@@ -35,6 +35,7 @@ func (p *Baidupinyin) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: baidupinyinOfficialWebsite,
 				Icon:            baidupinyinIconURL,
 				Tags:            []string{"输入法"},
+				Categories:      []string{"input-method"},
 			},
 			Versions: []plugin.Version{
 				{

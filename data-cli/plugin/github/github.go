@@ -121,6 +121,7 @@ func (p *githubPlugin) fetchReposInternal() ([]plugin.SoftwareData, error) {
 				Organization:    repo.Organization,
 				OfficialWebsite: repo.OfficialWebsite,
 				Tags:            repo.Tags,
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

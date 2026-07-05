@@ -34,6 +34,7 @@ func (p *Youdaodict) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: youdaodictOfficialWebsite,
 				Icon:            youdaodictIconURL,
 				Tags:            []string{"翻译", "词典"},
+				Categories:      []string{"translation"},
 			},
 			Versions: []plugin.Version{
 				{

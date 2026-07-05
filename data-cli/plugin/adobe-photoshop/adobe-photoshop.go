@@ -34,6 +34,7 @@ func (p *Adobephotoshop) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: adobephotoshopOfficialWebsite,
 				Icon:            adobephotoshopIconURL,
 				Tags:            []string{"图像处理", "设计"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

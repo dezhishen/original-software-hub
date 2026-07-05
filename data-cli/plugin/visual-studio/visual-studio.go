@@ -34,6 +34,7 @@ func (p *Visualstudio) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: visualstudioOfficialWebsite,
 				Icon:            visualstudioIconURL,
 				Tags:            []string{"开发工具", "IDE"},
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

@@ -35,6 +35,7 @@ func (p *Adobeacrobatreader) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: adobeacrobatreaderOfficialWebsite,
 				Icon:            adobeacrobatreaderIconURL,
 				Tags:            []string{"PDF", "文档阅读"},
+				Categories:      []string{"office"},
 			},
 			Versions: []plugin.Version{
 				{

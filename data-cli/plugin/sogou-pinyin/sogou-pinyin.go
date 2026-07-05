@@ -35,6 +35,7 @@ func (p *Sogoupinyin) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: sogoupinyinOfficialWebsite,
 				Icon:            sogoupinyinIconURL,
 				Tags:            []string{"输入法"},
+				Categories:      []string{"input-method"},
 			},
 			Versions: []plugin.Version{
 				{

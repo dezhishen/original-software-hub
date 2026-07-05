@@ -40,6 +40,7 @@ func (p *P360browser) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: p360browserOfficialWebsite,
 				Icon:            p360browserIconURL,
 				Tags:            []string{"浏览器"},
+				Categories:      []string{"browser"},
 			},
 			Versions: []plugin.Version{
 				{

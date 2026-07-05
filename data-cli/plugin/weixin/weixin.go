@@ -50,6 +50,7 @@ func (w *WeChat) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Tencent",
 				OfficialWebsite: weixinOfficialWebsite,
 				Tags:            []string{"即时通讯", "社交"},
+				Categories:      []string{"communication"},
 			},
 			Versions: []plugin.Version{
 				{

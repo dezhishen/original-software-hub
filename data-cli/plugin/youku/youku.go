@@ -34,6 +34,7 @@ func (p *Youku) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: youkuOfficialWebsite,
 				Icon:            youkuIconURL,
 				Tags:            []string{"视频"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

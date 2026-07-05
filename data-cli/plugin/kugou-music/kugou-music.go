@@ -34,6 +34,7 @@ func (p *Kugoumusic) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: kugoumusicOfficialWebsite,
 				Icon:            kugoumusicIconURL,
 				Tags:            []string{"音乐"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

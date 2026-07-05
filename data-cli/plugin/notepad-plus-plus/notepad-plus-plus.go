@@ -34,6 +34,7 @@ func (p *Notepadplusplus) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: notepadplusplusOfficialWebsite,
 				Icon:            notepadplusplusIconURL,
 				Tags:            []string{"开发工具", "文本编辑器"},
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

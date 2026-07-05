@@ -82,6 +82,7 @@ func (q *QQMusic) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Tencent Music",
 				OfficialWebsite: qqMusicWebsiteURL,
 				Tags:            []string{"音乐", "流媒体"},
+				Categories:      []string{"media"},
 			},
 			Versions: versions,
 		},

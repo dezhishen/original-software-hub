@@ -34,6 +34,7 @@ func (p *Kingsoftantivirus) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: kingsoftantivirusOfficialWebsite,
 				Icon:            kingsoftantivirusIconURL,
 				Tags:            []string{"安全防护", "杀毒软件"},
+				Categories:      []string{"security"},
 			},
 			Versions: []plugin.Version{
 				{

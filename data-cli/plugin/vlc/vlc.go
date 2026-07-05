@@ -34,6 +34,7 @@ func (p *Vlc) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: vlcOfficialWebsite,
 				Icon:            vlcIconURL,
 				Tags:            []string{"媒体播放", "音视频"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

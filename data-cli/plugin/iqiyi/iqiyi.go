@@ -34,6 +34,7 @@ func (p *Iqiyi) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: qiqiyiOfficialWebsite,
 				Icon:            qiqiyiIconURL,
 				Tags:            []string{"视频"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

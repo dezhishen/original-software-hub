@@ -34,6 +34,7 @@ func (p *Qqbrowser) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: qqbrowserOfficialWebsite,
 				Icon:            qqbrowserIconURL,
 				Tags:            []string{"浏览器"},
+				Categories:      []string{"browser"},
 			},
 			Versions: []plugin.Version{
 				{

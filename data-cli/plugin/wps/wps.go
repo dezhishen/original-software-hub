@@ -69,6 +69,7 @@ func (w *WPS) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Kingsoft Office",
 				OfficialWebsite: wpsWebsiteURL,
 				Tags:            []string{"办公软件", "文档处理"},
+				Categories:      []string{"office"},
 			},
 			Versions: versions,
 		},

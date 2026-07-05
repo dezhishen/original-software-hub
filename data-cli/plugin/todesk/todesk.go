@@ -171,6 +171,7 @@ func (t *ToDesk) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "ToDesk",
 				OfficialWebsite: todeskOfficialWebsite,
 				Tags:            []string{"远程控制", "远程办公", "协作"},
+				Categories:      []string{"remote"},
 			},
 			Versions: versions,
 		},

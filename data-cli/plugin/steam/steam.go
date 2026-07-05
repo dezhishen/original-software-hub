@@ -47,6 +47,7 @@ func (s *Steam) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Valve Corporation",
 				OfficialWebsite: steamOfficialWebsite,
 				Tags:            []string{"游戏平台", "娱乐"},
+				Categories:      []string{"gaming"},
 			},
 			Versions: []plugin.Version{
 				{

@@ -121,6 +121,7 @@ func (a *Alipan) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    alipanOrganization,
 				OfficialWebsite: alipanOfficialURL,
 				Tags:            alipanTags,
+				Categories:      []string{"cloud-storage"},
 			},
 			Versions: []plugin.Version{
 				{

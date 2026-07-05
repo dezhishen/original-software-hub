@@ -33,6 +33,7 @@ func (p *Potplayer) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: potplayerOfficialWebsite,
 				Icon:            "",
 				Tags:            []string{"媒体播放", "音视频"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

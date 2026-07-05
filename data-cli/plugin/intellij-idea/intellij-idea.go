@@ -34,6 +34,7 @@ func (p *Intellijidea) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: intellijideaOfficialWebsite,
 				Icon:            intellijideaIconURL,
 				Tags:            []string{"开发工具", "IDE"},
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

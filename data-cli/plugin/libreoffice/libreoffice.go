@@ -52,6 +52,7 @@ func (p *LibreOffice) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: libreofficeHomeURL,
 				Icon:            libreofficeIconURL,
 				Tags:            []string{"办公", "开源"},
+				Categories:      []string{"office"},
 			},
 			Versions: []plugin.Version{
 				{

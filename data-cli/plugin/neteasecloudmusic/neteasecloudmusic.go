@@ -57,6 +57,7 @@ func (n *NeteaseCloudMusic) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "网易公司",
 				OfficialWebsite: neteaseWebsite,
 				Tags:            []string{"音乐", "流媒体"},
+				Categories:      []string{"media"},
 			},
 			Versions: versions,
 		},

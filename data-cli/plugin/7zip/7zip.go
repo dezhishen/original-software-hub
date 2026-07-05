@@ -54,6 +54,7 @@ func (p *Sevenzip) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: sevenzipHomeURL,
 				Icon:            sevenzipIconURL,
 				Tags:            []string{"压缩"},
+				Categories:      []string{"compression"},
 			},
 			Versions: []plugin.Version{
 				{

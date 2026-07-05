@@ -34,6 +34,7 @@ func (p *Onedrive) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: onedriveOfficialWebsite,
 				Icon:            onedriveIconURL,
 				Tags:            []string{"云存储"},
+				Categories:      []string{"cloud-storage"},
 			},
 			Versions: []plugin.Version{
 				{

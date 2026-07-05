@@ -34,6 +34,7 @@ func (p *Pycharm) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: pycharmOfficialWebsite,
 				Icon:            pycharmIconURL,
 				Tags:            []string{"开发工具", "IDE"},
+				Categories:      []string{"development"},
 			},
 			Versions: []plugin.Version{
 				{

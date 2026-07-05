@@ -55,6 +55,7 @@ func (p *Foxmail) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: foxmailWebsiteURL,
 				Icon:            foxmailIconURL,
 				Tags:            []string{"邮件"},
+				Categories:      []string{"communication"},
 			},
 			Versions: versions,
 		},

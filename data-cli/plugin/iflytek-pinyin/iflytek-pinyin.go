@@ -33,6 +33,7 @@ func (p *Iflytekpinyin) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: iflytekpinyinOfficialWebsite,
 				Icon:            "",
 				Tags:            []string{"输入法"},
+				Categories:      []string{"input-method"},
 			},
 			Versions: []plugin.Version{
 				{

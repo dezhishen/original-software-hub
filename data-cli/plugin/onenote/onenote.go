@@ -34,6 +34,7 @@ func (p *Onenote) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: onenoteOfficialWebsite,
 				Icon:            onenoteIconURL,
 				Tags:            []string{"笔记", "效率工具"},
+				Categories:      []string{"note-taking"},
 			},
 			Versions: []plugin.Version{
 				{

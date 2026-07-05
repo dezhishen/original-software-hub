@@ -34,6 +34,7 @@ func (p *Microsoftoffice) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: microsoftofficeOfficialWebsite,
 				Icon:            microsoftofficeIconURL,
 				Tags:            []string{"办公软件", "文档处理"},
+				Categories:      []string{"office"},
 			},
 			Versions: []plugin.Version{
 				{

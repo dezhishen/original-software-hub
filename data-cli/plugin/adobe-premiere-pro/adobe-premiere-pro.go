@@ -34,6 +34,7 @@ func (p *Adobepremierepro) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: adobepremiereproOfficialWebsite,
 				Icon:            adobepremiereproIconURL,
 				Tags:            []string{"视频剪辑"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

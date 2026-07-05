@@ -34,6 +34,7 @@ func (p *Virtualbox) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: virtualboxOfficialWebsite,
 				Icon:            virtualboxIconURL,
 				Tags:            []string{"虚拟机"},
+				Categories:      []string{"virtualization"},
 			},
 			Versions: []plugin.Version{
 				{

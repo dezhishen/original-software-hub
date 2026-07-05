@@ -34,6 +34,7 @@ func (p *Snipaste) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: snipasteOfficialWebsite,
 				Icon:            snipasteIconURL,
 				Tags:            []string{"截图", "效率工具"},
+				Categories:      []string{"design"},
 			},
 			Versions: []plugin.Version{
 				{

@@ -34,6 +34,7 @@ func (p *Tencentpcmanager) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: tencentpcmanagerOfficialWebsite,
 				Icon:            tencentpcmanagerIconURL,
 				Tags:            []string{"安全防护"},
+				Categories:      []string{"security"},
 			},
 			Versions: []plugin.Version{
 				{

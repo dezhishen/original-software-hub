@@ -34,6 +34,7 @@ func (p *Jianying) Fetch() ([]plugin.SoftwareData, error) {
 				OfficialWebsite: jianyingOfficialWebsite,
 				Icon:            jianyingIconURL,
 				Tags:            []string{"视频剪辑"},
+				Categories:      []string{"media"},
 			},
 			Versions: []plugin.Version{
 				{

@@ -31,6 +31,7 @@ func (f *Firefox) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Mozilla Foundation",
 				OfficialWebsite: "https://www.mozilla.org/firefox/",
 				Tags:            []string{"浏览器", "网络", "开源"},
+				Categories:      []string{"browser"},
 			},
 			Versions: []plugin.Version{
 				{

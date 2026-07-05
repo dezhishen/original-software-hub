@@ -51,6 +51,7 @@ func (h *Huorong) Fetch() ([]plugin.SoftwareData, error) {
 				Organization:    "Huorong",
 				OfficialWebsite: huorongOfficialWebsite,
 				Tags:            []string{"安全防护", "杀毒软件"},
+				Categories:      []string{"security"},
 			},
 			Versions: []plugin.Version{
 				{
