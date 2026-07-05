@@ -1,9 +1,7 @@
 <template>
-  <div class="category-bar-wrapper relative mb-2 border-b border-slate-200 dark:border-slate-700">
-    <div
-      class="flex overflow-x-auto overscroll-x-contain pb-2"
-    >
-      <div class="flex gap-1.5">
+  <div class="category-bar category-bar-wrapper relative mb-2 border-b border-slate-200 dark:border-slate-700">
+    <div class="overflow-x-auto overscroll-x-contain pb-2">
+      <div class="inline-flex gap-1.5">
         <button
           type="button"
           :class="activeClass('')"
