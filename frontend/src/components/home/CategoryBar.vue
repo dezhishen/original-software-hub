@@ -1,6 +1,6 @@
 <template>
   <div class="category-bar category-bar-wrapper relative mb-2 border-b border-slate-200 dark:border-slate-700">
-    <div class="overflow-x-auto overscroll-x-contain pb-2 whitespace-nowrap">
+    <div class="overflow-x-auto overscroll-x-contain pb-2 whitespace-nowrap w-full">
       <span class="inline-flex gap-1.5">
         <button
           type="button"
