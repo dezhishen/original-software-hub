@@ -110,7 +110,7 @@ func main() {
 	scheduleOrder := flag.String("schedule-order", "priority", "Plugin scheduling order: input,alpha,priority")
 	skipUnchanged := flag.Bool("skip-unchanged", true, "Skip write/icon steps when software versions are unchanged from previous output")
 	flag.Parse()
-	log.Printf("[run] start outDir=%s plugins=%s concurrency=%d order=%s skipUnchanged=%t",
+	log.Printf("🚀 Run started  outDir=%s plugins=%s concurrency=%d order=%s skipUnchanged=%t",
 		*outDir, *pluginsArg, *concurrency, *scheduleOrder, *skipUnchanged)
 
 	// ── Directories ────────────────────────────────────────────────────────────
@@ -131,7 +131,7 @@ func main() {
 		}
 	}
 	previousState := plugin.PreviousState{Versions: prevVersions, Items: prevItems}
-	log.Printf("[state] loaded previous versions=%d listItems=%d hasGeneratedAt=%t",
+	log.Printf("📂 Previous state  versions=%d listItems=%d hasGeneratedAt=%t",
 		len(prevVersions), len(prevItems), strings.TrimSpace(prevIndex.Meta.GeneratedAt) != "")
 
 	// ── Plugin selection ───────────────────────────────────────────────────────
@@ -143,7 +143,7 @@ func main() {
 		log.Println("no plugins registered, nothing to do")
 		return
 	}
-	log.Printf("[scheduler] plugins=%d concurrency=%d order=%s skipUnchanged=%t",
+	log.Printf("📋 Scheduler  plugins=%d concurrency=%d order=%s skipUnchanged=%t",
 		len(plugins), *concurrency, strings.ToLower(strings.TrimSpace(*scheduleOrder)), *skipUnchanged)
 
 	// ── Fetch & process ────────────────────────────────────────────────────────
@@ -187,26 +187,32 @@ func main() {
 	}
 
 	// ── Summary ────────────────────────────────────────────────────────────────
-	log.Printf("[summary] duration=%s selectedPlugins=%d pluginFetchErrors=%d processedEntries=%d listItems=%d versionsChanged=%d versionsSkipped=%d skipUnsupported=%d versionsWritten=%d versionWriteErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d listChanged=%t dataChanged=%t",
-		time.Since(runStartedAt), len(plugins),
-		stats.pluginFetchErrors, stats.totalEntries, len(listItems),
-		stats.changedCount, stats.unchangedCount, stats.skipUnsupportedCount,
-		stats.writtenCount, stats.versionWriteErrors,
-		stats.iconDownloadSuccess, stats.iconDownloadErrors,
-		listChanged, dataChanged)
-	fmt.Println("Done.")
+	printSummary(time.Since(runStartedAt), len(plugins), listItems, listChanged, dataChanged, stats)
 }
 
-// runStats aggregates counters from all plugin fetch results.
+// errDetail stores one rich error record for the summary.
+type errDetail struct {
+	Plugin   string `json:"plugin"`
+	Software string `json:"software,omitempty"`
+	Message  string `json:"message"`
+	Attempts int    `json:"attempts,omitempty"`
+	Duration string `json:"duration,omitempty"`
+}
+
+// runStats aggregates counters and error details from all plugin fetch results.
 type runStats struct {
 	pluginFetchErrors    int
+	pluginFetchErrs      []errDetail
 	changedCount         int
 	unchangedCount       int
 	skipUnsupportedCount int
+	skipUnsupportedSoft  []string
 	writtenCount         int
 	versionWriteErrors   int
+	versionWriteErrs     []errDetail
 	iconDownloadSuccess  int
 	iconDownloadErrors   int
+	iconDownloadErrs     []errDetail
 	totalEntries         int
 }
 
@@ -226,7 +232,13 @@ func processFetchResults(
 		p := result.Plugin
 		if result.Err != nil {
 			stats.pluginFetchErrors++
-			log.Printf("[%s] Fetch error: %v", p.Name(), result.Err)
+			stats.pluginFetchErrs = append(stats.pluginFetchErrs, errDetail{
+				Plugin:   p.Name(),
+				Message:  result.Err.Error(),
+				Attempts: result.Attempts,
+				Duration: result.Duration.Round(time.Millisecond).String(),
+			})
+			log.Printf("[%s] ❌ Fetch error (attempts=%d duration=%s): %v", p.Name(), result.Attempts, result.Duration.Round(time.Millisecond), result.Err)
 			continue
 		}
 
@@ -244,13 +256,14 @@ func processFetchResults(
 
 			if !decision.SkipSupported {
 				stats.skipUnsupportedCount++
+				stats.skipUnsupportedSoft = append(stats.skipUnsupportedSoft, softwareID)
 				pSkipUnsupported++
 			}
 
 			if decision.Changed {
 				stats.changedCount++
 				pChanged++
-				log.Printf("[%s/%s] decision=changed reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
+				log.Printf("[%s/%s] ✓ changed reason=%s", p.Name(), softwareID, decision.Reason)
 				payload := plugin.PlatformPayload{
 					SoftwareID: softwareID,
 					UpdatedAt:  updatedAt,
@@ -258,8 +271,13 @@ func processFetchResults(
 				}
 				if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), payload); err != nil {
 					stats.versionWriteErrors++
+					stats.versionWriteErrs = append(stats.versionWriteErrs, errDetail{
+						Plugin:   p.Name(),
+						Software: softwareID,
+						Message:  err.Error(),
+					})
 					pWriteErrors++
-					log.Printf("[%s/%s] write json: %v", p.Name(), softwareID, err)
+					log.Printf("[%s/%s] ❌ write json: %v", p.Name(), softwareID, err)
 					continue
 				}
 				stats.writtenCount++
@@ -267,15 +285,20 @@ func processFetchResults(
 			} else {
 				stats.unchangedCount++
 				pUnchanged++
-				log.Printf("[%s/%s] decision=skipped reason=%s skipSupport=%t", p.Name(), softwareID, decision.Reason, decision.SkipSupported)
+				log.Printf("[%s/%s] − skipped reason=%s", p.Name(), softwareID, decision.Reason)
 			}
 
 			item := entry.Item
 			if decision.Changed {
 				if localIcon, err := iconDL.Download(softwareID, item.Icon); err != nil {
 					stats.iconDownloadErrors++
+					stats.iconDownloadErrs = append(stats.iconDownloadErrs, errDetail{
+						Plugin:   p.Name(),
+						Software: softwareID,
+						Message:  err.Error(),
+					})
 					pIconErr++
-					log.Printf("[%s/%s] download icon: %v", p.Name(), softwareID, err)
+					log.Printf("[%s/%s] ❌ download icon: %v", p.Name(), softwareID, err)
 					if hasPrevItem && strings.TrimSpace(prevItem.Icon) != "" {
 						item.Icon = prevItem.Icon
 					}
@@ -295,8 +318,14 @@ func processFetchResults(
 			stats.totalEntries++
 		}
 
-		log.Printf("[plugin-summary] name=%s mode=fetch items=%d changed=%d skipped=%d skipUnsupported=%d written=%d writeErrors=%d iconDownloadSuccess=%d iconDownloadErrors=%d",
-			p.Name(), pItems, pChanged, pUnchanged, pSkipUnsupported, pWritten, pWriteErrors, pIconOK, pIconErr)
+		// Plugin-level summary
+		if pWriteErrors > 0 || pIconErr > 0 {
+			log.Printf("[plugin-summary] %s: items=%d ✓%d −%d ⚠%d | written=%d ❌%d icons=✓%d ❌%d",
+				p.Name(), pItems, pChanged, pUnchanged, pSkipUnsupported, pWritten, pWriteErrors, pIconOK, pIconErr)
+		} else {
+			log.Printf("[plugin-summary] %s: items=%d ✓%d −%d ⚠%d | written=%d icons=%d",
+				p.Name(), pItems, pChanged, pUnchanged, pSkipUnsupported, pWritten, pIconOK)
+		}
 	}
 
 	return listItems, stats
@@ -506,20 +535,20 @@ func fetchPluginsConcurrently(plugins []plugin.Plugin, maxConcurrency int, order
 	for _, j := range jobList {
 		queued = append(queued, j.Plugin.Name())
 	}
-	log.Printf("[scheduler] queue=%s", strings.Join(queued, ","))
+	log.Printf("📋 Queue (%d): %s", len(jobList), strings.Join(queued, ", "))
 
 	var wg sync.WaitGroup
 	worker := func(workerID int) {
 		defer wg.Done()
 		for job := range jobs {
 			start := time.Now()
-			log.Printf("[scheduler] start plugin=%s order=%d worker=%d", job.Plugin.Name(), job.Index, workerID)
+			log.Printf("▶ %s  worker#%d", job.Plugin.Name(), workerID)
 			outcome, attempts, err := fetchWithRetry(job.Plugin, defaultFetchRetries, defaultRetryBaseDelay)
 			duration := time.Since(start)
 			if err != nil {
-				log.Printf("[scheduler] done plugin=%s status=failed attempts=%d duration=%s err=%v", job.Plugin.Name(), attempts, duration, err)
+				log.Printf("✖ %s  attempts=%d duration=%s err=%v", job.Plugin.Name(), attempts, duration.Round(time.Millisecond), err)
 			} else {
-				log.Printf("[scheduler] done plugin=%s status=ok attempts=%d duration=%s items=%d", job.Plugin.Name(), attempts, duration, len(outcome.Items))
+				log.Printf("✔ %s  attempts=%d duration=%s items=%d", job.Plugin.Name(), attempts, duration.Round(time.Millisecond), len(outcome.Items))
 			}
 			results <- pluginFetchResult{
 				Index:    job.Index,
@@ -570,7 +599,6 @@ func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) (
 	}
 
 	var lastErr error
-	log.Printf("[%s] fetch mode=fetch", p.Name())
 	for attempt := 1; attempt <= maxAttempts; attempt++ {
 		items, err := p.Fetch()
 		if err == nil {
@@ -583,7 +611,7 @@ func fetchWithRetry(p plugin.Plugin, maxAttempts int, baseDelay time.Duration) (
 		}
 
 		delay := retryDelay(baseDelay, attempt)
-		log.Printf("[%s] fetch failed (attempt %d/%d): %v; retry in %s", p.Name(), attempt, maxAttempts, err, delay)
+		log.Printf("⟳ %s retry attempt=%d/%d err=%v wait=%s", p.Name(), attempt, maxAttempts, err, delay)
 		time.Sleep(delay)
 	}
 
@@ -654,7 +682,7 @@ func selectPlugins(all []plugin.Plugin, pluginsArg string) ([]plugin.Plugin, err
 		enabled := make([]plugin.Plugin, 0, len(all))
 		for _, p := range all {
 			if p.Disabled() {
-				log.Printf("[scheduler] skip disabled plugin: %s", p.Name())
+				log.Printf("− skip disabled plugin: %s", p.Name())
 				continue
 			}
 			enabled = append(enabled, p)
@@ -951,4 +979,86 @@ func containsHan(s string) bool {
 		}
 	}
 	return false
+}
+
+// printSummary renders a structured, multi-line summary with error details
+// prominently displayed at the top, followed by general statistics.
+func printSummary(duration time.Duration, pluginCount int, listItems []plugin.SoftwareItem, listChanged, dataChanged bool, stats runStats) {
+	var sb strings.Builder
+
+	// ── Separator ──
+	sb.WriteString("\n══════════════════════════════════════════════════════\n")
+
+	// ── ERRORS section ──
+	totalErrors := stats.pluginFetchErrors + stats.versionWriteErrors + stats.iconDownloadErrors
+	if totalErrors > 0 {
+		sb.WriteString(fmt.Sprintf("❌  ERRORS (%d)\n\n", totalErrors))
+
+		if stats.pluginFetchErrors > 0 {
+			sb.WriteString(fmt.Sprintf("   Plugin fetch errors: %d\n", stats.pluginFetchErrors))
+			for _, e := range stats.pluginFetchErrs {
+				detail := ""
+				if e.Attempts > 0 || e.Duration != "" {
+					detail = fmt.Sprintf(" (%d attempts, %s)", e.Attempts, e.Duration)
+				}
+				sb.WriteString(fmt.Sprintf("     × %s: %s%s\n", e.Plugin, truncateStr(e.Message, 120), detail))
+			}
+			sb.WriteString("\n")
+		}
+
+		if stats.versionWriteErrors > 0 {
+			sb.WriteString(fmt.Sprintf("   Version write errors: %d\n", stats.versionWriteErrors))
+			for _, e := range stats.versionWriteErrs {
+				sb.WriteString(fmt.Sprintf("     × %s/%s: %s\n", e.Plugin, e.Software, truncateStr(e.Message, 120)))
+			}
+			sb.WriteString("\n")
+		}
+
+		if stats.iconDownloadErrors > 0 {
+			sb.WriteString(fmt.Sprintf("   Icon download errors: %d\n", stats.iconDownloadErrors))
+			for _, e := range stats.iconDownloadErrs {
+				sb.WriteString(fmt.Sprintf("     × %s/%s: %s\n", e.Plugin, e.Software, truncateStr(e.Message, 120)))
+			}
+			sb.WriteString("\n")
+		}
+	}
+
+	// ── WARNINGS section ──
+	if stats.skipUnsupportedCount > 0 {
+		sb.WriteString(fmt.Sprintf("⚠  WARNINGS (%d)\n\n", stats.skipUnsupportedCount))
+		sb.WriteString(fmt.Sprintf("   Skip-unsupported (no previous version to compare): %d\n", stats.skipUnsupportedCount))
+		if len(stats.skipUnsupportedSoft) <= 20 {
+			sb.WriteString(fmt.Sprintf("     %s\n\n", strings.Join(stats.skipUnsupportedSoft, ", ")))
+		} else {
+			sb.WriteString(fmt.Sprintf("     %s, …(+%d more)\n\n",
+				strings.Join(stats.skipUnsupportedSoft[:20], ", "),
+				len(stats.skipUnsupportedSoft)-20))
+		}
+	}
+
+	// ── SUMMARY section ──
+	sb.WriteString("✅  SUMMARY\n\n")
+	sb.WriteString(fmt.Sprintf("   Duration:           %s\n", duration.Round(time.Millisecond)))
+	sb.WriteString(fmt.Sprintf("   Plugins selected:  %d\n", pluginCount))
+	sb.WriteString(fmt.Sprintf("   Plugins with fetch errors: %d\n", stats.pluginFetchErrors))
+	sb.WriteString(fmt.Sprintf("   Total entries:     %d\n", stats.totalEntries))
+	sb.WriteString(fmt.Sprintf("   List items:        %d\n", len(listItems)))
+	sb.WriteString(fmt.Sprintf("   Versions changed:  %d\n", stats.changedCount))
+	sb.WriteString(fmt.Sprintf("   Versions skipped:  %d\n", stats.unchangedCount))
+	sb.WriteString(fmt.Sprintf("   Versions written:  %d\n", stats.writtenCount))
+	sb.WriteString(fmt.Sprintf("   Icons downloaded:  %d\n", stats.iconDownloadSuccess))
+	sb.WriteString(fmt.Sprintf("   List changed:      %t\n", listChanged))
+	sb.WriteString(fmt.Sprintf("   Data changed:      %t\n", dataChanged))
+	sb.WriteString("══════════════════════════════════════════════════════\n")
+
+	log.Println(sb.String())
+	fmt.Println("Done.")
+}
+
+func truncateStr(s string, maxLen int) string {
+	runes := []rune(s)
+	if len(runes) <= maxLen {
+		return s
+	}
+	return string(runes[:maxLen]) + "…"
 }

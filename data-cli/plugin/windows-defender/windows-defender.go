@@ -1,6 +1,15 @@
 package windowsdefender
 
-import "github.com/dezhishen/original-software-hub/data-cli/plugin"
+import (
+	"time"
+
+	"github.com/dezhishen/original-software-hub/data-cli/plugin"
+)
+
+const (
+	windowsdefenderOfficialWebsite = "https://www.microsoft.com"
+	windowsdefenderIconURL         = "https://www.microsoft.com/favicon.ico"
+)
 
 type Windowsdefender struct{}
 
@@ -13,20 +22,37 @@ func (p *Windowsdefender) Name() string {
 }
 
 func (p *Windowsdefender) Fetch() ([]plugin.SoftwareData, error) {
+	releaseDate := time.Now().UTC().Format("2006-01-02")
+
 	return []plugin.SoftwareData{
 		{
 			Item: plugin.SoftwareItem{
 				ID:              "windows-defender",
-				Name:            "Windows Defender",
-				Description:     "Windows 自带安全功能。",
+				Name:            "Microsoft Defender",
+				Description:     "Windows 内置的安全防护功能，现升级为 Microsoft Defender，提供实时病毒和威胁防护。",
 				Organization:    "Microsoft",
-				OfficialWebsite: "https://www.microsoft.com",
-				Icon:            "",
+				OfficialWebsite: windowsdefenderOfficialWebsite,
+				Icon:            windowsdefenderIconURL,
 				Tags:            []string{"安全防护"},
 			},
-			Versions: []plugin.Version{},
+			Versions: []plugin.Version{
+				{
+					Version:     "latest",
+					ReleaseDate: releaseDate,
+					OfficialURL: "https://www.microsoft.com/windows/comprehensive-security",
+					Platforms: plugin.PlatformsFromVariants("latest", releaseDate, windowsdefenderOfficialWebsite, []plugin.Variant{
+						{
+							Architecture: "x64",
+							Platform:     "Windows",
+							Links: []plugin.Link{
+								{Type: "webpage", Label: "Microsoft Defender 安全中心", URL: "https://www.microsoft.com/windows/comprehensive-security"},
+							},
+						},
+					}),
+				},
+			},
 		},
 	}, nil
 }
 
-func (p *Windowsdefender) Disabled() bool { return true }
+func (p *Windowsdefender) Disabled() bool { return false }

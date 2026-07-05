@@ -3,19 +3,26 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.26.0",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
+  },
   "scripts": {
     "dev": "vite",
     "ads:sync": "node ./scripts/sync-public-service-ads.mjs",
     "build": "vite build",
     "preview": "vite preview --port 5173",
     "build:data": "cd ../data-cli && go run . -skip-unchanged",
-    "build:all": "pnpm build:data && pnpm ads:sync && pnpm build"
+    "build:all": "pnpm build:data && pnpm ads:sync && pnpm build",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
