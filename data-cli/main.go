@@ -57,6 +57,7 @@ import (
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/kingsoft-antivirus"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/kingsoft-pdf"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/kugou-music"
+	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/libreoffice"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/microsoft-office"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/microsoft-pinyin"
 	_ "github.com/dezhishen/original-software-hub/data-cli/plugin/neteasecloudmusic"

@@ -57,23 +57,19 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Generate latest data
-        working-directory: data-cli
         env:
           OSH_GITHUB_TOKEN: ${{ secrets.OSH_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: go run . -concurrency 5 -schedule-order priority -skip-unchanged
+        run: make data
 
       - name: Install frontend dependencies
-        working-directory: frontend
-        run: pnpm install --frozen-lockfile
+        run: make install-ci
 
       - name: Sync public-service ads
-        working-directory: frontend
-        run: pnpm ads:sync
+        run: make ads-sync
 
       - name: Build minified frontend
-        working-directory: frontend
-        run: pnpm build
+        run: make build-ci
 
       - name: Publish frontend (with data) to page branch
         uses: JamesIves/github-pages-deploy-action@v4.8.0

@@ -27,39 +27,30 @@
 
 ## 本地运行
 
-**抓取数据**
+**环境要求**
+
+- [Go](https://go.dev/) 1.22+
+- [Node.js](https://nodejs.org/) 22+
+- [pnpm](https://pnpm.io)（推荐通过 `corepack enable` 启用）
+
+**常用命令**
 
 ```bash
-cd data-cli
-go run . -concurrency 5 -schedule-order priority -skip-unchanged
+# 一键：抓取数据 → 安装依赖 → 构建 → 预览
+make all
+
+# 仅抓取最新软件数据
+make data
+
+# 跳过数据抓取，直接构建 + 预览
+make build-only
+
+# 启动 Vite 热重载开发服务器
+make dev
+
+# 清理构建产物
+make clean
 ```
-
-可选参数：
-
-| 参数 | 默认值 | 说明 |
-|------|--------|------|
-| `-out` | `../frontend/data/json` | 输出目录 |
-| `-plugins` | `all` | 指定插件，如 `weixin,qq` |
-| `-concurrency` | `3` | 并发数 |
-| `-schedule-order` | `priority` | 排序方式：`input` / `alpha` / `priority` |
-| `-skip-unchanged` | `true` | 版本未变化时跳过写入与图标下载 |
-
-**启动前端开发服务器**
-
-```bash
-cd frontend
-pnpm install
-pnpm dev
-```
-
-**一键构建（数据 + 前端）**
-
-```bash
-cd frontend
-pnpm build:all   # 等价于：go run ../data-cli && pnpm build
-```
-
-> 需要安装 [pnpm](https://pnpm.io)。推荐通过 `corepack enable` 启用。
 
 ## 插件位置说明
 
@@ -75,13 +66,14 @@ pnpm build:all   # 等价于：go run ../data-cli && pnpm build
 
 ## CI/CD
 
-通过 GitHub Actions（`.github/workflows/deploy-data.yml`）：
+通过 GitHub Actions（`.github/workflows/deploy-data.yml`），每4小时自动执行：
 
 1. 从 `page` 分支恢复历史版本数据（用于 skip-unchanged 比对）
-2. 运行 `data-cli` 抓取最新版本
-3. `pnpm install --frozen-lockfile` 安装前端依赖
-4. `pnpm build` 构建前端静态文件（含 PWA service worker）
-5. 部署至 `page` 分支（GitHub Pages）
+2. `make data` 抓取最新版本
+3. `make install-ci` 安装前端依赖
+4. `make ads-sync` 同步公共广告
+5. `make build-ci` 构建前端静态文件
+6. 部署至 `page` 分支（GitHub Pages）
 
 ## License
 
