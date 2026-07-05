@@ -30,11 +30,13 @@ body {
 
 .app-shell {
   width: min(1920px, calc(100% - 0.5rem));
+  max-width: 100vw;
 }
 
 @media (min-width: 768px) {
   .app-shell {
     width: min(1920px, calc(100% - 1.25rem));
+    max-width: 100vw;
   }
 }
 
