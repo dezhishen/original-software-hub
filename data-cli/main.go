@@ -239,6 +239,16 @@ func processFetchResults(
 				Duration: result.Duration.Round(time.Millisecond).String(),
 			})
 			log.Printf("[%s] ❌ Fetch error (attempts=%d duration=%s): %v", p.Name(), result.Attempts, result.Duration.Round(time.Millisecond), result.Err)
+
+			// ── Fallback to previous data ─────────────────────────────────
+			fallbackItems := fallbackToPrevious(p.Name(), previousState, jsonDir, updatedAt)
+			for _, fi := range fallbackItems {
+				listItems = append(listItems, fi)
+				stats.totalEntries++
+			}
+			if len(fallbackItems) > 0 {
+				log.Printf("[%s] ↺ fallback to previous data: %d items", p.Name(), len(fallbackItems))
+			}
 			continue
 		}
 
@@ -1061,4 +1071,44 @@ func truncateStr(s string, maxLen int) string {
 		return s
 	}
 	return string(runes[:maxLen]) + "…"
+}
+
+// fallbackToPrevious attempts to recover a failed plugin by reusing its
+// last known good data from the previous run. Returns the SoftwareItem list
+// to append (empty if no previous data is found).
+func fallbackToPrevious(pluginName string, prev plugin.PreviousState, jsonDir, updatedAt string) []plugin.SoftwareItem {
+	// Determine candidate software IDs: exact match or prefix match.
+	candidates := []string{pluginName}
+	for id := range prev.Versions {
+		if id == pluginName {
+			continue // already in candidates
+		}
+		// Some plugin names map differently (e.g. "tencentmeeting" → "tencent-meeting")
+		if strings.ReplaceAll(id, "-", "") == strings.ReplaceAll(pluginName, "-", "") {
+			candidates = append(candidates, id)
+		}
+	}
+
+	for _, softwareID := range candidates {
+		payload, hasVersions := prev.Versions[softwareID]
+		item, hasItem := prev.Items[softwareID]
+		if !hasVersions || !hasItem {
+			continue
+		}
+
+		// Re-write the version JSON (mirroring unchanged data).
+		payload.UpdatedAt = updatedAt
+		if err := writeJSON(filepath.Join(jsonDir, softwareID+".json"), payload); err != nil {
+			log.Printf("[%s/fallback] ❌ write previous version json: %v", pluginName, err)
+			continue
+		}
+
+		item.Source = plugin.Source{Mode: "json", Path: "versions/" + softwareID + ".json", TimeoutMs: 8000}
+		log.Printf("[%s/fallback] ↺ reused previous data for %s (versions=%d platforms=%d)",
+			pluginName, softwareID, len(payload.Platforms), len(payload.Platforms))
+		return []plugin.SoftwareItem{item}
+	}
+
+	log.Printf("[%s/fallback] − no previous data available to fallback", pluginName)
+	return nil
 }

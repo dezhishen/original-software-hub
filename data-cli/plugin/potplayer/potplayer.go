@@ -8,7 +8,6 @@ import (
 
 const (
 	potplayerOfficialWebsite = "https://potplayer.daum.net"
-	potplayerIconURL         = "https://potplayer.daum.net/favicon.ico"
 )
 
 type Potplayer struct{}
@@ -32,7 +31,7 @@ func (p *Potplayer) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "多功能多媒体播放器，支持广泛的视频格式，界面简洁高效。",
 				Organization:    "Daum Communications",
 				OfficialWebsite: potplayerOfficialWebsite,
-				Icon:            potplayerIconURL,
+				Icon:            "",
 				Tags:            []string{"媒体播放", "音视频"},
 			},
 			Versions: []plugin.Version{

@@ -127,7 +127,8 @@ func fetchLatestStable() (string, string, string, error) {
 
 	releaseDate := strings.TrimSpace(history[version])
 	if releaseDate == "" {
-		return "", "", "", fmt.Errorf("release date not found for version %s", version)
+		// 版本已发布但尚未录入 history API 时，回退到当前日期
+		releaseDate = time.Now().UTC().Format("2006-01-02")
 	}
 
 	officialURL := "https://www.thunderbird.net/notes/"

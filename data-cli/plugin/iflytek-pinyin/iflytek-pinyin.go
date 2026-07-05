@@ -8,7 +8,6 @@ import (
 
 const (
 	iflytekpinyinOfficialWebsite = "https://shurufa.iflytek.com"
-	iflytekpinyinIconURL         = "https://shurufa.iflytek.com/favicon.ico"
 )
 
 type Iflytekpinyin struct{}
@@ -32,7 +31,7 @@ func (p *Iflytekpinyin) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "科大讯飞出品的免费中文输入法，支持语音、拼音、手写等多种输入方式。",
 				Organization:    "科大讯飞",
 				OfficialWebsite: iflytekpinyinOfficialWebsite,
-				Icon:            iflytekpinyinIconURL,
+				Icon:            "",
 				Tags:            []string{"输入法"},
 			},
 			Versions: []plugin.Version{

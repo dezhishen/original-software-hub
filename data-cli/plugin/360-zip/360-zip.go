@@ -10,7 +10,7 @@ import (
 
 const (
 	p360zipOfficialWebsite = "https://yasuo.360.cn"
-	p360zipIconURL         = "https://yasuo.360.cn/favicon.ico"
+
 	p360zipDownloadURL     = "https://yasuo.360.cn/360zip_setup.exe"
 )
 
@@ -38,7 +38,7 @@ func (p *P360zip) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "360 出品的免费压缩与解压工具，支持多种格式。",
 				Organization:    "360",
 				OfficialWebsite: p360zipOfficialWebsite,
-				Icon:            p360zipIconURL,
+				Icon:            "",
 				Tags:            []string{"压缩"},
 			},
 			Versions: []plugin.Version{

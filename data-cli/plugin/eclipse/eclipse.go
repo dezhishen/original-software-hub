@@ -8,7 +8,6 @@ import (
 
 const (
 	eclipseOfficialWebsite = "https://www.eclipse.org"
-	eclipseIconURL         = "https://www.eclipse.org/favicon.ico"
 )
 
 type Eclipse struct{}
@@ -32,7 +31,7 @@ func (p *Eclipse) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "Eclipse 基金会出品的开源集成开发环境（IDE），支持 Java、C/C++、Python 等语言。",
 				Organization:    "Eclipse Foundation",
 				OfficialWebsite: eclipseOfficialWebsite,
-				Icon:            eclipseIconURL,
+				Icon:            "",
 				Tags:            []string{"开发工具", "IDE"},
 			},
 			Versions: []plugin.Version{

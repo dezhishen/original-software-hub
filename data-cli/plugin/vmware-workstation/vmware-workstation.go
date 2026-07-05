@@ -8,7 +8,6 @@ import (
 
 const (
 	vmwareworkstationOfficialWebsite = "https://www.vmware.com/products/workstation"
-	vmwareworkstationIconURL         = "https://www.vmware.com/favicon.ico"
 )
 
 type Vmwareworkstation struct{}
@@ -32,7 +31,7 @@ func (p *Vmwareworkstation) Fetch() ([]plugin.SoftwareData, error) {
 				Description:     "VMware 出品的专业桌面虚拟化软件，支持在单台 PC 上运行多个虚拟机。",
 				Organization:    "VMware",
 				OfficialWebsite: vmwareworkstationOfficialWebsite,
-				Icon:            vmwareworkstationIconURL,
+				Icon:            "",
 				Tags:            []string{"虚拟机"},
 			},
 			Versions: []plugin.Version{
