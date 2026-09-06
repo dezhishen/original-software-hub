@@ -1,0 +1,90 @@
+{
+  "softwareId": "edge",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/edge",
+      "packages": [
+        {
+          "architecture": "x64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Edge deb 安装包",
+              "url": "https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_1.0.0_amd64.deb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/edge",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Edge 安装包 (arm64)",
+              "url": "https://go.microsoft.com/fwlink/?linkid=2108834\u0026Channel=Stable\u0026language=zh-CN\u0026arch=arm64"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Edge 安装包 (x64)",
+              "url": "https://go.microsoft.com/fwlink/?linkid=2108834\u0026Channel=Stable\u0026language=zh-CN"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Edge 安装包 (x86)",
+              "url": "https://go.microsoft.com/fwlink/?linkid=2108834\u0026Channel=Stable\u0026language=zh-CN\u0026arch=x86"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/edge",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Edge 安装包 (macOS ARM)",
+              "url": "https://go.microsoft.com/fwlink/?linkid=2108834\u0026Channel=Stable\u0026language=zh-CN\u0026platform=mac\u0026arch=arm64"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Edge 安装包 (macOS)",
+              "url": "https://go.microsoft.com/fwlink/?linkid=2108834\u0026Channel=Stable\u0026language=zh-CN\u0026platform=mac"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

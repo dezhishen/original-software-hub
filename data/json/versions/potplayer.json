@@ -1,0 +1,24 @@
+{
+  "softwareId": "potplayer",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://potplayer.daum.net",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "PotPlayer 下载页",
+              "url": "https://potplayer.daum.net/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

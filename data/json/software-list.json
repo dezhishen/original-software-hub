@@ -1,0 +1,1453 @@
+{
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "items": [
+    {
+      "id": "7zip",
+      "name": "7-Zip",
+      "icon": "./assets/software-icons/7zip.png",
+      "description": "高压缩率的开源压缩与解压工具。",
+      "organization": "Igor Pavlov",
+      "officialWebsite": "https://www.7-zip.org/",
+      "categories": [
+        "compression"
+      ],
+      "tags": [
+        "压缩"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/7zip.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "adobe-acrobat-reader",
+      "name": "Adobe Acrobat Reader",
+      "icon": "./assets/software-icons/adobe-acrobat-reader.ico",
+      "description": "Adobe 出品的免费 PDF 文档阅读、编辑与签名工具。",
+      "organization": "Adobe",
+      "officialWebsite": "https://www.adobe.com/acrobat/pdf-reader",
+      "categories": [
+        "office"
+      ],
+      "tags": [
+        "PDF",
+        "文档阅读"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/adobe-acrobat-reader.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "adobe-illustrator",
+      "name": "Adobe Illustrator",
+      "icon": "./assets/software-icons/adobe-acrobat-reader.ico",
+      "description": "Adobe 出品的专业矢量图形设计软件，广泛用于插画、排版与 Logo 设计。",
+      "organization": "Adobe",
+      "officialWebsite": "https://www.adobe.com/products/illustrator",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "设计",
+        "矢量图形"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/adobe-illustrator.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "adobe-photoshop",
+      "name": "Adobe Photoshop",
+      "icon": "./assets/software-icons/adobe-acrobat-reader.ico",
+      "description": "Adobe 出品的专业图像编辑与设计软件，广泛用于摄影、设计与数字艺术。",
+      "organization": "Adobe",
+      "officialWebsite": "https://www.adobe.com/products/photoshop",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "图像处理",
+        "设计"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/adobe-photoshop.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "adobe-premiere-pro",
+      "name": "Adobe Premiere Pro",
+      "icon": "./assets/software-icons/adobe-acrobat-reader.ico",
+      "description": "Adobe 出品的专业视频剪辑与后期制作软件，广泛用于影视与视频创作。",
+      "organization": "Adobe",
+      "officialWebsite": "https://www.adobe.com/products/premiere",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "视频剪辑"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/adobe-premiere-pro.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "adobe-after-effects",
+      "name": "After Effects",
+      "icon": "./assets/software-icons/adobe-acrobat-reader.ico",
+      "description": "Adobe 出品的专业视觉特效与动态图形软件，广泛用于影视后期制作。",
+      "organization": "Adobe",
+      "officialWebsite": "https://www.adobe.com/products/aftereffects",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "视频后期",
+        "特效"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/adobe-after-effects.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "iqiyi",
+      "name": "爱奇艺",
+      "pinyin": "aiqiyi aqy",
+      "icon": "./assets/software-icons/iqiyi.ico",
+      "description": "爱奇艺出品的视频客户端，提供电影、电视剧、综艺等在线视频播放。",
+      "organization": "爱奇艺",
+      "officialWebsite": "https://www.iqiyi.com",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "视频"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/iqiyi.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "alipan",
+      "name": "阿里云盘",
+      "pinyin": "aliyunpan alyp",
+      "icon": "./assets/software-icons/alipan.png",
+      "description": "阿里巴巴推出的高速、可靠的个人网盘，支持文件备份、同步和分享",
+      "organization": "Alibaba",
+      "officialWebsite": "https://www.alipan.com",
+      "categories": [
+        "cloud-storage"
+      ],
+      "tags": [
+        "云存储",
+        "文件同步",
+        "网盘"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/alipan.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "360-safe-guard",
+      "name": "360 安全卫士",
+      "pinyin": "anquanweishi aqws",
+      "icon": "./assets/software-icons/360-safe-guard.ico",
+      "description": "360 出品的综合安全防护工具，提供病毒查杀、系统优化、软件管理等功能。",
+      "organization": "360",
+      "officialWebsite": "https://www.360.com",
+      "categories": [
+        "security"
+      ],
+      "tags": [
+        "安全防护"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/360-safe-guard.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "anydesk",
+      "name": "AnyDesk",
+      "icon": "./assets/software-icons/anydesk.ico",
+      "description": "轻量高速的远程控制软件，支持跨平台访问与控制。",
+      "organization": "AnyDesk Software GmbH",
+      "officialWebsite": "https://anydesk.com.cn",
+      "categories": [
+        "remote"
+      ],
+      "tags": [
+        "远程控制"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/anydesk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "autocad",
+      "name": "AutoCAD",
+      "icon": "./assets/software-icons/autocad.ico",
+      "description": "Autodesk 出品的专业计算机辅助设计（CAD）软件，广泛用于建筑、工程与制造领域。",
+      "organization": "Autodesk",
+      "officialWebsite": "https://www.autodesk.com/products/autocad",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "设计",
+        "CAD"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/autocad.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "baidu-pinyin",
+      "name": "百度输入法",
+      "pinyin": "baidushurufa bdsrf",
+      "icon": "./assets/software-icons/baidu-pinyin.ico",
+      "description": "百度出品的免费中文输入法，支持拼音、手写、语音等多种输入方式。",
+      "organization": "百度",
+      "officialWebsite": "https://shurufa.baidu.com",
+      "categories": [
+        "input-method"
+      ],
+      "tags": [
+        "输入法"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/baidu-pinyin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "baidunetdisk",
+      "name": "百度网盘",
+      "pinyin": "baiduwangpan bdwp",
+      "icon": "./assets/software-icons/baidunetdisk.ico",
+      "description": "百度网盘客户端，提供文件同步、分享与云存储服务。",
+      "organization": "Baidu",
+      "officialWebsite": "https://pan.baidu.com/",
+      "categories": [
+        "cloud-storage"
+      ],
+      "tags": [
+        "云存储",
+        "文件同步"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/baidunetdisk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "coreldraw",
+      "name": "CorelDRAW",
+      "icon": "./assets/software-icons/coreldraw.ico",
+      "description": "Corel 出品的专业平面设计与矢量插图软件。",
+      "organization": "Corel",
+      "officialWebsite": "https://www.coreldraw.com",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "设计"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/coreldraw.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "dingtalk",
+      "name": "钉钉",
+      "pinyin": "dingding dd",
+      "icon": "./assets/software-icons/dingtalk.ico",
+      "description": "阿里巴巴旗下企业协作与即时通讯应用。",
+      "organization": "Alibaba",
+      "officialWebsite": "https://www.dingtalk.com/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "办公协作",
+        "即时通讯"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/dingtalk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "doubao",
+      "name": "豆包客户端",
+      "pinyin": "doubaokehuduan dbkhd",
+      "icon": "./assets/software-icons/doubao.png",
+      "description": "字节跳动推出的 AI 助手，提供智能对话、文案创作、代码编程等功能的桌面客户端",
+      "organization": "ByteDance",
+      "officialWebsite": "https://www.doubao.com",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "AI 助手",
+        "智能对话",
+        "效率工具"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/doubao.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "easytier",
+      "name": "EasyTier",
+      "icon": "./assets/software-icons/easytier.png",
+      "description": "EasyTier 是一个去中心化的 Mesh VPN，支持 WireGuard。",
+      "organization": "EasyTier",
+      "officialWebsite": "https://easytier.cn",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "网络工具",
+        "VPN"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/easytier.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "eclipse",
+      "name": "Eclipse IDE",
+      "description": "Eclipse 基金会出品的开源集成开发环境（IDE），支持 Java、C/C++、Python 等语言。",
+      "organization": "Eclipse Foundation",
+      "officialWebsite": "https://www.eclipse.org",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "IDE"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/eclipse.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "evernote",
+      "name": "Evernote",
+      "icon": "./assets/software-icons/evernote.ico",
+      "description": "跨平台云端笔记软件，支持记录、整理与同步。",
+      "organization": "Evernote Corporation",
+      "officialWebsite": "https://evernote.com",
+      "categories": [
+        "note-taking"
+      ],
+      "tags": [
+        "笔记",
+        "效率工具"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/evernote.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "foxmail",
+      "name": "Foxmail",
+      "icon": "./assets/software-icons/foxmail.ico",
+      "description": "腾讯推出的桌面邮件客户端。",
+      "organization": "Tencent",
+      "officialWebsite": "https://www.foxmail.com/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "邮件"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/foxmail.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "foxit-reader",
+      "name": "福昕阅读器（Foxit Reader）",
+      "pinyin": "fuxinyueduqi fxydq",
+      "icon": "./assets/software-icons/foxit-reader.ico",
+      "description": "福昕出品的免费 PDF 阅读与编辑工具，支持注释、表单填写和文档协作。",
+      "organization": "福昕",
+      "officialWebsite": "https://www.foxitsoftware.com/pdf-reader",
+      "categories": [
+        "office"
+      ],
+      "tags": [
+        "PDF",
+        "文档阅读"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/foxit-reader.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "icon": "./assets/software-icons/git.ico",
+      "description": "Linus Torvalds 创建的开源分布式版本控制系统，是目前最流行的版本控制工具。",
+      "organization": "Git Community",
+      "officialWebsite": "https://git-scm.com",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "版本控制"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/git.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "chrome",
+      "name": "Google Chrome",
+      "icon": "./assets/software-icons/chrome.svg",
+      "description": "Google 出品的高速、安全浏览器。",
+      "organization": "Google LLC",
+      "officialWebsite": "https://www.google.com/chrome/",
+      "categories": [
+        "browser"
+      ],
+      "tags": [
+        "浏览器",
+        "网络"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/chrome.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "huorong",
+      "name": "火绒",
+      "pinyin": "huorong hr",
+      "icon": "./assets/software-icons/huorong.svg",
+      "description": "火绒安全软件，专业的个人电脑防护工具。",
+      "organization": "Huorong",
+      "officialWebsite": "https://www.huorong.cn/person",
+      "categories": [
+        "security"
+      ],
+      "tags": [
+        "安全防护",
+        "杀毒软件"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/huorong.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "intellij-idea",
+      "name": "IntelliJ IDEA",
+      "icon": "./assets/software-icons/intellij-idea.ico",
+      "description": "JetBrains 出品的专业 Java/Kotlin 集成开发环境（IDE），提供 Community（免费）和 Ultimate（付费）版本。",
+      "organization": "JetBrains",
+      "officialWebsite": "https://www.jetbrains.com/idea",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "IDE"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/intellij-idea.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "jianying",
+      "name": "剪映（桌面版）",
+      "pinyin": "jianyingzhuomianban jyzmb",
+      "icon": "./assets/software-icons/jianying.ico",
+      "description": "字节跳动出品的免费视频剪辑工具，支持桌面端和移动端，提供丰富的剪辑和特效功能。",
+      "organization": "字节跳动",
+      "officialWebsite": "https://www.capcut.com",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "视频剪辑"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/jianying.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "kingsoft-pdf",
+      "name": "金山 PDF",
+      "pinyin": "jinshan js",
+      "icon": "./assets/software-icons/kingsoft-antivirus.ico",
+      "description": "金山出品的免费 PDF 阅读器，支持文档阅读、注释和格式转换。",
+      "organization": "Kingsoft",
+      "officialWebsite": "https://www.kingsoft.com",
+      "categories": [
+        "office"
+      ],
+      "tags": [
+        "PDF",
+        "文档阅读"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/kingsoft-pdf.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "powerword",
+      "name": "金山词霸",
+      "pinyin": "jinshanciba jscb",
+      "icon": "./assets/software-icons/kingsoft-antivirus.ico",
+      "description": "金山出品的翻译与词典工具，支持英语查词、翻译和语音朗读等功能。",
+      "organization": "Kingsoft",
+      "officialWebsite": "https://www.kingsoft.com",
+      "categories": [
+        "translation"
+      ],
+      "tags": [
+        "翻译",
+        "词典"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/powerword.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "kingsoft-antivirus",
+      "name": "金山毒霸",
+      "pinyin": "jinshanduba jsdb",
+      "icon": "./assets/software-icons/kingsoft-antivirus.ico",
+      "description": "金山出品的综合安全防护软件，提供病毒查杀、系统清理和网络安全防护。",
+      "organization": "Kingsoft",
+      "officialWebsite": "https://www.kingsoft.com",
+      "categories": [
+        "security"
+      ],
+      "tags": [
+        "安全防护",
+        "杀毒软件"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/kingsoft-antivirus.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "kugou-music",
+      "name": "酷狗音乐",
+      "pinyin": "kugouyinle kgyl",
+      "icon": "./assets/software-icons/kugou-music.ico",
+      "description": "酷狗出品的音乐播放客户端，提供在线音乐、MV、电台等丰富的音娱服务。",
+      "organization": "酷狗",
+      "officialWebsite": "https://www.kugou.com",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "音乐"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/kugou-music.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "libreoffice",
+      "name": "LibreOffice",
+      "icon": "./assets/software-icons/libreoffice.png",
+      "description": "自由开源的办公套件，包含文字处理、电子表格、演示文稿等组件。",
+      "organization": "The Document Foundation",
+      "officialWebsite": "https://zh-cn.libreoffice.org/",
+      "categories": [
+        "office"
+      ],
+      "tags": [
+        "办公",
+        "开源"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/libreoffice.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "360-browser",
+      "name": "360 浏览器",
+      "pinyin": "liulanqi llq",
+      "icon": "./assets/software-icons/360-browser.ico",
+      "description": "360 出品的高速、安全网页浏览器，支持 Chromium 内核。",
+      "organization": "360",
+      "officialWebsite": "https://browser.360.cn",
+      "categories": [
+        "browser"
+      ],
+      "tags": [
+        "浏览器"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/360-browser.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "qq-browser",
+      "name": "QQ 浏览器",
+      "pinyin": "liulanqi llq",
+      "icon": "./assets/software-icons/qq-browser.ico",
+      "description": "腾讯出品的 Chromium 内核浏览器，提供高速、安全的网页浏览体验。",
+      "organization": "Tencent",
+      "officialWebsite": "https://browser.qq.com",
+      "categories": [
+        "browser"
+      ],
+      "tags": [
+        "浏览器"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/qq-browser.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "vlc",
+      "name": "VLC 媒体播放器",
+      "pinyin": "meitibofangqi mtbfq",
+      "icon": "./assets/software-icons/vlc.ico",
+      "description": "VideoLAN 出品的开源跨平台多媒体播放器，支持几乎所有音频和视频格式。",
+      "organization": "VideoLAN",
+      "officialWebsite": "https://www.videolan.org/vlc",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "媒体播放",
+        "音视频"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/vlc.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "edge",
+      "name": "Microsoft Edge",
+      "icon": "./assets/software-icons/edge.ico",
+      "description": "Microsoft 出品的 Chromium 内核浏览器，支持跨平台同步。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://www.microsoft.com/edge",
+      "categories": [
+        "browser"
+      ],
+      "tags": [
+        "浏览器"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/edge.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "microsoft-office",
+      "name": "Microsoft Office",
+      "icon": "./assets/software-icons/edge.ico",
+      "description": "Microsoft 出品的办公套件，包含 Word、Excel、PowerPoint、Outlook 等经典应用。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://www.microsoft.com/office",
+      "categories": [
+        "office"
+      ],
+      "tags": [
+        "办公软件",
+        "文档处理"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/microsoft-office.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "outlook",
+      "name": "Microsoft Outlook",
+      "icon": "./assets/software-icons/edge.ico",
+      "description": "Microsoft 出品的邮件与日历管理客户端，支持日程管理和联系人管理。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://www.microsoft.com/outlook",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "邮件",
+        "日历"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/outlook.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "firefox",
+      "name": "Mozilla Firefox",
+      "icon": "./assets/software-icons/firefox.png",
+      "description": "Mozilla 出品的快速、安全、开源浏览器。",
+      "organization": "Mozilla Foundation",
+      "officialWebsite": "https://www.mozilla.org/firefox/",
+      "categories": [
+        "browser"
+      ],
+      "tags": [
+        "浏览器",
+        "网络",
+        "开源"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/firefox.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "thunderbird",
+      "name": "Mozilla Thunderbird",
+      "icon": "./assets/software-icons/thunderbird.png",
+      "description": "Mozilla 出品的开源邮件客户端与日历应用。",
+      "organization": "MZLA Technologies Corporation (Mozilla Foundation)",
+      "officialWebsite": "https://www.thunderbird.net/zh-CN/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "邮件",
+        "日历",
+        "开源"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/thunderbird.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "notepad-plus-plus",
+      "name": "Notepad++",
+      "icon": "./assets/software-icons/notepad-plus-plus.ico",
+      "description": "开源免费的源代码编辑器，支持多种编程语言，提供丰富的插件扩展。",
+      "organization": "Notepad++ Team",
+      "officialWebsite": "https://notepad-plus-plus.org",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "文本编辑器"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/notepad-plus-plus.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "onedrive",
+      "name": "OneDrive",
+      "icon": "./assets/software-icons/edge.ico",
+      "description": "Microsoft 出品的云存储服务，支持文件同步、备份与共享。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://www.microsoft.com/onedrive",
+      "categories": [
+        "cloud-storage"
+      ],
+      "tags": [
+        "云存储"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/onedrive.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "onenote",
+      "name": "OneNote",
+      "icon": "./assets/software-icons/edge.ico",
+      "description": "Microsoft 出品的数字笔记应用，支持多设备同步与协作。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://www.microsoft.com/onenote",
+      "categories": [
+        "note-taking"
+      ],
+      "tags": [
+        "笔记",
+        "效率工具"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/onenote.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "virtualbox",
+      "name": "Oracle VM VirtualBox",
+      "icon": "./assets/software-icons/virtualbox.ico",
+      "description": "Oracle 出品的开源跨平台虚拟机软件，支持在单台电脑上运行多个操作系统。",
+      "organization": "Oracle",
+      "officialWebsite": "https://www.virtualbox.org",
+      "categories": [
+        "virtualization"
+      ],
+      "tags": [
+        "虚拟机"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/virtualbox.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "potplayer",
+      "name": "PotPlayer",
+      "description": "多功能多媒体播放器，支持广泛的视频格式，界面简洁高效。",
+      "organization": "Daum Communications",
+      "officialWebsite": "https://potplayer.daum.net",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "媒体播放",
+        "音视频"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/potplayer.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "pycharm",
+      "name": "PyCharm",
+      "icon": "./assets/software-icons/intellij-idea.ico",
+      "description": "JetBrains 出品的专业 Python 集成开发环境（IDE），提供 Community（免费）和 Professional（付费）版本。",
+      "organization": "JetBrains",
+      "officialWebsite": "https://www.jetbrains.com/pycharm",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "IDE"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/pycharm.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "wecom",
+      "name": "企业微信",
+      "pinyin": "qiyeweixin qywx",
+      "icon": "./assets/software-icons/wecom.ico",
+      "description": "腾讯企业微信，面向企业的办公沟通与协作平台。",
+      "organization": "Tencent",
+      "officialWebsite": "https://work.weixin.qq.com/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "办公协作",
+        "企业通讯"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/wecom.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "qq",
+      "name": "QQ",
+      "icon": "./assets/software-icons/qq.png",
+      "description": "腾讯即时通信软件。",
+      "organization": "Tencent",
+      "officialWebsite": "https://im.qq.com/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "即时通讯",
+        "社交"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/qq.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "360-antivirus",
+      "name": "360 杀毒",
+      "pinyin": "shadu sd",
+      "icon": "./assets/software-icons/360-antivirus.ico",
+      "description": "360 出品的安全与防护工具，提供病毒查杀、系统清理等功能。",
+      "organization": "360",
+      "officialWebsite": "https://sd.360.cn",
+      "categories": [
+        "security"
+      ],
+      "tags": [
+        "安全防护",
+        "杀毒软件"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/360-antivirus.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "snipaste",
+      "name": "Snipaste",
+      "icon": "./assets/software-icons/snipaste.ico",
+      "description": "简单高效的截图工具，支持截图后贴图到屏幕上，方便高效办公。",
+      "organization": "Snipaste",
+      "officialWebsite": "https://www.snipaste.com",
+      "categories": [
+        "design"
+      ],
+      "tags": [
+        "截图",
+        "效率工具"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/snipaste.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "sogou-browser",
+      "name": "搜狗高速浏览器",
+      "pinyin": "sougougaosuliulanqi sggsllq",
+      "icon": "./assets/software-icons/sogou-browser.ico",
+      "description": "搜狗出品的双核浏览器，结合 Trident 和 Chromium 内核，提供高速上网体验。",
+      "organization": "搜狗",
+      "officialWebsite": "https://www.sogou.com",
+      "categories": [
+        "browser"
+      ],
+      "tags": [
+        "浏览器"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/sogou-browser.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "sogou-pinyin",
+      "name": "搜狗输入法",
+      "pinyin": "sougoushurufa sgsrf",
+      "icon": "./assets/software-icons/sogou-pinyin.ico",
+      "description": "搜狗出品的免费中文输入法，拥有丰富的词库和智能输入功能。",
+      "organization": "搜狗",
+      "officialWebsite": "https://pinyin.sogou.com",
+      "categories": [
+        "input-method"
+      ],
+      "tags": [
+        "输入法"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/sogou-pinyin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "steam",
+      "name": "Steam",
+      "icon": "./assets/software-icons/steam.png",
+      "description": "Valve 旗下数字游戏平台客户端。",
+      "organization": "Valve Corporation",
+      "officialWebsite": "https://store.steampowered.com/about/",
+      "categories": [
+        "gaming"
+      ],
+      "tags": [
+        "游戏平台",
+        "娱乐"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/steam.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "teamviewer",
+      "name": "TeamViewer",
+      "icon": "./assets/software-icons/teamviewer.ico",
+      "description": "全球知名的远程控制、远程访问和远程支持软件。",
+      "organization": "TeamViewer AG",
+      "officialWebsite": "https://www.teamviewer.com",
+      "categories": [
+        "remote"
+      ],
+      "tags": [
+        "远程控制"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/teamviewer.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "tencent-pc-manager",
+      "name": "腾讯电脑管家",
+      "pinyin": "tengxundiannaoguanjia txdngj",
+      "icon": "./assets/software-icons/tencent-pc-manager.ico",
+      "description": "腾讯出品的综合安全与管理软件，提供病毒查杀、系统加速和软件管理功能。",
+      "organization": "Tencent",
+      "officialWebsite": "https://guanjia.qq.com",
+      "categories": [
+        "security"
+      ],
+      "tags": [
+        "安全防护"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/tencent-pc-manager.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "tencent-meeting",
+      "name": "腾讯会议",
+      "pinyin": "tengxunhuiyi txhy",
+      "icon": "./assets/software-icons/tencent-meeting.ico",
+      "description": "腾讯会议，支持多端高清视频会议与在线协作。",
+      "organization": "Tencent",
+      "officialWebsite": "https://meeting.tencent.com/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "视频会议",
+        "办公协作",
+        "腾讯"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/tencent-meeting.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "tencent-video",
+      "name": "腾讯视频",
+      "pinyin": "tengxunshipin txsp",
+      "icon": "./assets/software-icons/tencent-video.ico",
+      "description": "腾讯出品的在线视频平台客户端，提供电视剧、电影、综艺、动漫等内容。",
+      "organization": "Tencent",
+      "officialWebsite": "https://v.qq.com",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "视频"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/tencent-video.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "weiyun",
+      "name": "腾讯微云",
+      "pinyin": "tengxunweiyun txwy",
+      "icon": "./assets/software-icons/weiyun.ico",
+      "description": "腾讯出品的云存储服务，支持文件同步、备份和在线预览。",
+      "organization": "Tencent",
+      "officialWebsite": "https://www.weiyun.com",
+      "categories": [
+        "cloud-storage"
+      ],
+      "tags": [
+        "云存储"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/weiyun.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "todesk",
+      "name": "ToDesk",
+      "icon": "./assets/software-icons/todesk.ico",
+      "description": "ToDesk 远程控制客户端，支持多端远程协作与设备管理。",
+      "organization": "ToDesk",
+      "officialWebsite": "https://www.todesk.com/",
+      "categories": [
+        "remote"
+      ],
+      "tags": [
+        "远程控制",
+        "远程办公",
+        "协作"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/todesk.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "visual-studio",
+      "name": "Visual Studio",
+      "icon": "./assets/software-icons/visual-studio.ico",
+      "description": "Microsoft 出品的专业集成开发环境（IDE），支持 C#、C++、Python 等多种语言。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://visualstudio.microsoft.com",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "IDE"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/visual-studio.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "vscode",
+      "name": "Visual Studio Code",
+      "icon": "./assets/software-icons/vscode.ico",
+      "description": "Microsoft 出品的轻量级开源代码编辑器，支持丰富的扩展生态。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://code.visualstudio.com",
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "开发工具",
+        "代码编辑器"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/vscode.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "vmware-workstation",
+      "name": "VMware Workstation Pro",
+      "description": "VMware 出品的专业桌面虚拟化软件，支持在单台 PC 上运行多个虚拟机。",
+      "organization": "VMware",
+      "officialWebsite": "https://www.vmware.com/products/workstation",
+      "categories": [
+        "virtualization"
+      ],
+      "tags": [
+        "虚拟机"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/vmware-workstation.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "microsoft-pinyin",
+      "name": "微软拼音",
+      "pinyin": "weiruanpinyin wrpy",
+      "icon": "./assets/software-icons/edge.ico",
+      "description": "Windows 内置的中文拼音输入法，由 Microsoft 开发维护，支持智能词组与云输入。",
+      "organization": "Microsoft",
+      "officialWebsite": "https://www.microsoft.com",
+      "categories": [
+        "input-method"
+      ],
+      "tags": [
+        "输入法"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/microsoft-pinyin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "weixin",
+      "name": "微信",
+      "pinyin": "weixin wx",
+      "icon": "./assets/software-icons/weixin.svg",
+      "description": "腾讯微信，提供消息、通话、朋友圈等功能的通讯软件。",
+      "organization": "Tencent",
+      "officialWebsite": "https://weixin.qq.com/",
+      "categories": [
+        "communication"
+      ],
+      "tags": [
+        "即时通讯",
+        "社交"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/weixin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "winrar",
+      "name": "WinRAR",
+      "icon": "./assets/software-icons/winrar.ico",
+      "description": "高效的压缩与解压工具，支持 RAR 和 ZIP 等多种格式。",
+      "organization": "RARLAB",
+      "officialWebsite": "https://www.rarlab.com",
+      "categories": [
+        "compression"
+      ],
+      "tags": [
+        "压缩"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/winrar.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "wps",
+      "name": "WPS Office",
+      "icon": "./assets/software-icons/wps.svg",
+      "description": "金山办公旗下 WPS Office 办公软件。",
+      "organization": "Kingsoft Office",
+      "officialWebsite": "https://www.wps.cn/",
+      "categories": [
+        "office"
+      ],
+      "tags": [
+        "办公软件",
+        "文档处理"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/wps.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "sunlogin",
+      "name": "向日葵远程控制",
+      "pinyin": "xiangrikuiyuanchengkongzhi xrkyckz",
+      "icon": "./assets/software-icons/sunlogin.ico",
+      "description": "上海贝锐出品的远程控制软件，支持远程桌面、远程文件传输和远程运维。",
+      "organization": "上海贝锐",
+      "officialWebsite": "https://sunlogin.oray.com",
+      "categories": [
+        "remote"
+      ],
+      "tags": [
+        "远程控制"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/sunlogin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "iflytek-pinyin",
+      "name": "讯飞输入法",
+      "pinyin": "xunfeishurufa xfsrf",
+      "description": "科大讯飞出品的免费中文输入法，支持语音、拼音、手写等多种输入方式。",
+      "organization": "科大讯飞",
+      "officialWebsite": "https://shurufa.iflytek.com",
+      "categories": [
+        "input-method"
+      ],
+      "tags": [
+        "输入法"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/iflytek-pinyin.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "360-zip",
+      "name": "360 压缩",
+      "pinyin": "yasuo ys",
+      "description": "360 出品的免费压缩与解压工具，支持多种格式。",
+      "organization": "360",
+      "officialWebsite": "https://yasuo.360.cn",
+      "categories": [
+        "compression"
+      ],
+      "tags": [
+        "压缩"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/360-zip.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "qqmusic",
+      "name": "QQ音乐",
+      "pinyin": "yinle yl",
+      "icon": "./assets/software-icons/qqmusic.ico",
+      "description": "腾讯旗下在线音乐平台客户端。",
+      "organization": "Tencent Music",
+      "officialWebsite": "https://y.qq.com/",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "音乐",
+        "流媒体"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/qqmusic.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "youdao-dict",
+      "name": "有道词典（桌面版）",
+      "pinyin": "youdaocidianzhuomianban ydcdzmb",
+      "icon": "./assets/software-icons/youdao-dict.ico",
+      "description": "网易有道出品的免费翻译与词典工具，支持多语种翻译、查词和语音朗读。",
+      "organization": "网易有道",
+      "officialWebsite": "https://youdao.com",
+      "categories": [
+        "translation"
+      ],
+      "tags": [
+        "翻译",
+        "词典"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/youdao-dict.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "youku",
+      "name": "优酷",
+      "pinyin": "youku yk",
+      "icon": "./assets/software-icons/youku.ico",
+      "description": "优酷出品的视频平台客户端，提供电视剧、电影、综艺、动漫等丰富内容。",
+      "organization": "优酷",
+      "officialWebsite": "https://www.youku.com",
+      "categories": [
+        "media"
+      ],
+      "tags": [
+        "视频"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/youku.json",
+        "timeoutMs": 8000
+      }
+    },
+    {
+      "id": "uu-remote",
+      "name": "UU远程",
+      "pinyin": "yuancheng yc",
+      "icon": "./assets/software-icons/uu-remote.png",
+      "description": "网易 UU 远程控制客户端，支持低延迟远控与多端协作。",
+      "organization": "NetEase",
+      "officialWebsite": "https://uuyc.163.com/",
+      "categories": [
+        "remote"
+      ],
+      "tags": [
+        "远程控制",
+        "远程办公",
+        "网易"
+      ],
+      "source": {
+        "mode": "json",
+        "path": "versions/uu-remote.json",
+        "timeoutMs": 8000
+      }
+    }
+  ]
+}

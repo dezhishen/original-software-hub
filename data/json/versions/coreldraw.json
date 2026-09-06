@@ -1,0 +1,42 @@
+{
+  "softwareId": "coreldraw",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.coreldraw.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "CorelDRAW 免费试用下载",
+              "url": "https://www.coreldraw.com/cn/pages/free-trial/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.coreldraw.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "CorelDRAW 免费试用下载",
+              "url": "https://www.coreldraw.com/cn/pages/free-trial/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

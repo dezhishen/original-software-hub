@@ -1,0 +1,116 @@
+{
+  "softwareId": "anydesk",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "9.7.15",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://anydesk.com.cn/zhs/downloads/windows",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "AnyDesk Windows 安装包",
+              "url": "https://download.anydesk.com/AnyDesk.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "9.7.3",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://anydesk.com.cn/zhs/downloads/windows",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "AnyDesk macOS 安装包",
+              "url": "https://download.anydesk.com/anydesk.dmg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "8.0.4",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://anydesk.com.cn/zhs/downloads/linux",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Debian / Ubuntu / Mint (64 Bit)",
+              "url": "https://download.anydesk.com/linux/anydesk_8.0.4-1_amd64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "openSUSE 15/42 (64 Bit)",
+              "url": "https://download.anydesk.com/linux/anydesk_8.0.4-1_x86_64.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Generic Linux (64 Bit)",
+              "url": "https://download.anydesk.com/linux/anydesk-8.0.4-amd64.tar.gz"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Android",
+      "version": "8.5.0",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://play.google.com/store/apps/details?id=com.anydesk.anydeskandroid",
+      "packages": [
+        {
+          "architecture": "all",
+          "links": [
+            {
+              "type": "store",
+              "label": "Google Play",
+              "url": "https://play.google.com/store/apps/details?id=com.anydesk.anydeskandroid"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "8.2.2",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://itunes.apple.com/us/app/anydesk/id1176131273",
+      "packages": [
+        {
+          "architecture": "all",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://itunes.apple.com/us/app/anydesk/id1176131273"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

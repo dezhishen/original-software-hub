@@ -1,0 +1,24 @@
+{
+  "softwareId": "foxit-reader",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.foxitsoftware.com/pdf-reader",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Foxit Reader 下载页",
+              "url": "https://www.foxitsoftware.com/downloads/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

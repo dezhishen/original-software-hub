@@ -1,0 +1,101 @@
+{
+  "softwareId": "uu-remote",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "Latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://uuyc.163.com/download/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "UU远程 Android 下载",
+              "url": "https://adl.netease.com/d/g/uuremote/c/gw?type=android"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Android TV",
+      "version": "Latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://uuyc.163.com/download/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "UU远程 Android TV 下载",
+              "url": "https://adl.netease.com/d/g/uuremote/c/adtv"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "Latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://uuyc.163.com/download/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "UU远程 Windows 下载",
+              "url": "https://adl.netease.com/d/g/uuremote/c/gw?type=pc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "Latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://uuyc.163.com/download/",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/cn/app/uu%E8%BF%9C%E7%A8%8B/id1642306791"
+            },
+            {
+              "type": "direct",
+              "label": "UU远程 iOS / iPadOS 下载",
+              "url": "https://adl.netease.com/d/g/uuremote/c/gw?type=ios"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "Latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://uuyc.163.com/download/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "UU远程 macOS 下载",
+              "url": "https://adl.netease.com/d/g/uuremote/c/gw_mac"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

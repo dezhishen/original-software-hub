@@ -1,0 +1,105 @@
+{
+  "softwareId": "vscode",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "1.136.1",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://code.visualstudio.com",
+      "packages": [
+        {
+          "architecture": "arm64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode .deb (arm64)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=linux-deb-arm64"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode .deb (amd64)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=linux-deb-x64"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (rpm)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode .rpm (amd64)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=linux-rpm-x64"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "1.136.1",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://code.visualstudio.com",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode 用户安装包 (arm64)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=win32-arm64-user"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode 用户安装包 (x64)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=win32-x64-user"
+            },
+            {
+              "type": "direct",
+              "label": "VSCode 系统安装包 (x64)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=win32-x64"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode 用户安装包 (x86)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=win32-x86-user"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "1.136.1",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://code.visualstudio.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VSCode for macOS (Universal)",
+              "url": "https://code.visualstudio.com/sha/download?build=stable\u0026os=darwin-universal"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

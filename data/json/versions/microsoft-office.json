@@ -1,0 +1,78 @@
+{
+  "softwareId": "microsoft-office",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/office",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "Google Play",
+              "url": "https://play.google.com/store/apps/details?id=com.microsoft.office.officehubrow"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/office",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Microsoft Office 官方页",
+              "url": "https://www.microsoft.com/office"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/office",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/microsoft-office/id541164041"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com/office",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Microsoft Office for Mac 官方页",
+              "url": "https://www.microsoft.com/office"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

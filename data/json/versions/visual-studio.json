@@ -1,0 +1,42 @@
+{
+  "softwareId": "visual-studio",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://visualstudio.microsoft.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Visual Studio Community 2022",
+              "url": "https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community\u0026rel=17"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://visualstudio.microsoft.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Visual Studio for Mac",
+              "url": "https://visualstudio.microsoft.com/vs/mac/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

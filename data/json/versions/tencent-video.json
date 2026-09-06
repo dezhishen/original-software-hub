@@ -1,0 +1,42 @@
+{
+  "softwareId": "tencent-video",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://v.qq.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "腾讯视频 Windows 客户端下载",
+              "url": "https://v.qq.com/download.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://v.qq.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "腾讯视频 macOS 客户端下载",
+              "url": "https://v.qq.com/download.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "softwareId": "360-antivirus",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://sd.360.cn",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "360 杀毒安装包",
+              "url": "https://dl.360.cn/sd/360sd_inst.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

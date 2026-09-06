@@ -1,0 +1,60 @@
+{
+  "softwareId": "pycharm",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.jetbrains.com/pycharm",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "PyCharm Linux 下载",
+              "url": "https://www.jetbrains.com/pycharm/download/#section=linux"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.jetbrains.com/pycharm",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "PyCharm Community 下载",
+              "url": "https://www.jetbrains.com/pycharm/download/#section=windows"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.jetbrains.com/pycharm",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "PyCharm macOS 下载",
+              "url": "https://www.jetbrains.com/pycharm/download/#section=mac"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

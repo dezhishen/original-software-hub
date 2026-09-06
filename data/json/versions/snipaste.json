@@ -1,0 +1,42 @@
+{
+  "softwareId": "snipaste",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.snipaste.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Snipaste 下载",
+              "url": "https://www.snipaste.com/download"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.snipaste.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Snipaste macOS 下载",
+              "url": "https://www.snipaste.com/download"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

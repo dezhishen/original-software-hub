@@ -1,0 +1,24 @@
+{
+  "softwareId": "360-safe-guard",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.360.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "360 安全卫士安装包",
+              "url": "https://dl.360.cn/setup.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

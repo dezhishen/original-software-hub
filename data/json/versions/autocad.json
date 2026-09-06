@@ -1,0 +1,42 @@
+{
+  "softwareId": "autocad",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.autodesk.com/products/autocad",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "AutoCAD 免费试用下载",
+              "url": "https://www.autodesk.com/products/autocad/free-trial"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.autodesk.com/products/autocad",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "AutoCAD 免费试用下载",
+              "url": "https://www.autodesk.com/products/autocad/free-trial"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "softwareId": "kugou-music",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.kugou.com",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "应用市场",
+              "url": "https://www.kugou.com/android/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.kugou.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "酷狗音乐 Windows 下载",
+              "url": "https://www.kugou.com/download/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.kugou.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/id472966188"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

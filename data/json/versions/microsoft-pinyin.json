@@ -1,0 +1,24 @@
+{
+  "softwareId": "microsoft-pinyin",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.microsoft.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Windows 输入法管理帮助",
+              "url": "https://support.microsoft.com/zh-cn/windows/%E5%9C%A8-windows-%E4%B8%AD%E7%AE%A1%E7%90%86%E8%BE%93%E5%85%A5%E6%B3%95-1b7af6fc-e66f-4bbe-bec0-52e5e33bbe93"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

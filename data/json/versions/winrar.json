@@ -1,0 +1,24 @@
+{
+  "softwareId": "winrar",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.rarlab.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "WinRAR 下载页",
+              "url": "https://www.rarlab.com/download.htm"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

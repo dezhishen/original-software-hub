@@ -1,0 +1,42 @@
+{
+  "softwareId": "youdao-dict",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://youdao.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "有道词典 PC 版下载",
+              "url": "https://youdao.com/dict/download"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://youdao.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "有道词典 Mac 版下载",
+              "url": "https://youdao.com/dict/download"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

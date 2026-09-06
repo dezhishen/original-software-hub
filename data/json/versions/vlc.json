@@ -1,0 +1,106 @@
+{
+  "softwareId": "vlc",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.videolan.org/vlc",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "Google Play",
+              "url": "https://play.google.com/store/apps/details?id=org.videolan.vlc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.videolan.org/vlc",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "VLC for Linux",
+              "url": "https://www.videolan.org/vlc/#download"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.videolan.org/vlc",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VLC Windows 安装包 (x64)",
+              "url": "https://get.videolan.org/vlc/latest/win64/vlc-latest-win64.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VLC Windows 安装包 (x86)",
+              "url": "https://get.videolan.org/vlc/latest/win32/vlc-latest-win32.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.videolan.org/vlc",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/vlc-for-mobile/id650377962"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.videolan.org/vlc",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "VLC macOS 安装包",
+              "url": "https://get.videolan.org/vlc/latest/macosx/vlc-latest-universal.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

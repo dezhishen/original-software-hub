@@ -1,0 +1,78 @@
+{
+  "softwareId": "baidu-pinyin",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://shurufa.baidu.com",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "应用市场",
+              "url": "https://shurufa.baidu.com/android"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://shurufa.baidu.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "百度输入法 Windows 版",
+              "url": "https://srf.baidu.com/?c=1\u0026s=down\u0026a=pc"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://shurufa.baidu.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/id414542983"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://shurufa.baidu.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "百度输入法 Mac 版",
+              "url": "https://srf.baidu.com/input/mac.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

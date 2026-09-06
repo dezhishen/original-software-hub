@@ -1,0 +1,42 @@
+{
+  "softwareId": "weiyun",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.weiyun.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "腾讯微云 Windows 下载",
+              "url": "https://www.weiyun.com/download.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.weiyun.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "腾讯微云 macOS 下载",
+              "url": "https://www.weiyun.com/download.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

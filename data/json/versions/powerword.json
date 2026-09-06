@@ -1,0 +1,24 @@
+{
+  "softwareId": "powerword",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.kingsoft.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "金山词霸 PC 版下载",
+              "url": "https://cp.iciba.com/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

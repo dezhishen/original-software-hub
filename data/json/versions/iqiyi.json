@@ -1,0 +1,78 @@
+{
+  "softwareId": "iqiyi",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.iqiyi.com",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "应用市场",
+              "url": "https://www.iqiyi.com/download/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.iqiyi.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "爱奇艺 Windows 客户端下载",
+              "url": "https://www.iqiyi.com/download/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.iqiyi.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://apps.apple.com/app/id393765873"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.iqiyi.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "爱奇艺 macOS 客户端下载",
+              "url": "https://www.iqiyi.com/download/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

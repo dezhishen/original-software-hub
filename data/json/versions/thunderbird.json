@@ -1,0 +1,83 @@
+{
+  "softwareId": "thunderbird",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Android",
+      "version": "155.0",
+      "releaseDate": "2026-09-01",
+      "officialUrl": "https://www.thunderbird.net/notes/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "store",
+              "label": "Google Play",
+              "url": "https://play.google.com/store/apps/details?id=net.thunderbird.android"
+            },
+            {
+              "type": "store",
+              "label": "F-Droid",
+              "url": "https://f-droid.org/packages/net.thunderbird.android"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "155.0",
+      "releaseDate": "2026-09-01",
+      "officialUrl": "https://www.thunderbird.net/notes/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "tar.bz2",
+              "url": "https://download.mozilla.org/?product=thunderbird-155.0-SSL\u0026os=linux64\u0026lang=zh-CN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "155.0",
+      "releaseDate": "2026-09-01",
+      "officialUrl": "https://www.thunderbird.net/notes/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "安装包 (exe)",
+              "url": "https://download.mozilla.org/?product=thunderbird-155.0-SSL\u0026os=win64\u0026lang=zh-CN"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "155.0",
+      "releaseDate": "2026-09-01",
+      "officialUrl": "https://www.thunderbird.net/notes/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "安装包 (dmg)",
+              "url": "https://download.mozilla.org/?product=thunderbird-155.0-SSL\u0026os=osx\u0026lang=zh-CN"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

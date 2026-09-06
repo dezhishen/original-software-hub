@@ -1,0 +1,42 @@
+{
+  "softwareId": "adobe-illustrator",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.adobe.com/products/illustrator",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Illustrator 免费试用",
+              "url": "https://www.adobe.com/products/illustrator/free-trial-download.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.adobe.com/products/illustrator",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "Illustrator 免费试用",
+              "url": "https://www.adobe.com/products/illustrator/free-trial-download.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

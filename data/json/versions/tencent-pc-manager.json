@@ -1,0 +1,24 @@
+{
+  "softwareId": "tencent-pc-manager",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://guanjia.qq.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "腾讯电脑管家下载",
+              "url": "https://guanjia.qq.com/download.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

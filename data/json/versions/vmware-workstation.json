@@ -1,0 +1,42 @@
+{
+  "softwareId": "vmware-workstation",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.vmware.com/products/workstation",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "VMware Workstation Linux 下载",
+              "url": "https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.vmware.com/products/workstation",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "VMware Workstation 免费试用",
+              "url": "https://www.vmware.com/products/workstation-pro/workstation-pro-evaluation.html"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

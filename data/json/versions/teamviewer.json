@@ -1,0 +1,60 @@
+{
+  "softwareId": "teamviewer",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.teamviewer.com",
+      "packages": [
+        {
+          "architecture": "x64 (deb)",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "TeamViewer Linux 下载",
+              "url": "https://www.teamviewer.com/zh-cn/download/linux/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.teamviewer.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "TeamViewer 安装包 (x64)",
+              "url": "https://download.teamviewer.com/download/TeamViewer_Setup_x64.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.teamviewer.com",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "TeamViewer macOS 下载",
+              "url": "https://www.teamviewer.com/zh-cn/download/macos/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

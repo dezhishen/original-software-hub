@@ -1,0 +1,120 @@
+{
+  "softwareId": "easytier",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "v2.6.4",
+      "releaseDate": "2026-05-12",
+      "officialUrl": "https://github.com/EasyTier/EasyTier/releases/tag/v2.6.4",
+      "packages": [
+        {
+          "architecture": "aarch64 (appimage)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_aarch64.AppImage",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_aarch64.AppImage"
+            }
+          ]
+        },
+        {
+          "architecture": "aarch64 (rpm)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui-2.6.4-1.aarch64.rpm",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui-2.6.4-1.aarch64.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "arm64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_arm64.deb",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_arm64.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (appimage)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_amd64.AppImage",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_amd64.AppImage"
+            }
+          ]
+        },
+        {
+          "architecture": "x64 (deb)",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_amd64.deb",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_amd64.deb"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "v2.6.4",
+      "releaseDate": "2026-05-12",
+      "officialUrl": "https://github.com/EasyTier/EasyTier/releases/tag/v2.6.4",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_arm64-setup.exe",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_arm64-setup.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_x64-setup.exe",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_x64-setup.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "v2.6.4",
+      "releaseDate": "2026-05-12",
+      "officialUrl": "https://github.com/EasyTier/EasyTier/releases/tag/v2.6.4",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_aarch64.dmg",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_aarch64.dmg"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "easytier-gui_2.6.4_x64.dmg",
+              "url": "https://github.com/EasyTier/EasyTier/releases/download/v2.6.4/easytier-gui_2.6.4_x64.dmg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

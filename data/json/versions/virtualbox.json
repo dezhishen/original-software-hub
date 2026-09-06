@@ -1,0 +1,60 @@
+{
+  "softwareId": "virtualbox",
+  "updatedAt": "2026-09-06T17:58:42Z",
+  "platforms": [
+    {
+      "platform": "Linux",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.virtualbox.org",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "VirtualBox Linux 下载",
+              "url": "https://www.virtualbox.org/wiki/Downloads"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.virtualbox.org",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "VirtualBox Windows 下载",
+              "url": "https://www.virtualbox.org/wiki/Downloads"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "latest",
+      "releaseDate": "2026-09-06",
+      "officialUrl": "https://www.virtualbox.org",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "VirtualBox macOS 下载",
+              "url": "https://www.virtualbox.org/wiki/Downloads"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
