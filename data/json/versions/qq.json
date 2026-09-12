@@ -1,0 +1,181 @@
+{
+  "softwareId": "qq",
+  "updatedAt": "2026-09-12T21:47:15Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "9.9.33",
+      "releaseDate": "2026-08-24",
+      "officialUrl": "https://im.qq.com/pcqq/index.shtml",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ_9.9.33_260813_arm64_01.exe",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/497e2f1f/QQ_9.9.33_260813_arm64_01.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ_9.9.33_260813_x64_01.exe",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/497e2f1f/QQ_9.9.33_260813_x64_01.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ_9.9.33_260813_x86_01.exe",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/497e2f1f/QQ_9.9.33_260813_x86_01.exe"
+            },
+            {
+              "type": "direct",
+              "label": "QQ9.7.25.29417.exe",
+              "url": "https://qqdl.gtimg.cn/qqfile/qq/PCQQ/PCQQ9.7.25/QQ9.7.25.29417.exe"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Linux",
+      "version": "3.2.32",
+      "releaseDate": "2026-08-24",
+      "officialUrl": "https://im.qq.com/linuxqq/index.shtml",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "appimage",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_arm64_01.AppImage"
+            },
+            {
+              "type": "direct",
+              "label": "deb",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_arm64_01.deb"
+            },
+            {
+              "type": "direct",
+              "label": "rpm",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_aarch64_01.rpm"
+            }
+          ]
+        },
+        {
+          "architecture": "loongarch64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ_3.2.32_260812_loongarch64_01.deb",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_loongarch64_01.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "mips64el",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ_3.2.32_260812_mips64el_01.deb",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_mips64el_01.deb"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "appimage",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_x86_64_01.AppImage"
+            },
+            {
+              "type": "direct",
+              "label": "deb",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_amd64_01.deb"
+            },
+            {
+              "type": "direct",
+              "label": "rpm",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_3.2.32_260812_x86_64_01.rpm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "7.0.0 (Intel+Apple Silicon)0",
+      "releaseDate": "2026-08-24",
+      "officialUrl": "https://im.qq.com/macqq/index.shtml",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ_7.0.0_260812_01.dmg",
+              "url": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/126b7ce6/QQ_7.0.0_260812_01.dmg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "Android",
+      "version": "9.3.55",
+      "releaseDate": "2026-09-12",
+      "officialUrl": "https://im.qq.com/",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ Android x64 安装包",
+              "url": "https://downv6.qq.com/qqweb/QQ_1/android_apk/9.3.55_226abb86565ab9e9.apk"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "QQ Android x86 安装包",
+              "url": "https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.8.90.7975_537119543_32.apk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "iOS / iPadOS",
+      "version": "9.3.55",
+      "releaseDate": "2026-09-12",
+      "officialUrl": "https://im.qq.com/",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "store",
+              "label": "App Store",
+              "url": "https://itunes.apple.com/cn/app/qq-2011/id444934666?mt=8"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
