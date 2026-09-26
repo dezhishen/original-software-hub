@@ -1,0 +1,24 @@
+{
+  "softwareId": "360-browser",
+  "updatedAt": "2026-09-26T15:19:03Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-26",
+      "officialUrl": "https://browser.360.cn",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "360 浏览器安装包",
+              "url": "https://browser.360.cn/ee/360browser_ee.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "softwareId": "360-zip",
+  "updatedAt": "2026-09-26T15:19:03Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-09-26",
+      "officialUrl": "https://yasuo.360.cn",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "360 压缩安装包",
+              "url": "https://yasuo.360.cn/360zip_setup.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
