@@ -1,0 +1,42 @@
+{
+  "softwareId": "foxmail",
+  "updatedAt": "2026-10-11T04:23:40Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "7.2.25",
+      "releaseDate": "2026-07-06",
+      "officialUrl": "https://www.foxmail.com/win/",
+      "packages": [
+        {
+          "architecture": "x64/x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "FoxmailSetup_7.2.25.563.exe",
+              "url": "https://dl.foxmail.com/foxmail/windows/FoxmailSetup_7.2.25.563.exe?sign=be6df548e6faebf2e5fe50e5fbe3a88d\u0026t=1791692624"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "1.5.8.95111",
+      "releaseDate": "2026-06-17",
+      "officialUrl": "https://www.foxmail.com/mac/",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "direct",
+              "label": "Foxmail_for_Mac_1.5.8.95111.dmg",
+              "url": "https://dl.foxmail.com/foxmail/MacFoxmail/Foxmail_for_Mac_1.5.8.95111.dmg?sign=db302f3ac3e5b65162e62a8f100f8813\u0026t=1791692624"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

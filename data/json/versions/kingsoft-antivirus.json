@@ -1,0 +1,24 @@
+{
+  "softwareId": "kingsoft-antivirus",
+  "updatedAt": "2026-10-11T04:23:40Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-10-11",
+      "officialUrl": "https://www.kingsoft.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "金山毒霸下载页",
+              "url": "https://www.kingsoft.com/duba/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

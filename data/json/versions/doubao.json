@@ -1,0 +1,42 @@
+{
+  "softwareId": "doubao",
+  "updatedAt": "2026-10-11T04:23:40Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "1.0.4.7231",
+      "releaseDate": "2026-10-11",
+      "officialUrl": "https://www.doubao.com/download",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "豆包 Windows 下载页",
+              "url": "https://www.doubao.com/download"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "macOS",
+      "version": "1.0.4.7231",
+      "releaseDate": "2026-10-11",
+      "officialUrl": "https://www.doubao.com/download",
+      "packages": [
+        {
+          "architecture": "universal",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "豆包 macOS 下载页",
+              "url": "https://www.doubao.com/download"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
