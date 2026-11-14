@@ -1,0 +1,44 @@
+{
+  "softwareId": "7zip",
+  "updatedAt": "2026-11-14T11:18:53Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "26.06",
+      "releaseDate": "2026-11-06",
+      "officialUrl": "https://www.7-zip.org/",
+      "packages": [
+        {
+          "architecture": "arm64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "7z2606-arm64.exe",
+              "url": "https://github.com/ip7z/7zip/releases/download/26.06/7z2606-arm64.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "direct",
+              "label": "7z2606-x64.exe",
+              "url": "https://github.com/ip7z/7zip/releases/download/26.06/7z2606-x64.exe"
+            }
+          ]
+        },
+        {
+          "architecture": "x86",
+          "links": [
+            {
+              "type": "direct",
+              "label": "7z2606.exe",
+              "url": "https://github.com/ip7z/7zip/releases/download/26.06/7z2606.exe"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
