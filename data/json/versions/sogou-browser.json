@@ -1,0 +1,24 @@
+{
+  "softwareId": "sogou-browser",
+  "updatedAt": "2026-11-28T16:29:19Z",
+  "platforms": [
+    {
+      "platform": "Windows",
+      "version": "latest",
+      "releaseDate": "2026-11-28",
+      "officialUrl": "https://browser.sogou.com",
+      "packages": [
+        {
+          "architecture": "x64",
+          "links": [
+            {
+              "type": "webpage",
+              "label": "搜狗浏览器下载",
+              "url": "https://browser.sogou.com/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
